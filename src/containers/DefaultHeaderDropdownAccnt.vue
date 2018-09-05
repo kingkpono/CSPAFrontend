@@ -1,7 +1,7 @@
 <template>
   <AppHeaderDropdown right no-caret>
     <template slot="header">
-      Hello, Admin User
+      Hello, {{ username }}
       <img
         src="img/new_logo.png"
         class="img-avatar"
@@ -27,9 +27,9 @@
         <router-link to="/settings/change-password"  style="text-decoration:none"> Change Password</router-link>
       </b-dropdown-item>
 
-      <b-dropdown-item>
+      <b-dropdown-item @click="logOut">
         <i class="fa fa-lock" />
-        <router-link to="/auth/login"  style="text-decoration:none"> Log Out</router-link>
+         Log Out
       </b-dropdown-item>
     </template>
   </AppHeaderDropdown>
@@ -43,7 +43,19 @@ export default {
     AppHeaderDropdown
   },
   data: () => {
-    return { itemsCount: 42 }
-  }
+    return {
+      itemsCount: 42,
+      username: []
+    }
+  },
+   created: function(){
+     this.username = this.$localStorage.get().data.name
+    },
+    methods: {
+      logOut(){
+        localStorage.clear()
+         this.$router.push({ path: '/auth/login' })
+      }
+    }
 }
 </script>

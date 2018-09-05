@@ -42,7 +42,9 @@ Vue.use(Vuex, store)
 const store = new Vuex.Store({
   state: {
     count: 2,
-    staffEditScope:[]
+    staffEditScope:[],
+    sectorEditScope:[],
+    clientEditScope: []
   },
   mutations: {
     increment (state) {
@@ -50,6 +52,12 @@ const store = new Vuex.Store({
     },
     editStaffScope(state, scope){
       state.staffEditScope = scope
+    },
+    editSectorScope(state, scope){
+      state.sectorEditScope = scope
+    },
+    editClientScope(state, scope){
+      state.clientEditScope = scope
     }
   }
 })
@@ -67,6 +75,13 @@ Vue.use(ElementUI, { locale })
 Vue.use(qs);
 Vue.use(BootstrapVue)
 
+router.beforeEach((to, from, next) => {
+  if(to.path !== '/auth/login'){
+    localStorage.get() ?  next() :  next({ path:'/auth/login'})
+  }else{
+    next();
+  }
+})
 /* eslint-disable no-new */
 Vue.prototype.$localStorage = localStorage;
 

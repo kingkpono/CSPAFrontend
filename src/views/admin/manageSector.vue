@@ -5,11 +5,11 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Manage User
+                 <i class="icon-user"></i>Manage Sector
               </div>
               <div class="card-body">
                   <el-row>
-                  <router-link to="/admin/staff/add">
+                  <router-link to="/admin/sector/add">
                      <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
                   </router-link>
                   </el-row>
@@ -30,17 +30,10 @@
                             </el-popover>
                           </template>
                         </el-table-column>
-                         <el-table-column type="index" label="S/N" > </el-table-column>
-                        <el-table-column prop="name" label="Name" > </el-table-column>
-                        <el-table-column prop="email" label="Email" > </el-table-column>
-                        <el-table-column prop="department" label="Dept" width="100" > </el-table-column>
-                        <el-table-column prop="status" label="Status" width="90" :filters="[{ text: 'Active', value: 1 }, { text: 'Inactive', value: 0 }]" :filter-method="filterTag" filter-placement="bottom-end" >
-                          <template slot-scope="scope">
-                            <el-tag>
-                              {{scope.row.status == 1 ? 'Active' : 'Inactive'}}
-                            </el-tag>
-                          </template>
-                        </el-table-column>
+                          <el-table-column type="index" label="S/N" > </el-table-column>
+                          <el-table-column prop="name" label="Name" > </el-table-column>
+                          <el-table-column prop="description" label="Description" > </el-table-column>
+
                       </el-table>
                     </el-card>
               </div>
@@ -53,14 +46,13 @@
 
 <script>
 export default {
-  name: 'Manage-Staff',
+  name: 'Manage-Sector',
  data() {
 
       return {
         loading:false,
-        //visible: false,
+        tableData: [],
         multipleSelection: [],
-         tableData: [],
       };
     },
      computed: {
@@ -70,18 +62,18 @@ export default {
     },
     mounted:function() {
           this.loading = true
-              this.axios.get(`users`)
-              .then(response => {
-                this.tableData = response.data
-              })
-              .catch(e => {
-                alert(e);
-              }).finally(() => this.loading = false)
+          this.axios.get(`sectors`)
+          .then(response => {
+            this.tableData = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
     },
     methods: {
        handleClick(scope) {
-         this.$store.commit('editStaffScope', scope)
-         this.$router.push({ path: '/admin/staff/edit' })
+         this.$store.commit('editSectorScope', scope)
+         this.$router.push({ path: '/admin/sector/edit' })
       },
 
       resetForm(formName) {
@@ -102,10 +94,10 @@ export default {
             }
           })
           this.tableData = allData;
-              this.axios.delete('users/'+ row.id)
+              this.axios.delete('sectors/'+ row.id)
               .then(response => {
                  this.$alertify.success("Record Deleted Successfully")
-                this.$router.push({ path: '/admin/staff/manage' })
+                this.$router.push({ path: '/admin/sector/manage' })
               })
               .catch(e => {
                  this.$alertify.error("Unable to Delete Record")

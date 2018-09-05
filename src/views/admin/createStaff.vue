@@ -85,7 +85,7 @@ export default {
             { required: true, message: 'Please input the department', trigger: 'blur' }
           ],
           phone: [
-            { required: true, message: 'Please input the department', trigger: 'blur' },
+            { required: true, message: 'Please input the phone-number', trigger: 'blur' },
             { min: 11, message: 'Length should be a minimum of 11', trigger: 'blur' }
           ]
         }

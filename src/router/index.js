@@ -1,10 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { createClient } from 'http';
 
 const changePassword = () => import('@/views/settings/changePassword')
 const manageStaff = () => import('@/views/admin/manageStaff')
 const createStaff = () => import('@/views/admin/createStaff')
 const editStaff = () => import('@/views/admin/editStaff')
+const manageSector = () => import('@/views/admin/manageSector')
+const createSector = () => import('@/views/admin/createSector')
+const editSector = () => import('@/views/admin/editSector')
+const manageClients = () => import('@/views/admin/manageClients')
+const createClients = () => import('@/views/admin/createClient')
+const editClient = () => import('@/views/admin/editClient')
+
+
+
+
+
+
 
 const Login = () => import('@/views/auth/Login')
 const Register = () => import('@/views/auth/Register')
@@ -365,6 +378,90 @@ export default new Router({
           ]
         },
         {
+          path: 'admin',
+          redirect: '/admin/sector/manage',
+          name: 'admin',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'sector',
+              redirect: '/admin/sector/manage',
+              name: 'sector',
+              component: {
+                render (c) { return c('router-view') }
+              },
+              children: [
+                {
+                  path: 'manage',
+                  name: 'Manage Sector',
+                  component: manageSector,
+                },
+                {
+                  path: 'add',
+                  name: 'Create Sector',
+                  component: createSector
+                },
+                {
+                  path: 'edit',
+                  name: 'Edit Sector',
+                  component: editSector
+                },
+
+              ]
+            }
+          ]
+        },
+        {
+          path: 'admin',
+          redirect: '/admin/company/clients/manage',
+          name: 'Admin',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'company',
+              redirect: '/admin/company/clients/manage',
+              name: 'Company',
+              component: {
+                render (c) { return c('router-view') }
+              },
+              children: [
+                {
+                  path: 'clients',
+                  redirect: '/admin/company/clients/manage',
+                  name: 'Clients',
+                  component: {
+                    render (c) { return c('router-view') }
+                  },
+                  children: [
+                    {
+                      path: 'manage',
+                      name: 'Manage Clients',
+                      component: manageClients,
+                    },
+                    {
+                      path: 'add',
+                      name: 'Create Clients',
+                      component: createClients
+                    },
+                    {
+                      path: 'edit',
+                      name: 'Edit Clients',
+                      component: editClient
+                    },
+
+                  ]
+                }
+              ],
+
+            }
+          ],
+
+        },
+        {
           path: '/pages',
           redirect: '/pages/404',
           name: 'Pages',
@@ -381,17 +478,8 @@ export default new Router({
               path: '500',
               name: 'Page500',
               component: Page500
-            },
-            {
-              path: 'login',
-              name: 'Login',
-              component: Login
-            },
-            {
-              path: 'register',
-              name: 'Register',
-              component: Register
-            },
+            }
+
 
           ]
         },
@@ -420,3 +508,5 @@ export default new Router({
     },
   ]
 })
+
+

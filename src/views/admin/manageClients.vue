@@ -5,11 +5,11 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Manage User
+                 <i class="icon-user"></i>Manage Clients
               </div>
               <div class="card-body">
                   <el-row>
-                  <router-link to="/admin/staff/add">
+                  <router-link to="/admin/company/clients/add">
                      <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
                   </router-link>
                   </el-row>
@@ -30,17 +30,15 @@
                             </el-popover>
                           </template>
                         </el-table-column>
-                         <el-table-column type="index" label="S/N" > </el-table-column>
-                        <el-table-column prop="name" label="Name" > </el-table-column>
-                        <el-table-column prop="email" label="Email" > </el-table-column>
-                        <el-table-column prop="department" label="Dept" width="100" > </el-table-column>
-                        <el-table-column prop="status" label="Status" width="90" :filters="[{ text: 'Active', value: 1 }, { text: 'Inactive', value: 0 }]" :filter-method="filterTag" filter-placement="bottom-end" >
-                          <template slot-scope="scope">
-                            <el-tag>
-                              {{scope.row.status == 1 ? 'Active' : 'Inactive'}}
-                            </el-tag>
-                          </template>
-                        </el-table-column>
+                          <el-table-column type="index" label="S/N" > </el-table-column>
+                          <el-table-column prop="name" label="Name" width="170"> </el-table-column>
+                          <el-table-column prop="email" label="Email" width="170"> </el-table-column>
+                          <el-table-column prop="client_type" label="Client- type" width="140"> </el-table-column>
+                          <el-table-column prop="sector_id" label="Sector" width="170"> </el-table-column>
+                          <el-table-column prop="vendor_status" label="Vendor-status" width="140"> </el-table-column>
+                          <el-table-column prop="contact_person" label="Contact-person" width="140"> </el-table-column>
+                          <el-table-column prop="bdm_person_id" label="BDM-person" width="140"> </el-table-column>
+                          <el-table-column prop="address" label="Address" width="170"> </el-table-column>
                       </el-table>
                     </el-card>
               </div>
@@ -53,35 +51,62 @@
 
 <script>
 export default {
-  name: 'Manage-Staff',
+  name: 'Manage-Clients',
  data() {
 
       return {
+        scope: '',
         loading:false,
-        //visible: false,
+        bdm_person: '',
+        sector: '',
+        tableData: [],
         multipleSelection: [],
-         tableData: [],
       };
     },
      computed: {
-        count: function(){
-          return console.log(this.$store.state.count)
-        }
+
     },
     mounted:function() {
-          this.loading = true
-              this.axios.get(`users`)
-              .then(response => {
-                this.tableData = response.data
-              })
-              .catch(e => {
-                alert(e);
-              }).finally(() => this.loading = false)
+      this.getClients()
     },
     methods: {
+      getBdmpersonNameById(scope){
+       
+          this.loading = true
+          this.axios.get(`bdmpersons/` + scope.bdm_person_id)
+          .then(response => {
+           return this.bdm_person = response.data.name
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
+          return this.bdm_person
+      },
+       getSectorNameById(scope){
+          this.loading = true
+          console.log(scope);
+          this.axios.get(`sectors/` + scope.sector_id)
+          .then(response => {
+           return this.sector = response.data.name
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
+          return this.sector
+      },
+      getClients(){
+          this.loading = true
+          this.axios.get(`clients`)
+          .then(response => {
+            this.tableData = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
+      },
        handleClick(scope) {
-         this.$store.commit('editStaffScope', scope)
-         this.$router.push({ path: '/admin/staff/edit' })
+         this.$store.commit('editClientScope', scope)
+         this.$router.push({ path: '/admin/company/clients/edit' })
       },
 
       resetForm(formName) {
@@ -102,10 +127,10 @@ export default {
             }
           })
           this.tableData = allData;
-              this.axios.delete('users/'+ row.id)
+              this.axios.delete('clients/'+ row.id)
               .then(response => {
                  this.$alertify.success("Record Deleted Successfully")
-                this.$router.push({ path: '/admin/staff/manage' })
+                this.$router.push({ path: '/admin/company/clients/manage' })
               })
               .catch(e => {
                  this.$alertify.error("Unable to Delete Record")
