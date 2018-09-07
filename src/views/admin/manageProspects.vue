@@ -5,17 +5,11 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Manage Sector
+                 <i class="icon-user"></i>Manage Prospects
               </div>
               <div class="card-body">
-                  <el-row>
-                  <router-link to="/admin/sector/add">
-                     <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
-                  </router-link>
-                  </el-row>
 
                    <el-card class="box-card" style="width:90%;margin:auto" >
-                     
                       <el-table :data="tableData" style="width: 100%"  v-loading="loading"  ref="multipleTable" @selection-change="handleSelectionChange">
                        <el-table-column type="selection" width="55"></el-table-column>
                         <el-table-column fixed="right" label="Operations" width="120">
@@ -32,10 +26,15 @@
                           </template>
                         </el-table-column>
                           <el-table-column type="index" label="S/N" > </el-table-column>
-                          <el-table-column prop="name" label="Name" > </el-table-column>
-                          <el-table-column prop="description" label="Description" > </el-table-column>
+                          <el-table-column prop="name" label="Name" width="170"> </el-table-column>
+                          <el-table-column prop="email" label="Email" width="170"> </el-table-column>
+                          <el-table-column prop="client_type" label="Client- type" width="140"> </el-table-column>
+                          <el-table-column prop="sector.name" label="Sector" width="170"> </el-table-column>
+                          <el-table-column prop="vendor_status" label="Vendor-status" width="140"> </el-table-column>
+                          <el-table-column prop="contact_person" label="Contact-person" width="140"> </el-table-column>
+                          <el-table-column prop="bdmperson.name" label="BDM-person" width="140"> </el-table-column>
+                          <el-table-column prop="address" label="Address" width="170"> </el-table-column>
                       </el-table>
-
                     </el-card>
               </div>
             </div>
@@ -47,47 +46,49 @@
 
 <script>
 export default {
-  name: 'Manage-Sector',
+  name: 'ManageProspects',
  data() {
 
       return {
+        scope: '',
         loading:false,
+        bdm_person: '',
+        sector: '',
         tableData: [],
         multipleSelection: [],
-        selectedId: []
       };
     },
      computed: {
-        count: function(){
-          return console.log(this.$store.state.count)
-        }
+
     },
     mounted:function() {
+      this.getClients()
+    },
+    methods: {
+
+      getClients(){
           this.loading = true
-          this.axios.get(`sectors`)
+          this.axios.get(`prospects`)
           .then(response => {
             this.tableData = response.data
           })
           .catch(e => {
             alert(e);
           }).finally(() => this.loading = false)
-    },
-    methods: {
+      },
        handleClick(scope) {
-         this.$store.commit('editSectorScope', scope)
-         this.$router.push({ path: '/admin/sector/edit' })
+         this.$store.commit('editProspectsScope', scope)
+         this.$router.push({ path: '/admin/company/prospects/edit' })
       },
 
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      handleSelectionChange(val) {
+       handleSelectionChange(val) {
+         console.log(this.multipleSelection);
          this.multipleSelection = val;
       },
-      clearSelection(){
-        this.$refs.multipleTable.clearSelection();
-      },
-      filterTag(value, row) {
+       filterTag(value, row) {
         return row.status === value;
       },
       handleDelete(row){
@@ -98,16 +99,15 @@ export default {
             }
           })
           this.tableData = allData;
-              this.axios.delete('sectors/'+ row.id)
+              this.axios.delete('clients/'+ row.id)
               .then(response => {
                  this.$alertify.success("Record Deleted Successfully")
-                this.$router.push({ path: '/admin/sector/manage' })
+                this.$router.push({ path: '/admin/company/prospects/manage' })
               })
               .catch(e => {
                  this.$alertify.error("Unable to Delete Record")
               }).finally(() => this.loading = false)
-      },
-
+      }
     }
   }
 </script>

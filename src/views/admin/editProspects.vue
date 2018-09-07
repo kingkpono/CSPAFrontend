@@ -5,7 +5,7 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Edit Client
+                 <i class="icon-user"></i>Edit Prospects
               </div>
               <div class="card-body">
                 <el-card class="box-card" style="width:60%;margin:auto" >
@@ -65,7 +65,7 @@
 
 
 export default {
-  name: 'Edit-Client',
+  name: 'Edit-Prospects',
    data() {
       return {
         loading:false,
@@ -121,18 +121,18 @@ export default {
       };
     },
     created: function() {
-          this.ruleForm.email = this.$store.state.clientEditScope.email
-          this.ruleForm.name = this.$store.state.clientEditScope.name
-           this.ruleForm.sector_id = this.$store.state.clientEditScope.sector_id
-          this.ruleForm.vendor_status = this.$store.state.clientEditScope.vendor_status
-           this.ruleForm.contact_person = this.$store.state.clientEditScope.contact_person
-          this.ruleForm.name = this.$store.state.clientEditScope.name
-           this.ruleForm.mobile = this.$store.state.clientEditScope.mobile
-          this.ruleForm.bdm_person_id = this.$store.state.clientEditScope.bdm_person_id
-           this.ruleForm.address = this.$store.state.clientEditScope.address
-           this.ruleForm.client_type = this.$store.state.clientEditScope.client_type
-           this.bdmperson = this.$store.state.clientEditScope.bdmperson.name
-           this.sector = this.$store.state.clientEditScope.sector.name
+          this.ruleForm.email = this.$store.state.prospectsEditScope.email
+          this.ruleForm.name = this.$store.state.prospectsEditScope.name
+           this.ruleForm.sector_id = this.$store.state.prospectsEditScope.sector_id
+          this.ruleForm.vendor_status = this.$store.state.prospectsEditScope.vendor_status
+           this.ruleForm.contact_person = this.$store.state.prospectsEditScope.contact_person
+          this.ruleForm.name = this.$store.state.prospectsEditScope.name
+           this.ruleForm.mobile = this.$store.state.prospectsEditScope.mobile
+          this.ruleForm.bdm_person_id = this.$store.state.prospectsEditScope.bdm_person_id
+           this.ruleForm.address = this.$store.state.prospectsEditScope.address
+           this.ruleForm.client_type = this.$store.state.prospectsEditScope.client_type
+           this.bdmperson = this.$store.state.prospectsEditScope.bdmperson.name
+           this.sector = this.$store.state.prospectsEditScope.sector.name
            this.initOnCreated()
     },
     methods: {
@@ -161,10 +161,10 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
               this.loading = true
-              this.axios.put('clients/'+ this.$store.state.clientEditScope.id, this.ruleForm)
+              this.axios.put('clients/'+ this.$store.state.prospectsEditScope.id, this.ruleForm)
              .then(response => {
                  this.$alertify.success("Client Updated Successfully")
-                this.$router.push({ path: '/admin/company/clients/manage'})
+                this.$router.push({ path: '/admin/company/prospects/manage'})
               })
               .catch(e => {
 

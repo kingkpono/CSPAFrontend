@@ -15,6 +15,20 @@
                   </el-row>
 
                    <el-card class="box-card" style="width:90%;margin:auto" >
+                     <el-form :inline="true" class="demo-form-inline">
+                      <el-form-item label="Filter by:">
+                        <el-select v-model="query_params" placeholder="Query option" @change="fetchQuery">
+                          <el-option label="Sector" value="Sector"></el-option>
+                          <el-option label="BDM Manager" value="bdmperson"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="">
+                        <el-select v-model="value" clearable placeholder="Select" @change="fetchQueryValue">
+                          <el-option v-for="item in query_value" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                        </el-select>
+                      </el-form-item>
+
+                    </el-form>
                       <el-table :data="tableData" style="width: 100%"  v-loading="loading"  ref="multipleTable" @selection-change="handleSelectionChange">
                        <el-table-column type="selection" width="55"></el-table-column>
                         <el-table-column fixed="right" label="Operations" width="120">
@@ -34,10 +48,10 @@
                           <el-table-column prop="name" label="Name" width="170"> </el-table-column>
                           <el-table-column prop="email" label="Email" width="170"> </el-table-column>
                           <el-table-column prop="client_type" label="Client- type" width="140"> </el-table-column>
-                          <el-table-column prop="sector_id" label="Sector" width="170"> </el-table-column>
+                          <el-table-column prop="sector.name" label="Sector" width="170"> </el-table-column>
                           <el-table-column prop="vendor_status" label="Vendor-status" width="140"> </el-table-column>
                           <el-table-column prop="contact_person" label="Contact-person" width="140"> </el-table-column>
-                          <el-table-column prop="bdm_person_id" label="BDM-person" width="140"> </el-table-column>
+                          <el-table-column prop="bdmperson.name" label="BDM-person" width="140"> </el-table-column>
                           <el-table-column prop="address" label="Address" width="170"> </el-table-column>
                       </el-table>
                     </el-card>
@@ -56,6 +70,9 @@ export default {
 
       return {
         scope: '',
+        query_value: [],
+        query_params: '',
+        value: [],
         loading:false,
         bdm_person: '',
         sector: '',
@@ -70,29 +87,59 @@ export default {
       this.getClients()
     },
     methods: {
-      getBdmpersonNameById(scope){
-       
-          this.loading = true
-          this.axios.get(`bdmpersons/` + scope.bdm_person_id)
-          .then(response => {
-           return this.bdm_person = response.data.name
-          })
-          .catch(e => {
-            alert(e);
-          }).finally(() => this.loading = false)
-          return this.bdm_person
+      fetchQuery(){
+         this.value = ''
+        if(this.query_params == 'Sector' ){
+          this.getSectors()
+        }else if(this.query_params == 'bdmperson' ){
+           this.getbdmPersons()
+        }
       },
-       getSectorNameById(scope){
-          this.loading = true
-          console.log(scope);
-          this.axios.get(`sectors/` + scope.sector_id)
+      fetchQueryValue(){
+        console.log(this.value)
+       if(this.query_params == 'Sector' ){
+           this.getClientBySector(this.value)
+        }else if(this.query_params == 'bdmperson' ){
+           this.getClientByBdmperson(this.value)
+        }
+      },
+      getClientByBdmperson(id){
+        this.loading = true
+         this.axios.get(`clients/bdm/`+ id)
           .then(response => {
-           return this.sector = response.data.name
+            this.tableData = response.data
           })
           .catch(e => {
             alert(e);
           }).finally(() => this.loading = false)
-          return this.sector
+      },
+      getClientBySector(id){
+        this.loading = true
+         this.axios.get(`clients/sector/`+ id)
+          .then(response => {
+            this.tableData = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
+      },
+      getSectors(){
+          this.axios.get(`sectors`)
+          .then(response => {
+            this.query_value = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
+      },
+      getbdmPersons(){
+          this.axios.get(`bdmpersons`)
+          .then(response => {
+            this.query_value = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
       },
       getClients(){
           this.loading = true
@@ -113,13 +160,13 @@ export default {
         this.$refs[formName].resetFields();
       },
        handleSelectionChange(val) {
-         console.log(this.multipleSelection);
          this.multipleSelection = val;
       },
        filterTag(value, row) {
         return row.status === value;
       },
       handleDelete(row){
+        this.loading = true
           let allData = []
           this.tableData.filter(value => {
             if(row.id !== value.id){

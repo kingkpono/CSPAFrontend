@@ -12,6 +12,10 @@ const editSector = () => import('@/views/admin/editSector')
 const manageClients = () => import('@/views/admin/manageClients')
 const createClients = () => import('@/views/admin/createClient')
 const editClient = () => import('@/views/admin/editClient')
+const manageProspects = () => import('@/views/admin/manageProspects')
+const editProspects = () => import('@/views/admin/editProspects')
+
+
 
 
 
@@ -430,6 +434,26 @@ export default new Router({
               },
               children: [
                 {
+                  path: 'prospects',
+                  redirect: '/admin/company/prospects/manage',
+                  name: 'Prospects',
+                  component: {
+                    render (c) { return c('router-view') }
+                  },
+                  children: [
+                    {
+                      path: 'manage',
+                      name: 'Manage Prospects',
+                      component: manageProspects,
+                    },
+                    {
+                      path: 'edit',
+                      name: 'Edit Prospects',
+                      component: editProspects,
+                    }
+                  ]
+                },
+                {
                   path: 'clients',
                   redirect: '/admin/company/clients/manage',
                   name: 'Clients',
@@ -453,9 +477,11 @@ export default new Router({
                       component: editClient
                     },
 
-                  ]
+                  ],
+
                 }
               ],
+
 
             }
           ],

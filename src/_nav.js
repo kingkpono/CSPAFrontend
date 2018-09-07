@@ -41,7 +41,7 @@ export default {
         },
         {
           name: 'Prospects',
-          url: '/buttons/brand-buttons'
+          url: '/admin/company/prospects/manage'
         },
         {
           name: 'Registration Status',
@@ -108,6 +108,6 @@ export default {
       url: '/buttons',
       icon: 'icon-puzzle',
     },
-   
+
   ]
 }
