@@ -68,7 +68,7 @@ export default {
 
       getClients(){
           this.loading = true
-          this.axios.get(`prospects`)
+          this.axios.get(`clients/type/prospect`)
           .then(response => {
             this.tableData = response.data
           })

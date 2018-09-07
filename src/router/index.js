@@ -14,6 +14,8 @@ const createClients = () => import('@/views/admin/createClient')
 const editClient = () => import('@/views/admin/editClient')
 const manageProspects = () => import('@/views/admin/manageProspects')
 const editProspects = () => import('@/views/admin/editProspects')
+const manageCompanyAssignment = () => import('@/views/admin/manageCompanyAssignment')
+
 
 
 
@@ -475,6 +477,23 @@ export default new Router({
                       path: 'edit',
                       name: 'Edit Clients',
                       component: editClient
+                    },
+
+                  ],
+
+                },
+                {
+                  path: 'company-assignment',
+                  redirect: '/admin/company/company-assignment/manage',
+                  name: 'Company Assignment',
+                  component: {
+                    render (c) { return c('router-view') }
+                  },
+                  children: [
+                    {
+                      path: 'manage',
+                      name: 'Manage Company Assignment',
+                      component: manageCompanyAssignment,
                     },
 
                   ],

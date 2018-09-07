@@ -5,28 +5,39 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Manage Clients
+                 <i class="icon-user"></i>Manage Company Assignment
               </div>
               <div class="card-body">
-                  <el-row>
-                  <router-link to="/admin/company/clients/add">
-                     <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
-                  </router-link>
-                  </el-row>
+
 
                    <el-card class="box-card" style="width:90%;margin:auto" >
-                     <el-form :inline="true" class="demo-form-inline" style="border:1px solid #ddd;padding:10px;margin-bottom:20px;height:60px">
-                      <el-form-item label="Filter by:">
-                        <el-select v-model="query_params" placeholder="Query option" @change="fetchQuery">
-                          <el-option label="Sector" value="Sector"></el-option>
-                          <el-option label="BDM Manager" value="bdmperson"></el-option>
+                     <el-form :inline="true" class="demo-form-inline" v-show="multipleSelection.length" style="border:1px solid #ddd;padding:10px;margin-bottom:20px;height:60px">
+                      <el-form-item label="BDM manager:">
+                        <el-select v-model="bdm_person_to_assign" placeholder="BDM manager">
+                           <el-option v-for="item in bdm_persons"  :key="item.id" :value="item.id" :label="item.name" element-loading-spinner="el-icon-loading" v-loading="fetchQueryValueLoader"></el-option>
+                        </el-select>
+                        <el-form-item label="">
+                         <el-button style="margin-left:20px" class="el-button--mini" type="success" block @click="AssignCompany">Assign</el-button>
+                       </el-form-item>
+                      </el-form-item>
+
+                    </el-form>
+                     <el-form :inline="true" class="demo-form-inline" v-show="!multipleSelection.length" style="border:1px solid #ddd;padding:10px;margin-bottom:20px;height:60px">
+                      <el-form-item label="Client type:">
+                        <el-select v-model="client_type" placeholder="Client type">
+                          <el-option label="All" value="all"></el-option>
+                          <el-option label="Customer" value="customer"></el-option>
+                          <el-option label="Prospect" value="prospect"></el-option>
                         </el-select>
                       </el-form-item>
-                      <el-form-item label="">
-                        <el-select v-model="value" placeholder="Select" @change="fetchQueryValue"  >
-                          <el-option v-for="item in query_value" :key="item.id" :value="item.id" :label="item.name" element-loading-spinner="el-icon-loading" v-loading="fetchQueryValueLoader"></el-option>
+                      <el-form-item label="Sectors">
+                        <el-select v-model="value" placeholder="Select" >
+                         <el-option v-for="item in sector_value"  :key="item.id" :value="item.id" :label="item.name" element-loading-spinner="el-icon-loading" v-loading="fetchQueryValueLoader"></el-option>
                         </el-select>
                       </el-form-item>
+                       <el-form-item label="">
+                         <el-button style="margin-bottom:20px" class="el-button--mini" type="success" block @click="fetchQuery">Query</el-button>
+                       </el-form-item>
                     </el-form>
                       <el-table :data="tableData" style="width: 100%"  v-loading="loading"  ref="multipleTable" @selection-change="handleSelectionChange">
                        <el-table-column type="selection" width="55"></el-table-column>
@@ -53,6 +64,7 @@
                           <el-table-column prop="bdmperson.name" label="BDM-person" width="140"> </el-table-column>
                           <el-table-column prop="address" label="Address" width="170"> </el-table-column>
                       </el-table>
+
                     </el-card>
               </div>
             </div>
@@ -68,11 +80,16 @@ export default {
  data() {
 
       return {
-        fetchQueryValueLoader: false,
+        bdm_person_data:{},
+        bdm_person_to_assign:'',
+        assigncomp:false,
+        fetchQueryValueLoader: true,
+        bdm_persons:'',
+        value:'',
         scope: '',
         query_value: [],
-        query_params: '',
-        value: [],
+        client_type: '',
+        sector_value: [],
         loading:false,
         bdm_person: '',
         sector: '',
@@ -85,24 +102,31 @@ export default {
     },
     mounted:function() {
       this.getClients()
+      this.getSectors()
+      this.getbdmPersons()
     },
     methods: {
       fetchQuery(){
-        this.fetchQueryValueLoader = true
-         this.value = ''
-        if(this.query_params == 'Sector' ){
-          this.getSectors()
-        }else if(this.query_params == 'bdmperson' ){
-           this.getbdmPersons()
+        console.log(this.value + this.client_type)
+       if(this.client_type == 'all' ||this.client_type == '' && this.value !== ''){
+            this.getClientBySector(this.value)
+        }else if(this.client_type !== 'all' && this.value){
+            this.getClientBySectorAndClientType(this.value,this.client_type)
+        }else if(this.client_type !== 'all'){
+           this.getClientsByType(this.client_type)
+        }else if(this.client_type == 'all'){
+          this.getClients()
         }
       },
-      fetchQueryValue(){
-        console.log(this.value)
-       if(this.query_params == 'Sector' ){
-           this.getClientBySector(this.value)
-        }else if(this.query_params == 'bdmperson' ){
-           this.getClientByBdmperson(this.value)
-        }
+      getClientBySectorAndClientType(sector_id,client_type){
+        this.loading = true
+         this.axios.get('clients/by-type-and-sector/'+client_type+'/'+ sector_id)
+          .then(response => {
+            this.tableData = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
       },
       getClientByBdmperson(id){
         this.loading = true
@@ -127,7 +151,8 @@ export default {
       getSectors(){
           this.axios.get(`sectors`)
           .then(response => {
-            this.query_value = response.data
+            console.log(response.data)
+            this.sector_value = response.data
           })
           .catch(e => {
             alert(e);
@@ -136,11 +161,21 @@ export default {
       getbdmPersons(){
           this.axios.get(`bdmpersons`)
           .then(response => {
-            this.query_value = response.data
+            this.bdm_persons = response.data
           })
           .catch(e => {
             alert(e);
           }).finally(() => this.fetchQueryValueLoader = false)
+      },
+      getClientsByType(type){
+          this.loading = true
+          this.axios.get(`clients/type/`+type)
+          .then(response => {
+            this.tableData = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
       },
       getClients(){
           this.loading = true
@@ -165,6 +200,31 @@ export default {
       },
        filterTag(value, row) {
         return row.status === value;
+      },
+      AssignCompany(){
+        if(this.multipleSelection.length <= 0){
+           this.$alertify.error("Please select a company")
+        }else if(this.bdm_person_to_assign <= 0){
+          this.$alertify.error("Please select a BDM Manager")
+        }else{
+          let client_id = ''
+          this.bdm_person_data.bdm_person_id = this.bdm_person_to_assign
+          this.multipleSelection.forEach(function(element) {
+             return client_id = element.id
+          });
+          this.updateBdmManager(client_id,this.bdm_person_data)
+        }
+      },
+      updateBdmManager(id,bdmperson){
+        this.loading = true
+        this.axios.put('clients/'+ id, bdmperson)
+        .then(response => {
+            this.$alertify.success("BDM Manager Updated Successfully")
+           this.$router.push({ path: '/admin/company/company-assignment/manage' })
+        })
+        .catch(e => {
+
+        }).finally(() => this.loading = false)
       },
       handleDelete(row){
         this.loading = true

@@ -44,6 +44,10 @@ export default {
           url: '/admin/company/prospects/manage'
         },
         {
+          name: 'Company Assignment',
+          url: '/admin/company/company-assignment/manage'
+        },
+        {
           name: 'Registration Status',
           url: '/buttons/brand-buttons'
         },
@@ -51,10 +55,7 @@ export default {
           name: 'Weekly Trail',
           url: '/buttons/brand-buttons'
         },
-        {
-          name: 'Assign Companies',
-          url: '/buttons/brand-buttons'
-        },
+
         {
           name: 'Assigned Companies',
           url: '/buttons/brand-buttons'
