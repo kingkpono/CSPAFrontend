@@ -15,6 +15,15 @@ const editClient = () => import('@/views/admin/editClient')
 const manageProspects = () => import('@/views/admin/manageProspects')
 const editProspects = () => import('@/views/admin/editProspects')
 const manageCompanyAssignment = () => import('@/views/admin/manageCompanyAssignment')
+const manageDevices = () => import('@/views/admin/manageDevices')
+const createDevice = () => import('@/views/admin/createDevices')
+const editDevice = () => import('@/views/admin/editDevices')
+const manageServiceTypes = () => import('@/views/admin/manageServiceTypes')
+const editServiceType = () => import('@/views/admin/editServiceType')
+const createServiceType = () => import('@/views/admin/createServiceType')
+const manageSalesTicket = () => import('@/views/admin/manageSalesTicket')
+const createSalesTicket = () => import('@/views/admin/createSalesTicket')
+
 
 
 
@@ -498,6 +507,119 @@ export default new Router({
 
                   ],
 
+                },
+                {
+                  path: 'devices',
+                  redirect: '/admin/company/devices/manage',
+                  name: 'Devices',
+                  component: {
+                    render (c) { return c('router-view') }
+                  },
+                  children: [
+                    {
+                      path: 'manage',
+                      name: 'Manage devices',
+                      component: manageDevices,
+                    },
+                    {
+                      path: 'add',
+                      name: 'Create devices',
+                      component: createDevice
+                    },
+                    {
+                      path: 'edit',
+                      name: 'Edit devices',
+                      component: editDevice
+                    },
+                    {
+                      path: 'service-types',
+                      name: 'Manage Service Types',
+                      component: {
+                        render (c) { return c('router-view') }
+                      },
+                      children: [
+                        {
+                          path: 'manage',
+                          name: 'Manage Service Types',
+                          component: manageServiceTypes,
+                        },
+                        {
+                          path: 'add',
+                          name: 'Create',
+                          component: createServiceType,
+                        },
+                        {
+                          path: 'edit',
+                          name: 'Edit Service Type',
+                          component: editServiceType,
+                        },
+
+                      ],
+                    },
+
+                  ],
+                },
+                {
+                  path: 'ticket',
+                  redirect: '/admin/company/ticket/sales/manage',
+                  name: 'Devices',
+                  component: {
+                    render (c) { return c('router-view') }
+                  },
+                  children: [
+
+                    {
+                      path: 'sales',
+                      name: 'Manage Sales Ticket',
+                      component: {
+                        render (c) { return c('router-view') }
+                      },
+                      children: [
+                        {
+                          path: 'manage',
+                          name: 'Manage Sales Ticket',
+                          component: manageSalesTicket,
+                        },
+                        {
+                          path: 'add',
+                          name: 'Create',
+                          component: createSalesTicket,
+                        },
+                        {
+                          path: 'edit',
+                          name: 'Edit Service Type',
+                          component: editServiceType,
+                        },
+
+                      ],
+                    },
+                    {
+                      path: 'support',
+                      name: 'Manage Sales Ticket',
+                      component: {
+                        render (c) { return c('router-view') }
+                      },
+                      children: [
+                        {
+                          path: 'manage',
+                          name: 'Manage Support Ticket',
+                          component: manageSalesTicket,
+                        },
+                        {
+                          path: 'add',
+                          name: 'Create',
+                          component: createSalesTicket,
+                        },
+                        {
+                          path: 'edit',
+                          name: 'Edit Support Type',
+                          component: editServiceType,
+                        },
+
+                      ],
+                    },
+
+                  ],
                 }
               ],
 

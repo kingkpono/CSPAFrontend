@@ -3,6 +3,9 @@
     <div class="container">
       <b-row class="justify-content-center">
         <b-col md="8">
+           <b-card no-body class="p-4" style="margin-bottom:0px">
+               <img src="/img/cspa2.png" class="image" style="height:80px;width:180px;margin-bottom:0px">
+           </b-card>
           <b-card-group>
             <b-card no-body class="p-4">
               <b-card-body>
@@ -13,9 +16,8 @@
                     <el-form-item label="" prop="email">
                       <el-input v-model="ruleForm2.email" class="el-input--small">
                         <template slot="prepend"><i class="icon-user"></i></template>
-                      </el-input>
+                      </el-input> 
                     </el-form-item>
-
                   <el-form-item label="" prop="pass">
                     <el-input type="password"  v-model="ruleForm2.password" auto-complete="off" class="el-input--small">
                       <template slot="prepend"><i class="icon-lock"></i></template>
@@ -31,6 +33,7 @@
               </b-card-body>
             </b-card>
             <b-card no-body class="text-white bg-primary py-5 d-md-down-none" style="width:44%">
+
               <b-card-body class="text-center">
                 <div>
                   <h2>Sign up</h2>
@@ -91,7 +94,7 @@ export default {
                 .then(response => {
                 this.$localStorage.set(response.data)
                 this.$alertify.success("login Successfull");
-                this.$router.push({ path: '/dashboard' }) 
+                this.$router.push({ path: '/dashboard' })
               })
               .catch(e => {
                 this.$alertify.error("Invalid login Credentials")

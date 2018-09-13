@@ -64,17 +64,17 @@ export default {
     },
     {
       name: 'Device and Services',
-      url: '/buttons',
+      url: '/admin/company/clients/manage',
       icon: 'icon-cursor',
       children: [
 
         {
           name: 'Devices',
-          url: '/buttons/brand-buttons'
+          url: '/admin/company/devices/manage'
         },
         {
           name: 'Service Types',
-          url: '/buttons/brand-buttons'
+          url: '/admin/company/devices/service-types/manage'
         },
         {
           name: 'Check Device Info',
@@ -95,19 +95,21 @@ export default {
       ]
     },
     {
-      name: 'Open Ticket',
-      url: '/buttons',
-      icon: 'icon-tag',
-    },
-    {
-      name: 'View Ticket',
-      url: '/buttons',
-      icon: 'icon-puzzle',
-    },
-    {
-      name: 'View Ticket',
-      url: '/buttons',
-      icon: 'icon-puzzle',
+      name: 'Manage Ticket',
+      url: '/admin/company/ticket/sales/manage',
+      icon: 'icon-cursor',
+      children: [
+
+        {
+          name: 'Sales Ticket',
+          url: '/admin/company/ticket/sales/manage'
+        },
+        {
+          name: 'Support Ticket',
+          url: '/admin/company/ticket/support/manage'
+        },
+
+      ]
     },
 
   ]

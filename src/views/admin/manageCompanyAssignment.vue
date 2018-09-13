@@ -220,7 +220,7 @@ export default {
         this.axios.put('clients/'+ id, bdmperson)
         .then(response => {
             this.$alertify.success("BDM Manager Updated Successfully")
-           this.$router.push({ path: '/admin/company/company-assignment/manage' })
+           location.reload()
         })
         .catch(e => {
 

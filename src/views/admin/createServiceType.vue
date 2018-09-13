@@ -5,16 +5,16 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Create Sector
+                 <i class="icon-user"></i>Create Device
               </div>
               <div class="card-body">
                 <el-card class="box-card" style="width:60%;margin:auto" >
                   <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm el-input--small"  v-loading="loading">
-                    <el-form-item label="Name" prop="name">
-                      <el-input placeholder="Name" v-model="ruleForm.name"></el-input>
-                    </el-form-item>
                     <el-form-item label="Description" prop="description">
                       <el-input placeholder="Description" v-model="ruleForm.description"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Service Type" prop="service_type">
+                      <el-input placeholder="Service Type" v-model="ruleForm.service_type"></el-input>
                     </el-form-item>
                     <el-form-item>
                       <el-button type="primary" @click="submitForm('ruleForm')">Create</el-button>
@@ -34,24 +34,26 @@
 
 
 export default {
-  name: 'Create-Sector',
+  name: 'Create-Device',
    data() {
       return {
         loading:false,
         requestError : [],
         ruleForm: {
-          name: '',
-          description: ''
+          service_type: '',
+          description:''
         },
         rules: {
 
-          name: [
+          service_type: [
             { required: true, message: 'Please input a name', trigger: 'blur' },
             { min: 3, message: 'Length should be a minimum of 3', trigger: 'blur' }
           ],
           description: [
-            { required: false, message: 'Please input the description', trigger: 'blur' }
-          ],
+            { required: true, message: 'Please input a description', trigger: 'blur' },
+            { min: 3, message: 'Length should be a minimum of 3', trigger: 'blur' }
+          ]
+
         }
       };
     },
@@ -61,13 +63,13 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
               this.loading = true
-              this.axios.post(`sectors`, this.ruleForm)
+              this.axios.post(`serviceTypes`, this.ruleForm)
                .then(response => {
-                 this.$alertify.success("New Sector Created Successfully")
-                this.$router.push({ path: '/admin/sector/manage' })
+                 this.$alertify.success("New Service Type Created Successfully")
+                this.$router.push({ path: '/admin/company/devices/service-type/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Sector")
+                 this.$alertify.error("Unable to Create Service Type")
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")

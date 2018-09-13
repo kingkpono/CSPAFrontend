@@ -32,7 +32,7 @@ Vue.use(VueAlertify, {
 
 
 const http = axios.create({
-  baseURL: 'http://162.144.33.194:8000/api/',
+  baseURL: 'http://209.97.136.174:8001/api',
   timeout: 30000,
   headers: { 'Authorization':'Basic a3Bvbm8uYWtwYWJpb0BzYnRlbGVjb21zLmNvbTphbG1vbmQuMg==','Content-Type': 'application/json'},
  });
@@ -44,7 +44,9 @@ const store = new Vuex.Store({
     count: 2,
     staffEditScope:[],
     sectorEditScope:[],
-    prospectsEditScope: []
+    prospectsEditScope: [],
+    deviceEditScope: [],
+    serviceTypeEditScope:[]
   },
   mutations: {
     increment (state) {
@@ -61,7 +63,14 @@ const store = new Vuex.Store({
     },
     editProspectsScope(state, scope){
       state.prospectsEditScope = scope
+    },
+    editDeviceScope(state, scope){
+      state.deviceEditScope = scope
+    },
+    editServiceTypeScope(state, scope){
+      state.serviceTypeEditScope = scope
     }
+
   }
 })
 
