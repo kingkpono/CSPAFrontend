@@ -60,7 +60,7 @@ export default {
 
     mounted:function() {
           this.loading = true
-          this.axios.get(`serviceTypes`)
+          this.axios.get(`salesTickets`)
           .then(response => {
             this.tableData = response.data
           })

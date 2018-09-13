@@ -65,8 +65,9 @@
                             <el-input type="textarea" autosize placeholder="Please input the project details" v-model="ruleForm.project_details"></el-input>
                           </el-form-item>
                           <el-form-item label="Attachment" prop="attachment">
-                            <el-upload  @success="fileUpload" style="float:right" class="upload-demo" v-model="ruleForm.attachment" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="ruleForm.fileList2" list-type="picture">
-                              <el-button size="small" type="primary">Upload Attachment</el-button>
+                            <el-upload ref="upload" :auto-upload="false" style="float:right" class="upload-demo" :on-change="fileUpload" v-model="ruleForm.attachment" action=""  list-type="picture">
+                             <el-button size="small" slot="trigger" type="primary">Select File </el-button>
+                             <el-button style="margin-left: 10px;" size="small" type="success" >Upload to server</el-button>
                               <div slot="tip" class="el-upload__tip"> size should not be more than 5mb</div>
                            </el-upload>
                           </el-form-item>
@@ -193,7 +194,6 @@ export default {
         isNewClient:false,
         requestError : [],
         ruleForm: {
-          fileList2: [],
           serial_number:'',
           device:'',
           client_id:[],
@@ -290,9 +290,9 @@ export default {
 
     },
     methods: {
-      fileUpload(file,filelist){
-        console.log(file)
-        this.fileList2 = file
+      fileUpload(response,file,filelist){
+
+        this.ruleForm.attachment = file
       },
       next(){
          this.assign_project_officer = true
@@ -376,15 +376,12 @@ export default {
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]
-                  //vm.ruleForm.start_date.push(id[0])
                 })
-              console.log(this.ruleForm)
-              return false
               this.loading = true
-              this.axios.post(`serviceTypes`, this.ruleForm)
+              this.axios.post(`salesTickets`, this.ruleForm)
                .then(response => {
-                 this.$alertify.success("New Service Type Created Successfully")
-                this.$router.push({ path: '/admin/company/devices/service-type/manage' })
+                 this.$alertify.success("New Sales Ticket Created Successfully")
+                this.$router.push({ path: '/admin/company/ticket/sales/manage' })
               })
               .catch(e => {
                  this.$alertify.error("Unable to Create Service Type")
