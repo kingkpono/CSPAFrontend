@@ -17,6 +17,7 @@ import Vuex from 'vuex'
 import VueAlertify from "vue-alertify"
 import qs from 'qs'
 import localStorage from "./localStorage"
+import firebase from 'firebase'
 
 Vue.use(VueAlertify, {
   transition: 'zoom',
@@ -29,7 +30,17 @@ Vue.use(VueAlertify, {
     closeButton: false
   },
 })
-
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCesNCiMQh8aCb48p7QYcLTrlrusIwGDtg",
+    authDomain: "cspa-95c03.firebaseapp.com",
+    databaseURL: "https://cspa-95c03.firebaseio.com",
+    projectId: "cspa-95c03",
+    storageBucket: "cspa-95c03.appspot.com",
+    messagingSenderId: "1029401930435"
+  };
+  firebase.initializeApp(config);
+  firebase.auth();
 
 const http = axios.create({
   baseURL: 'http://209.97.136.174:8001/api',
@@ -46,11 +57,15 @@ const store = new Vuex.Store({
     sectorEditScope:[],
     prospectsEditScope: [],
     deviceEditScope: [],
-    serviceTypeEditScope:[]
+    serviceTypeEditScope:[],
+    salesTicketEditScope:[]
   },
   mutations: {
     increment (state) {
       state.count++
+    },
+    editSalesTicketScope(state,scope){
+      state.salesTicketEditScope = scope
     },
     editStaffScope(state, scope){
       state.staffEditScope = scope
@@ -96,6 +111,8 @@ router.beforeEach((to, from, next) => {
 })
 /* eslint-disable no-new */
 Vue.prototype.$localStorage = localStorage;
+Vue.prototype.$firebase = firebase;
+
 
 new Vue({
   el: '#app',

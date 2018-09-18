@@ -14,7 +14,7 @@
                     <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
                   </router-link>
                 </el-row>
-                <el-card class="box-card" style="width:70%;margin:auto" >
+                <el-card class="box-card" style="width:100%;margin:auto" >
                   <el-table :data="tableData" style="width:100%;margin:auto"  v-loading="loading"  ref="multipleTable" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55"></el-table-column>
                     <el-table-column fixed="right" label="Operations" width="120">
@@ -31,8 +31,31 @@
                       </template>
                     </el-table-column>
                       <el-table-column type="index" label="S/N" > </el-table-column>
-                      <el-table-column prop="service_type" label="Service Type" > </el-table-column>
-                       <el-table-column prop="description" label="Description" > </el-table-column>
+                      <el-table-column prop="client_id" label="Client Name" >
+                        <template slot-scope="scope">
+                            <el-tag>
+                              {{ client_name}}
+                            </el-tag>
+                          </template>
+                      </el-table-column>
+                       <el-table-column prop="service_type_id" label="Service Type" >
+                        <template slot-scope="scope">
+                            <el-tag>
+                              {{ service_type}}
+                            </el-tag>
+                          </template>
+                      </el-table-column>
+                      <el-table-column prop="project_officers" label="Officers  " >
+                        <template slot-scope="scope">
+                            <el-tag>
+                              {{ project_officer}}
+                            </el-tag>
+                          </template>
+                      </el-table-column>
+                      <el-table-column prop="start_date" label="Start Date" > </el-table-column>
+                      <el-table-column prop="end_date" label="End Date" > </el-table-column>
+                       <el-table-column prop="status" label="Status" > </el-table-column>
+                         <el-table-column prop="project_details" label="Details" > </el-table-column>
                   </el-table>
                 </el-card>
               </div>
@@ -45,10 +68,13 @@
 
 <script>
 export default {
-  name: 'Manage-Devices',
+  name: 'Manage Sales Ticket',
  data() {
 
       return {
+        project_officer:'',
+        service_type:'',
+        client_name:'',
         serialNumber:'',
         centerDialogVisible:false,
         loading:false,
@@ -63,15 +89,52 @@ export default {
           this.axios.get(`salesTickets`)
           .then(response => {
             this.tableData = response.data
+            this.tableData.filter(id =>{
+              this.fetchSalesTicketClient(id.client_id)
+              this.fetchSalesTicketServiceType(id.service_type_id)
+              this.fetchSalesTicketProjectOfficer(id.project_officers)
+            })
           })
           .catch(e => {
             alert(e);
           }).finally(() => this.loading = false)
     },
     methods: {
-       handleClick(scope) {
-         this.$store.commit('editServiceTypeScope', scope)
-         this.$router.push({ path: '/admin/company/devices/service-types/edit' })
+      fetchSalesTicketClient(id){
+         this.axios.get(`clients/`+ id)
+          .then(response => {
+            this.client_name = response.data[0].name
+          })
+          .catch(e => {
+          }).finally(() =>
+          this.loading = false
+          )
+      },
+      fetchSalesTicketServiceType(id){
+         this.axios.get(`serviceTypes/`+ id)
+          .then(response => {
+            this.service_type = response.data.service_type
+
+          })
+          .catch(e => {
+          }).finally(() =>
+          this.loading = false
+          )
+      },
+       fetchSalesTicketProjectOfficer(id){
+         this.axios.get(`users/`+ id)
+          .then(response => {
+            this.project_officer = response.data.name
+          })
+          .catch(e => {
+          }).finally(() =>
+          this.loading = false
+          )
+      },
+      handleClick(scope) {
+        console.log(scope)
+         this.$store.commit('editSalesTicketScope', scope)
+         this.$router.push({ path: '/admin/company/ticket/sales/edit' })
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

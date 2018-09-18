@@ -4,20 +4,12 @@
       <b-row class="justify-content-center">
         <b-col md="12">
           <div class="card" >
-             <transition name="fade">
-            <el-dialog title="Notice" :visible.sync="openDialog" width="30%" :before-close="handleClose" center>
-              <h5>Is This Sales Ticket For A New Client?</h5>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="handleClose">Yes It is</el-button>
-                <el-button type="primary" @click="openDialog = false">No</el-button>
-              </span>
-           </el-dialog>
-             </transition>
+
               <div class="card-header" >
-                 <i class="icon-user"></i>Create Sales Ticket
+                 <i class="icon-user"></i>Edit Sales Ticket
               </div>
               <div class="card-body">
-                <el-card class="box-card" style="width:100%;margin:auto" >
+                <el-card class="box-card" style="width:80%;margin:auto" >
                   <el-steps :active="active" finish-status="success">
                     <el-step title="Step 1"></el-step>
                     <el-step title="Step 2"></el-step>
@@ -36,21 +28,17 @@
                               <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type" element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader"></el-option>
                             </el-select>
                           </el-form-item>
-
-                          <el-form-item label="Device" prop="device" v-show="ruleForm.device_related">
+                          <el-form-item label="Device" prop="device">
                             <el-select v-model="ruleForm.device" clearable placeholder="Select">
                               <el-option v-for="item in devices" :key="item.id" :value="item.id" :label="item.name" element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader"></el-option>
                             </el-select>
                           </el-form-item>
-                          <el-form-item label="Device Warranty" prop="device_warranty" v-show="ruleForm.device_related">
+                          <el-form-item label="Device Warranty" prop="device_warranty">
                             <el-select v-model="ruleForm.device_warranty" clearable placeholder="Select" v-loading="loading">
-                              <el-option  value="Six month" >6 Months</el-option>
-                              <el-option  value="1 year" >1 Year</el-option>
-                              <el-option  value="2 year" >2 Year</el-option>
+                              <el-option  value="six_month" >3 Months</el-option>
+                              <el-option  value="six_month" >6 Months</el-option>
+                              <el-option  value="six_month" >1 Year</el-option>
                             </el-select>
-                          </el-form-item>
-                          <el-form-item label="Is Device Related">
-                            <el-switch v-model="ruleForm.device_related"></el-switch>
                           </el-form-item>
                           <el-form-item label="Duration" prop="duration">
                              <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="ruleForm.duration" type="datetimerange" :picker-options="pickerOptions2" range-separator="-" start-placeholder="Start date" end-placeholder="End date" align="right"> </el-date-picker>
@@ -65,22 +53,19 @@
                           <el-form-item label="Mobile" prop="ticket_contact_phone">
                             <el-input placeholder="Contact Person Phone-number" v-model="ruleForm.ticket_contact_phone"></el-input>
                           </el-form-item>
-                          <el-form-item label="Serial Number " prop="S/N" v-show="ruleForm.device_related">
+                          <el-form-item label="Serial Number " prop="S/N">
                             <el-input placeholder="Device Serial Number" v-model="ruleForm.device_serial_number"></el-input>
                           </el-form-item>
                           <el-form-item label="Project Details" prop="project_details">
                             <el-input type="textarea" autosize placeholder="Please input the project details" v-model="ruleForm.project_details"></el-input>
                           </el-form-item>
 
-
                         </div>
                       </el-col>
 
                     </el-row>
-
                      <el-form-item label="" prop="attachment"  v-show="!assign_project_officer">
                             <el-upload
-                              style="width:60%"
                               action=""
                               :auto-upload="false"
                               class="upload-demo"
@@ -92,67 +77,22 @@
                               :file-list="fileList"
                               multiple>
                               <i class="el-icon-upload"></i>
-                              <div class="el-upload__text">Drop file here or <em>click to Select</em></div>
+                              <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
                             </el-upload>
-                            <el-button  @click="handleFileUpload" type="primary" size="small" style="width:30%;margin:0px 0px 0px 0px">Upload file</el-button>
                           </el-form-item>
-
                       <el-form-item align="center">
                         <el-button v-show="!assign_project_officer" type="info" size="small" @click="next">Next step</el-button>
                       </el-form-item>
                      <div style="margin-top:50px;width:30px" @click="assign_project_officer = !assign_project_officer" v-show="assign_project_officer"><i class="icon-logout"></i></div>
                     <div style="margin:auto;width:80%" v-show="assign_project_officer">
                       <el-form-item  prop="project_officers">
-                         <el-transfer   style="margin-bottom:30px"  :titles="['Project Managers', 'Target']" filterable :filter-method="filterMethod" filter-placeholder="Project Managers" v-model="ruleForm.project_officers" :data="allStaff"></el-transfer>
+                         <el-transfer style="margin-bottom:30px"  :titles="['Project Managers', 'Target']" filterable :filter-method="filterMethod" filter-placeholder="Project Managers" v-model="ruleForm.project_officers" :data="allStaff"></el-transfer>
                       </el-form-item>
                       <el-form-item>
                         <el-button type="primary" @click="submitSalesTicketForm('ruleForm')">Create Ticket</el-button>
                         <el-button @click="resetForm('ruleForm')">Reset</el-button>
                      </el-form-item>
                     </div>
-                  </el-form>
-                  <el-form :model="ruleForm2" v-show="isNewClient" :rules="rules" ref="ruleForm2" label-width="120px" class="demo-ruleForm el-input--small"  v-loading="loading">
-                    <el-form-item label="Name" prop="name">
-                      <el-input placeholder="Name" v-model="ruleForm2.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Email" prop="email">
-                      <el-input placeholder="Email" v-model="ruleForm2.email"></el-input>
-                    </el-form-item>
-                    <el-form-item label="BDM person" prop="bdm_person_id" >
-                      <el-select v-model="ruleForm2.bdm_person_id" clearable placeholder="Select" v-loading="loading" >
-                        <el-option v-for="item in bdmpersons" :key="item.id" :value="item.id" :label="item.name"></el-option>
-                      </el-select>
-                    </el-form-item>
-                     <el-form-item label="Sector" prop="sector_id">
-                      <el-select v-model="ruleForm2.sector_id" clearable placeholder="Select" v-loading="loading">
-                        <el-option v-for="item in sectors" :key="item.id" :value="item.id" :label="item.name"></el-option>
-                      </el-select>
-                    </el-form-item>
-                     <el-form-item label="Vendor-Status" prop="vendor_status">
-                      <el-radio-group v-model="ruleForm2.vendor_status" size="medium">
-                        <el-radio border label="Pending"></el-radio>
-                        <el-radio border label="Completed"></el-radio>
-                      </el-radio-group>
-                     </el-form-item>
-                    <el-form-item label="Contact Person" prop="contact_person">
-                      <el-input placeholder="Contact Person" v-model="ruleForm2.contact_person"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Mobile" prop="mobile">
-                      <el-input placeholder="Mobile" v-model="ruleForm2.mobile"></el-input>
-                    </el-form-item>
-                     <el-form-item label="Client-Type" prop="client_type">
-                      <el-radio-group v-model="ruleForm2.client_type" size="medium">
-                        <el-radio border label="Prospect"></el-radio>
-                        <el-radio border label="Customer"></el-radio>
-                      </el-radio-group>
-                     </el-form-item>
-                    <el-form-item label="Address" prop="address">
-                      <el-input placeholder="Address" v-model="ruleForm2.address"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-button type="primary" @click="submitClientForm('ruleForm2')">Proceed to create Ticket</el-button>
-                      <el-button @click="resetForm('ruleForm2')">Reset</el-button>
-                    </el-form-item>
                   </el-form>
                 </el-card>
               </div>
@@ -205,7 +145,7 @@ export default {
             }
           }]
         },
-        file:'',
+        default_officers:['1'],
         image:'',
         active:0,
         devices:[],
@@ -232,20 +172,8 @@ export default {
           project_officers:[],
           service_type_id:[],
           attachment:'',
-          duration:'',
-          projectStaff:[],
-          device_related:false
-        },
-        ruleForm2: {
-          name: '',
-          email: '',
-          client_type: '',
-          sector_id: '',
-          vendor_status: '',
-          contact_person: '',
-          mobile: '',
-          bdm_person_id: '',
-          address: ''
+          duration:[],
+          projectStaff:[]
         },
 
         rules: {
@@ -309,32 +237,38 @@ export default {
       };
     },
     mounted:function(){
-       this.openDialog = true
+      this.loading = true
        this.getClients()
        this.serviceTypes()
        this.getProjectOfficers()
        this.getDevices()
-
+        this.ruleForm.serial_number = this.$store.state.salesTicketEditScope.serial_number
+        this.ruleForm.device = this.$store.state.salesTicketEditScope.device
+        this.ruleForm.device_warranty = this.$store.state.salesTicketEditScope.device_warranty
+        this.ruleForm.project_details = this.$store.state.salesTicketEditScope.project_details
+        this.ruleForm.ticket_contact_phone = this.$store.state.salesTicketEditScope.ticket_contact_phone
+        this.ruleForm.ticket_contact_email = this.$store.state.salesTicketEditScope.ticket_contact_email
+        this.ruleForm.client_id = this.$store.state.salesTicketEditScope.client_id
+        this.ruleForm.device = this.$store.state.salesTicketEditScope.device
+        this.ruleForm.service_type_id = this.$store.state.salesTicketEditScope.service_type_id
+        this.ruleForm.project_officers = this.$store.state.salesTicketEditScope.project_officers
+        this.fileList.push({'name':'Attachment','url':this.$store.state.salesTicketEditScope.attachment})
+        this.ruleForm.duration.push(this.$store.state.salesTicketEditScope.start_date+'9:30:30',this.$store.state.salesTicketEditScope.end_date+'9:30:30')
     },
     methods: {
       handleFileChange(e) {
-       this.file = e
-        console.log(this.file)
-      },
-      handleFileUpload(){
-        if(!this.file){
-          this.$alertify.error("Attachment cannot be empty")
-          return
-        }
+        var file = e
+        var vm = this
+        console.log(file)
         var metadata = {
-          'contentType': this.file.type
+          'contentType': file.type
          };
-          var vm = this
+
           var auth = this.$firebase.auth();
           var storage = this.$firebase.storage();
           var storageRef = storage.ref();
-            console.log(this.file.url)
-           storageRef.child('salesTicketImages/' + this.file.name).put(this.file.raw, metadata).then(function(snapshot) {
+            console.log(file.url)
+           storageRef.child('salesTicketImages/' + file.name).put(file.raw, metadata).then(function(snapshot) {
             snapshot.ref.getDownloadURL().then(function(url) {
               vm.ruleForm.attachment = url
               vm.$alertify.success("file uploaded successfully")
@@ -343,6 +277,7 @@ export default {
             console.error('Upload failed:', error);
          });
       },
+
     removeImage: function (e) {
       this.fileList = '';
     },

@@ -23,6 +23,8 @@ const editServiceType = () => import('@/views/admin/editServiceType')
 const createServiceType = () => import('@/views/admin/createServiceType')
 const manageSalesTicket = () => import('@/views/admin/manageSalesTicket')
 const createSalesTicket = () => import('@/views/admin/createSalesTicket')
+const editSalesTicket = () => import('@/views/admin/editSalesTicket')
+
 
 
 
@@ -562,7 +564,7 @@ export default new Router({
                 {
                   path: 'ticket',
                   redirect: '/admin/company/ticket/sales/manage',
-                  name: 'Devices',
+                  name: 'Ticket',
                   component: {
                     render (c) { return c('router-view') }
                   },
@@ -570,7 +572,8 @@ export default new Router({
 
                     {
                       path: 'sales',
-                      name: 'Manage Sales Ticket',
+                      redirect: '/admin/company/ticket/sales/manage',
+                      name: 'Sales Ticket',
                       component: {
                         render (c) { return c('router-view') }
                       },
@@ -582,15 +585,14 @@ export default new Router({
                         },
                         {
                           path: 'add',
-                          name: 'Create',
+                          name: 'Create Sales Ticket',
                           component: createSalesTicket,
                         },
                         {
                           path: 'edit',
-                          name: 'Edit Service Type',
-                          component: editServiceType,
+                          name: 'Edit Sales Ticket',
+                          component: editSalesTicket,
                         },
-
                       ],
                     },
                     {
