@@ -6,7 +6,7 @@
           <div class="card" >
 
               <div class="card-header" >
-                 <i class="icon-user"></i>Edit Sales Ticket
+                 <i class="icon-user"></i>Edit support Ticket
               </div>
               <div class="card-body">
                 <el-card class="box-card" style="width:80%;margin:auto" >
@@ -28,40 +28,12 @@
                               <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type" element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader"></el-option>
                             </el-select>
                           </el-form-item>
-                          <el-form-item label="Device Name" prop="device" v-show="ruleForm.device_related">
-                            <el-input placeholder="Device Name" v-model="ruleForm.device"></el-input>
-                          </el-form-item>
-
-                          <el-form-item label="Device Warranty" prop="device_warranty" v-show="ruleForm.device_related">
-                            <el-select v-model="ruleForm.device_warranty" clearable placeholder="Select" v-loading="loading" >
-                              <el-option  value="six_month" >3 Months</el-option>
-                              <el-option  value="six_month" >6 Months</el-option>
-                              <el-option  value="six_month" >1 Year</el-option>
-                            </el-select>
-                          </el-form-item>
-                          <el-form-item label="Is Device Related">
-                            <el-switch v-model="ruleForm.device_related"></el-switch>
+                          <el-form-item label="Project Details" prop="project_details" >
+                            <el-input type="textarea" autosize placeholder="Please input the project details" v-model="ruleForm.project_details"></el-input>
                           </el-form-item>
                           <el-form-item label="Duration" prop="duration">
                              <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="ruleForm.duration" type="datetimerange" :picker-options="pickerOptions2" range-separator="-" start-placeholder="Start date" end-placeholder="End date" align="right"> </el-date-picker>
                           </el-form-item>
-                        </div>
-                      </el-col>
-                      <el-col :span="12">
-                        <div style="grid-content">
-                          <el-form-item label="Contact Email" prop="ticket_contact_email">
-                            <el-input placeholder="Contact Person Email" v-model="ruleForm.ticket_contact_email"></el-input>
-                          </el-form-item>
-                          <el-form-item label="Mobile" prop="ticket_contact_phone">
-                            <el-input placeholder="Contact Person Phone-number" v-model="ruleForm.ticket_contact_phone"></el-input>
-                          </el-form-item>
-                          <el-form-item label="Serial Number " prop="S/N" v-show="ruleForm.device_related">
-                            <el-input placeholder="Device Serial Number" v-model="ruleForm.serial_number"></el-input>
-                          </el-form-item>
-                          <el-form-item label="Project Details" prop="project_details" v-show="ruleForm.device_related">
-                            <el-input type="textarea" autosize placeholder="Please input the project details" v-model="ruleForm.project_details"></el-input>
-                          </el-form-item>
-
                         </div>
                       </el-col>
 
@@ -82,7 +54,7 @@
                               <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
                             </el-upload>
                           </el-form-item>
-                      <el-form-item align="center">
+                      <el-form-item align="center">   
                         <el-button v-show="!assign_project_officer" type="info" size="small" @click="next">Next step</el-button>
                       </el-form-item>
                      <div style="margin-top:50px;width:30px" @click="assign_project_officer = !assign_project_officer" v-show="assign_project_officer"><i class="icon-logout"></i></div>
@@ -91,7 +63,7 @@
                          <el-transfer style="margin-bottom:30px" :titles="['Project Managers', 'Target']" filterable :filter-method="filterMethod" filter-placeholder="Project Managers" v-model="ruleForm.project_officers" :data="allStaff"></el-transfer>
                       </el-form-item>
                       <el-form-item>
-                        <el-button type="primary" @click="submitSalesTicketForm('ruleForm')">Update Ticket</el-button>
+                        <el-button type="primary" @click="submitsupportTicketForm('ruleForm')">Update Ticket</el-button>
                         <el-button @click="resetForm('ruleForm')">Reset</el-button>
                      </el-form-item>
                     </div>
@@ -109,7 +81,7 @@
 
 
 export default {
-  name: 'Create Sales Ticket',
+  name: 'Create support Ticket',
 
    data() {
       return {
@@ -166,8 +138,6 @@ export default {
           client_id:[],
           device_warranty:'',
           project_details:'',
-          ticket_contact_phone:'',
-          ticket_contact_email:'',
           start_date:'',
           end_date:'',
           project_officers:[],
@@ -221,18 +191,9 @@ export default {
            duration: [
             { required: true, message: 'Please select the date duration', trigger: 'change' }
           ],
-          ticket_contact_phone: [
-            { required: true, message: 'Please input the phone-number', trigger: 'blur' },
-            { min: 11, message: 'Length should be a minimum of 11', trigger: 'blur' }
-          ],
-          ticket_contact_email:[
-             { required: true, message: 'Please input email address', trigger: 'blur' },
-             { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'blur'] }
-          ],
           project_officers: [
             { required: true, message: 'Please select a project Manager at least', trigger: 'blur' }
           ],
-
 
         }
       };
@@ -243,18 +204,18 @@ export default {
        this.serviceTypes()
        this.getProjectOfficers()
        this.getDevices()
-        this.ruleForm.serial_number = this.$store.state.salesTicketEditScope.serial_number
-        this.ruleForm.device = this.$store.state.salesTicketEditScope.device
-        this.ruleForm.device_warranty = this.$store.state.salesTicketEditScope.device_warranty
-        this.ruleForm.project_details = this.$store.state.salesTicketEditScope.project_details
-        this.ruleForm.ticket_contact_phone = this.$store.state.salesTicketEditScope.ticket_contact_phone
-        this.ruleForm.ticket_contact_email = this.$store.state.salesTicketEditScope.ticket_contact_email
-        this.ruleForm.client_id = this.$store.state.salesTicketEditScope.client_id
-        this.ruleForm.device = this.$store.state.salesTicketEditScope.device
-        this.ruleForm.service_type_id = this.$store.state.salesTicketEditScope.service_type_id
-        this.ruleForm.project_officers = this.$store.state.salesTicketEditScope.project_officers
-        this.fileList.push({'name':'Attachment','url':this.$store.state.salesTicketEditScope.attachment})
-        this.ruleForm.duration.push(this.$store.state.salesTicketEditScope.start_date+ ' '+ '9:30:30',this.$store.state.salesTicketEditScope.end_date+' '+'9:30:30')
+        this.ruleForm.serial_number = this.$store.state.supportTicketEditScope.serial_number
+        this.ruleForm.device = this.$store.state.supportTicketEditScope.device
+        this.ruleForm.device_warranty = this.$store.state.supportTicketEditScope.device_warranty
+        this.ruleForm.project_details = this.$store.state.supportTicketEditScope.project_details
+        this.ruleForm.ticket_contact_phone = this.$store.state.supportTicketEditScope.ticket_contact_phone
+        this.ruleForm.ticket_contact_email = this.$store.state.supportTicketEditScope.ticket_contact_email
+        this.ruleForm.client_id = this.$store.state.supportTicketEditScope.client_id
+        this.ruleForm.device = this.$store.state.supportTicketEditScope.device
+        this.ruleForm.service_type_id = this.$store.state.supportTicketEditScope.service_type_id
+        this.ruleForm.project_officers = this.$store.state.supportTicketEditScope.project_officers
+        this.fileList.push({'name':'Attachment','url':this.$store.state.supportTicketEditScope.attachment})
+        this.ruleForm.duration.push(this.$store.state.supportTicketEditScope.start_date+ ' '+ '9:30:30',this.$store.state.supportTicketEditScope.end_date+' '+'9:30:30')
         this.ruleForm.start_date = this.ruleForm.duration[0]
         this.ruleForm.end_date = this.ruleForm.duration[1]
     },
@@ -271,7 +232,7 @@ export default {
           var storage = this.$firebase.storage();
           var storageRef = storage.ref();
             console.log(file.url)
-           storageRef.child('salesTicketImages/' + file.name).put(file.raw, metadata).then(function(snapshot) {
+           storageRef.child('supportTicketImages/' + file.name).put(file.raw, metadata).then(function(snapshot) {
             snapshot.ref.getDownloadURL().then(function(url) {
               vm.ruleForm.attachment = url
               vm.$alertify.success("file uploaded successfully")
@@ -360,7 +321,7 @@ export default {
             }
         });
       },
-      submitSalesTicketForm(formName) {
+      submitsupportTicketForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const vm = this
@@ -370,13 +331,13 @@ export default {
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]
                 })
               this.loading = true
-              this.axios.put(`salesTickets/`+ this.$store.state.salesTicketEditScope.id, this.ruleForm)
+              this.axios.put(`supportTickets/`+ this.$store.state.supportTicketEditScope.id, this.ruleForm)
                .then(response => {
-                 this.$alertify.success("Sales Ticket Updated Successfully")
-                this.$router.push({ path: '/admin/company/ticket/sales/manage' })
+                 this.$alertify.success("support Ticket Updated Successfully")
+                this.$router.push({ path: '/admin/company/ticket/support/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Update Sales Ticket Type")
+                 this.$alertify.error("Unable to Update support Ticket Type")
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")

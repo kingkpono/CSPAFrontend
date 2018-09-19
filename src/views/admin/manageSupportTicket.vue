@@ -5,12 +5,11 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Manage Sales Ticket
+                 <i class="icon-user"></i>Manage Support Ticket
               </div>
-
               <div class="card-body">
                 <el-row>
-                  <router-link to="/admin/company/ticket/sales/add">
+                  <router-link to="/admin/company/ticket/support/add">
                     <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
                   </router-link>
                 </el-row>
@@ -49,7 +48,7 @@
 
 <script>
 export default {
-  name: 'Manage Sales Ticket',
+  name: 'Manage support Ticket',
  data() {
 
       return {
@@ -67,14 +66,14 @@ export default {
 
     mounted:function() {
           this.loading = true
-          this.axios.get(`salesTickets`)
+          this.axios.get(`supportTickets`)
           .then(response => {
             this.tableData = response.data
             console.log(this.tableData)
             this.tableData.filter(id =>{
-              this.fetchSalesTicketClient(id.client_id)
-              this.fetchSalesTicketServiceType(id.service_type_id)
-              //this.fetchSalesTicketProjectOfficer(id.project_officers)
+              this.fetchsupportTicketClient(id.client_id)
+              this.fetchsupportTicketServiceType(id.service_type_id)
+              //this.fetchsupportTicketProjectOfficer(id.project_officers)
             })
           })
           .catch(e => {
@@ -83,7 +82,7 @@ export default {
     },
     methods: {
 
-      fetchSalesTicketClient(id){
+      fetchsupportTicketClient(id){
          this.axios.get(`clients/`+ id)
           .then(response => {
             this.client_name = response.data[0].name
@@ -93,7 +92,7 @@ export default {
           this.loading = false
           )
       },
-      fetchSalesTicketServiceType(id){
+      fetchsupportTicketServiceType(id){
          this.axios.get(`serviceTypes/`+ id)
           .then(response => {
             this.service_type = response.data.service_type
@@ -104,7 +103,7 @@ export default {
           this.loading = false
           )
       },
-       fetchSalesTicketProjectOfficer(id){
+       fetchsupportTicketProjectOfficer(id){
          const projectOfficers = {'officers':id}
          this.axios.post(`users/officers`, projectOfficers)
           .then(response => {
@@ -120,12 +119,12 @@ export default {
       },
       handleClick(scope) {
         //console.log(scope)
-         this.$store.commit('editSalesTicketScope', scope)
-         this.$router.push({ path: '/admin/company/ticket/sales/edit' })
+         this.$store.commit('editSupportTicketScope', scope)
+         this.$router.push({ path: '/admin/company/ticket/support/edit' })
       },
       handleView(scope) {
-         this.$store.commit('editSalesTicketScope', scope)
-         this.$router.push({ path: '/admin/company/ticket/sales/view' })
+         this.$store.commit('editSupportTicketScope', scope)
+         this.$router.push({ path: '/admin/company/ticket/support/view' })
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
@@ -147,10 +146,10 @@ export default {
             }
           })
           this.tableData = allData;
-              this.axios.delete('salesTickets/'+ row.id)
+              this.axios.delete('supportTickets/'+ row.id)
               .then(response => {
                  this.$alertify.success("Record Deleted Successfully")
-                this.$router.push({ path: '/admin/company/ticket/sales/manage' })
+                this.$router.push({ path: '/admin/company/ticket/support/manage' })
               })
               .catch(e => {
                  this.$alertify.error("Unable to Delete Record")

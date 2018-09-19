@@ -8,8 +8,6 @@
                  <i class="icon-user"></i>Manage Company Assignment
               </div>
               <div class="card-body">
-
-
                    <el-card class="box-card" style="width:90%;margin:auto" >
                      <el-form :inline="true" class="demo-form-inline" v-show="multipleSelection.length" style="border:1px solid #ddd;padding:10px;margin-bottom:20px;height:60px">
                       <el-form-item label="BDM manager:">

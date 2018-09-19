@@ -24,6 +24,11 @@ const createServiceType = () => import('@/views/admin/createServiceType')
 const manageSalesTicket = () => import('@/views/admin/manageSalesTicket')
 const createSalesTicket = () => import('@/views/admin/createSalesTicket')
 const editSalesTicket = () => import('@/views/admin/editSalesTicket')
+const viewSalesTicket = () => import('@/views/admin/viewSalesTicket')
+const manageSupportTicket = () => import('@/views/admin/manageSupportTicket')
+const createSupportTicket = () => import('@/views/admin/createSupportTicket')
+const editSupportTicket = () => import('@/views/admin/editSupportTicket')
+const viewSupportTicket = () => import('@/views/admin/viewSupportTicket')
 
 
 
@@ -593,11 +598,16 @@ export default new Router({
                           name: 'Edit Sales Ticket',
                           component: editSalesTicket,
                         },
+                        {
+                          path: 'view',
+                          name: 'View Sales Ticket',
+                          component: viewSalesTicket,
+                        },
                       ],
                     },
                     {
                       path: 'support',
-                      name: 'Manage Sales Ticket',
+                      name: 'Manage Support Ticket',
                       component: {
                         render (c) { return c('router-view') }
                       },
@@ -605,18 +615,23 @@ export default new Router({
                         {
                           path: 'manage',
                           name: 'Manage Support Ticket',
-                          component: manageSalesTicket,
+                          component: manageSupportTicket,
                         },
                         {
                           path: 'add',
-                          name: 'Create',
-                          component: createSalesTicket,
+                          name: 'Create Support Ticket',
+                          component: createSupportTicket,
                         },
                         {
                           path: 'edit',
-                          name: 'Edit Support Type',
-                          component: editServiceType,
+                          name: 'Edit Support Ticket',
+                          component: editSupportTicket,
                         },
+                        {
+                          path: 'view',
+                          name: 'View Support Ticket',
+                          component: viewSupportTicket,
+                        }
 
                       ],
                     },

@@ -58,7 +58,8 @@ const store = new Vuex.Store({
     prospectsEditScope: [],
     deviceEditScope: [],
     serviceTypeEditScope:[],
-    salesTicketEditScope:[]
+    salesTicketEditScope:[],
+    supportTicketEditScope:[]
   },
   mutations: {
     increment (state) {
@@ -66,6 +67,9 @@ const store = new Vuex.Store({
     },
     editSalesTicketScope(state,scope){
       state.salesTicketEditScope = scope
+    },
+    editSupportTicketScope(state,scope){
+      state.supportTicketEditScope = scope
     },
     editStaffScope(state, scope){
       state.staffEditScope = scope

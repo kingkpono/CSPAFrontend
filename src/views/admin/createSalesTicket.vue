@@ -36,15 +36,12 @@
                               <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type" element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader"></el-option>
                             </el-select>
                           </el-form-item>
-
-                          <el-form-item label="Device" prop="device" v-show="ruleForm.device_related">
-                            <el-select v-model="ruleForm.device" clearable placeholder="Select">
-                              <el-option v-for="item in devices" :key="item.id" :value="item.id" :label="item.name" element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader"></el-option>
-                            </el-select>
+                           <el-form-item label="Device Name" prop="device" v-show="ruleForm.device_related">
+                            <el-input placeholder="Device Name" v-model="ruleForm.device"></el-input>
                           </el-form-item>
                           <el-form-item label="Device Warranty" prop="device_warranty" v-show="ruleForm.device_related">
                             <el-select v-model="ruleForm.device_warranty" clearable placeholder="Select" v-loading="loading">
-                              <el-option  value="Six month" >6 Months</el-option>
+                              <el-option  value="6 months" >6 Months</el-option>
                               <el-option  value="1 year" >1 Year</el-option>
                               <el-option  value="2 year" >2 Year</el-option>
                             </el-select>
@@ -66,18 +63,17 @@
                             <el-input placeholder="Contact Person Phone-number" v-model="ruleForm.ticket_contact_phone"></el-input>
                           </el-form-item>
                           <el-form-item label="Serial Number " prop="S/N" v-show="ruleForm.device_related">
-                            <el-input placeholder="Device Serial Number" v-model="ruleForm.device_serial_number"></el-input>
+                            <el-input placeholder="Device Serial Number" v-model="ruleForm.serial_number"></el-input>
+                          </el-form-item>
+                          <el-form-item label="Device Description " prop="S/N" v-show="ruleForm.device_related">
+                            <el-input placeholder="Device Description" v-model="ruleForm.device_description"></el-input>
                           </el-form-item>
                           <el-form-item label="Project Details" prop="project_details">
                             <el-input type="textarea" autosize placeholder="Please input the project details" v-model="ruleForm.project_details"></el-input>
                           </el-form-item>
-
-
                         </div>
                       </el-col>
-
                     </el-row>
-
                      <el-form-item label="" prop="attachment"  v-show="!assign_project_officer">
                             <el-upload
                               style="width:60%"
@@ -96,7 +92,6 @@
                             </el-upload>
                             <el-button  @click="handleFileUpload" type="primary" size="small" style="width:30%;margin:0px 0px 0px 0px">Upload file</el-button>
                           </el-form-item>
-
                       <el-form-item align="center">
                         <el-button v-show="!assign_project_officer" type="info" size="small" @click="next">Next step</el-button>
                       </el-form-item>
@@ -105,6 +100,7 @@
                       <el-form-item  prop="project_officers">
                          <el-transfer   style="margin-bottom:30px"  :titles="['Project Managers', 'Target']" filterable :filter-method="filterMethod" filter-placeholder="Project Managers" v-model="ruleForm.project_officers" :data="allStaff"></el-transfer>
                       </el-form-item>
+
                       <el-form-item>
                         <el-button type="primary" @click="submitSalesTicketForm('ruleForm')">Create Ticket</el-button>
                         <el-button @click="resetForm('ruleForm')">Reset</el-button>
@@ -208,7 +204,6 @@ export default {
         file:'',
         image:'',
         active:0,
-        devices:[],
         assign_project_officer:false,
         service_types:[],
         AllClients:[],
@@ -224,6 +219,7 @@ export default {
           device:'',
           client_id:[],
           device_warranty:'',
+          device_description:'',
           project_details:'',
           ticket_contact_phone:'',
           ticket_contact_email:'',
@@ -313,7 +309,6 @@ export default {
        this.getClients()
        this.serviceTypes()
        this.getProjectOfficers()
-       this.getDevices()
 
     },
     methods: {
@@ -356,15 +351,7 @@ export default {
       handlePreview(file) {
         console.log(file);
       },
-      getDevices(){
-        this.axios.get(`devices`)
-        .then(response => {
-          this.devices = response.data
-        })
-        .catch(e => {
-          alert(e);
-        }).finally(() => this.loading = false)
-      },
+
       getProjectOfficers(){
         const vm = this;
         this.axios.get(`users`)
@@ -427,6 +414,7 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const vm = this
+            console.log(this.ruleForm)
               this.ruleForm.project_officers = this.ruleForm.project_officers.join()
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
