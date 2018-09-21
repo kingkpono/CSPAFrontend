@@ -55,7 +55,7 @@
                           <el-form-item label="Mobile" prop="ticket_contact_phone">
                             <el-input placeholder="Contact Person Phone-number" v-model="ruleForm.ticket_contact_phone"></el-input>
                           </el-form-item>
-                          <el-form-item label="Serial Number " prop="S/N" v-show="ruleForm.device_related">
+                          <el-form-item label="Serial Number " prop="serial_number" v-show="ruleForm.device_related">
                             <el-input placeholder="Device Serial Number" v-model="ruleForm.serial_number"></el-input>
                           </el-form-item>
                           <el-form-item label="Project Details" prop="project_details" v-show="ruleForm.device_related">
@@ -64,7 +64,6 @@
 
                         </div>
                       </el-col>
-
                     </el-row>
                      <el-form-item label="" prop="attachment"  v-show="!assign_project_officer">
                             <el-upload
@@ -87,10 +86,10 @@
                       </el-form-item>
                      <div style="margin-top:50px;width:30px" @click="assign_project_officer = !assign_project_officer" v-show="assign_project_officer"><i class="icon-logout"></i></div>
                     <div style="margin:auto;width:80%" v-show="assign_project_officer">
-                      <el-form-item  prop="project_officers">
+                      <el-form-item prop="project_officers" >
                          <el-transfer style="margin-bottom:30px" :titles="['Project Managers', 'Target']" filterable :filter-method="filterMethod" filter-placeholder="Project Managers" v-model="ruleForm.project_officers" :data="allStaff"></el-transfer>
                       </el-form-item>
-                      <el-form-item>
+                      <el-form-item >
                         <el-button type="primary" @click="submitSalesTicketForm('ruleForm')">Update Ticket</el-button>
                         <el-button @click="resetForm('ruleForm')">Reset</el-button>
                      </el-form-item>
@@ -109,7 +108,7 @@
 
 
 export default {
-  name: 'Create Sales Ticket',
+  name: 'Edit',
 
    data() {
       return {
@@ -146,7 +145,7 @@ export default {
           }]
         },
 
-        image:'',
+        image:[],
         active:0,
         devices:[],
         assign_project_officer:false,
@@ -162,9 +161,9 @@ export default {
         ruleForm: {
           device_related:false,
           serial_number:'',
-          device:[],
+          device:'',
           client_id:[],
-          device_warranty:'',
+          device_warranty:[],
           project_details:'',
           ticket_contact_phone:'',
           ticket_contact_email:'',
@@ -172,7 +171,7 @@ export default {
           end_date:'',
           project_officers:[],
           service_type_id:[],
-          attachment:'',
+          attachment:"",
           duration:[],
           projectStaff:[]
         },
@@ -238,6 +237,7 @@ export default {
       };
     },
     mounted:function(){
+      console.log({'allStaff':this.allStaff,'project_officer':this.ruleForm.project_officers})
       this.loading = true
        this.getClients()
        this.serviceTypes()
@@ -252,7 +252,9 @@ export default {
         this.ruleForm.client_id = this.$store.state.salesTicketEditScope.client_id
         this.ruleForm.device = this.$store.state.salesTicketEditScope.device
         this.ruleForm.service_type_id = this.$store.state.salesTicketEditScope.service_type_id
-        this.ruleForm.project_officers = this.$store.state.salesTicketEditScope.project_officers
+        if(this.$localStorage.get().data.role == 'Staff'){
+                  this.ruleForm.project_officers =  this.$localStorage.get().data.id.toString()
+        }
         this.fileList.push({'name':'Attachment','url':this.$store.state.salesTicketEditScope.attachment})
         this.ruleForm.duration.push(this.$store.state.salesTicketEditScope.start_date+ ' '+ '9:30:30',this.$store.state.salesTicketEditScope.end_date+' '+'9:30:30')
         this.ruleForm.start_date = this.ruleForm.duration[0]
@@ -364,7 +366,11 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const vm = this
-            this.ruleForm.project_officers = this.ruleForm.project_officers.split("").join()
+            if(this.$localStorage.get().data.role == 'Admin'){
+              this.ruleForm.project_officers = this.ruleForm.project_officers.join()
+            }
+                        console.log(this.ruleForm.project_officers)
+            this.ruleForm.project_officers = this.ruleForm.project_officers.split("").filter(value => value != ',').join()
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]
@@ -405,14 +411,21 @@ export default {
       },
       generateData2(allStaff) {
         const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
+        const userRole = this.$localStorage.get().data.role.toLowerCase() == 'staff';
+
         const data = allStaff.map((staff, index) => {
-          return {
+          const formedStaff = {
             label: staff.name,
             key: staff.id,
             value: staff.id,
-            initial: initials[index]
+            initial: initials[index],
           };
+
+          return userRole
+            ? Object.assign({}, formedStaff, {disabled: 2})
+            : formedStaff;
         });
+        console.log({data})
 
         return data;
       },

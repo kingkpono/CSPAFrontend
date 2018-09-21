@@ -1,3 +1,4 @@
+d
 <template>
   <div class="app flex-row">
     <div class="container">
@@ -10,7 +11,7 @@
 
               <div class="card-body">
                 <el-row>
-                  <router-link to="/admin/company/ticket/sales/add">
+                  <router-link to="/staff/company/ticket/sales/add">
                     <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
                   </router-link>
                 </el-row>
@@ -73,36 +74,19 @@ export default {
 
     mounted:function() {
           this.loading = true
-          if(this.$localStorage.get().data.role == 'Staff'){
-            this.axios.get(`salesTickets-by-user/`+ this.$localStorage.get().data.id)
-            .then(response => {
-              this.tableData = response.data
-              console.log(this.tableData)
-              this.tableData.filter(id =>{
-                this.fetchSalesTicketClient(id.client_id)
-                this.fetchSalesTicketServiceType(id.service_type_id)
-                //this.fetchSalesTicketProjectOfficer(id.project_officers)
-              })
+          this.axios.get(`salesTickets`)
+          .then(response => {
+            this.tableData = response.data
+            console.log(this.tableData)
+            this.tableData.filter(id =>{
+              this.fetchSalesTicketClient(id.client_id)
+              this.fetchSalesTicketServiceType(id.service_type_id)
+              //this.fetchSalesTicketProjectOfficer(id.project_officers)
             })
-            .catch(e => {
-              alert(e);
-            }).finally(() => this.loading = false)
-          }else{
-             this.axios.get(`salesTickets`)
-            .then(response => {
-              this.tableData = response.data
-              console.log(this.tableData)
-              this.tableData.filter(id =>{
-                this.fetchSalesTicketClient(id.client_id)
-                this.fetchSalesTicketServiceType(id.service_type_id)
-                //this.fetchSalesTicketProjectOfficer(id.project_officers)
-              })
-            })
-            .catch(e => {
-              alert(e);
-            }).finally(() => this.loading = false)
-          }
-
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
     },
     methods: {
 

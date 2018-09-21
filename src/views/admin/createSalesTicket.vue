@@ -161,9 +161,8 @@
 
 <script>
 
-
 export default {
-  name: 'Create Sales Ticket',
+  name: 'Create',
 
    data() {
       return {
@@ -309,6 +308,9 @@ export default {
        this.getClients()
        this.serviceTypes()
        this.getProjectOfficers()
+       if(this.$localStorage.get().data.role == 'Staff'){
+         this.ruleForm.project_officers = this.$localStorage.get().data.id.toString()
+       }
 
     },
     methods: {
@@ -412,10 +414,11 @@ export default {
       },
       submitSalesTicketForm(formName) {
         this.$refs[formName].validate((valid) => {
+           this.ruleForm.project_officers = this.$localStorage.get().data.id.toString()
+
           if (valid) {
             const vm = this
-            console.log(this.ruleForm)
-              this.ruleForm.project_officers = this.ruleForm.project_officers.join()
+
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]
@@ -457,14 +460,21 @@ export default {
       },
       generateData2(allStaff) {
         const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
+        const userRole = this.$localStorage.get().data.role.toLowerCase() == 'staff';
+
         const data = allStaff.map((staff, index) => {
-          return {
+          const formedStaff = {
             label: staff.name,
             key: staff.id,
             value: staff.id,
-            initial: initials[index]
+            initial: initials[index],
           };
+
+          return userRole
+            ? Object.assign({}, formedStaff, {disabled: 2})
+            : formedStaff;
         });
+        console.log({data})
 
         return data;
       },

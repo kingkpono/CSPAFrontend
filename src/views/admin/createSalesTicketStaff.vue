@@ -6,7 +6,7 @@
           <div class="card" >
              <transition name="fade">
             <el-dialog title="Notice" :visible.sync="openDialog" width="30%" :before-close="handleClose" center>
-              <h5>Is This Support Ticket For A New Client?</h5>
+              <h5>Is This Sales Ticket For A New Client?</h5>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="handleClose">Yes It is</el-button>
                 <el-button type="primary" @click="openDialog = false">No</el-button>
@@ -14,7 +14,7 @@
            </el-dialog>
              </transition>
               <div class="card-header" >
-                 <i class="icon-user"></i>Create Support Ticket
+                 <i class="icon-user"></i>Create Sales Ticket
               </div>
               <div class="card-body">
                 <el-card class="box-card" style="width:100%;margin:auto" >
@@ -36,48 +36,50 @@
                               <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type" element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader"></el-option>
                             </el-select>
                           </el-form-item>
-                          <el-form-item label="Project Details" prop="project_details">
-                            <el-input type="textarea" autosize placeholder="Please input the project details" v-model="ruleForm.project_details"></el-input>
+                           <el-form-item label="Device Name" prop="device" v-show="ruleForm.device_related">
+                            <el-input placeholder="Device Name" v-model="ruleForm.device"></el-input>
+                          </el-form-item>
+                          <el-form-item label="Device Warranty" prop="device_warranty" v-show="ruleForm.device_related">
+                            <el-select v-model="ruleForm.device_warranty" clearable placeholder="Select" v-loading="loading">
+                              <el-option  value="6 months" >6 Months</el-option>
+                              <el-option  value="1 year" >1 Year</el-option>
+                              <el-option  value="2 year" >2 Year</el-option>
+                            </el-select>
+                          </el-form-item>
+                          <el-form-item label="Is Device Related">
+                            <el-switch v-model="ruleForm.device_related"></el-switch>
                           </el-form-item>
                           <el-form-item label="Duration" prop="duration">
                              <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="ruleForm.duration" type="datetimerange" :picker-options="pickerOptions2" range-separator="-" start-placeholder="Start date" end-placeholder="End date" align="right"> </el-date-picker>
                           </el-form-item>
                         </div>
                       </el-col>
-
-                    </el-row>
-                     <el-form-item label="" prop="attachment"  v-show="!assign_project_officer">
-                            <el-upload
-                              style="width:60%"
-                              action=""
-                              :auto-upload="false"
-                              class="upload-demo"
-                              list-type="picture"
-                              drag
-                              :on-preview="handlePreview"
-                              :on-remove="handleRemove"
-                              :on-change="handleFileChange"
-                              :file-list="fileList"
-                              multiple>
-                              <i class="el-icon-upload"></i>
-                              <div class="el-upload__text">Drop file here or <em>click to Select</em></div>
-                            </el-upload>
-                            <el-button  @click="handleFileUpload" type="primary" size="small" style="width:30%;margin:0px 0px 0px 0px">Upload file</el-button>
+                      <el-col :span="12">
+                        <div style="grid-content">
+                          <el-form-item label="Contact Email" prop="ticket_contact_email">
+                            <el-input placeholder="Contact Person Email" v-model="ruleForm.ticket_contact_email"></el-input>
                           </el-form-item>
-                      <el-form-item align="center">
-                        <el-button v-show="!assign_project_officer" type="info" size="small" @click="next">Next step</el-button>
-                      </el-form-item>
-                     <div style="margin-top:50px;width:30px" @click="assign_project_officer = !assign_project_officer" v-show="assign_project_officer"><i class="icon-logout"></i></div>
-                    <div style="margin:auto;width:80%" v-show="assign_project_officer">
-                      <el-form-item  prop="project_officers">
-                         <el-transfer   style="margin-bottom:30px"  :titles="['Project Managers', 'Target']" filterable :filter-method="filterMethod" filter-placeholder="Project Managers" v-model="ruleForm.project_officers" :data="allStaff"></el-transfer>
-                      </el-form-item>
+                          <el-form-item label="Mobile" prop="ticket_contact_phone">
+                            <el-input placeholder="Contact Person Phone-number" v-model="ruleForm.ticket_contact_phone"></el-input>
+                          </el-form-item>
+                          <el-form-item label="Serial Number " prop="S/N" v-show="ruleForm.device_related">
+                            <el-input placeholder="Device Serial Number" v-model="ruleForm.serial_number"></el-input>
+                          </el-form-item>
+                          <el-form-item label="Device Description " prop="S/N" v-show="ruleForm.device_related">
+                            <el-input placeholder="Device Description" v-model="ruleForm.device_description"></el-input>
+                          </el-form-item>
+                          <el-form-item label="Project Details" prop="project_details">
+                            <el-input type="textarea" autosize placeholder="Please input the project details" v-model="ruleForm.project_details"></el-input>
+                          </el-form-item>
+                           <el-form-item>
+                            <el-button type="primary" @click="submitSalesTicketForm('ruleForm')">Create Ticket</el-button>
+                            <el-button @click="resetForm('ruleForm')">Reset</el-button>
+                           </el-form-item>
+                        </div>
+                      </el-col>
+                    </el-row>
 
-                      <el-form-item>
-                        <el-button type="primary" @click="submitsupportTicketForm('ruleForm')">Create Ticket</el-button>
-                        <el-button @click="resetForm('ruleForm')">Reset</el-button>
-                     </el-form-item>
-                    </div>
+
                   </el-form>
                   <el-form :model="ruleForm2" v-show="isNewClient" :rules="rules" ref="ruleForm2" label-width="120px" class="demo-ruleForm el-input--small"  v-loading="loading">
                     <el-form-item label="Name" prop="name">
@@ -193,9 +195,11 @@ export default {
           device_warranty:'',
           device_description:'',
           project_details:'',
+          ticket_contact_phone:'',
+          ticket_contact_email:'',
           start_date:'',
           end_date:'',
-          project_officers:[],
+          project_officers:this.localStorage.get().data.id,
           service_type_id:[],
           attachment:'',
           duration:'',
@@ -258,7 +262,14 @@ export default {
            duration: [
             { required: true, message: 'Please select the date duration', trigger: 'change' }
           ],
-
+          ticket_contact_phone: [
+            { required: true, message: 'Please input the phone-number', trigger: 'blur' },
+            { min: 11, message: 'Length should be a minimum of 11', trigger: 'blur' }
+          ],
+          ticket_contact_email:[
+             { required: true, message: 'Please input email address', trigger: 'blur' },
+             { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'blur'] }
+          ],
           project_officers: [
             { required: true, message: 'Please select a project Manager at least', trigger: 'blur' }
           ],
@@ -272,9 +283,6 @@ export default {
        this.getClients()
        this.serviceTypes()
        this.getProjectOfficers()
-       if(this.$localStorage.get().data.role == 'Staff'){
-         this.ruleForm.project_officers = this.$localStorage.get().data.id.toString()
-       }
 
     },
     methods: {
@@ -295,7 +303,7 @@ export default {
           var storage = this.$firebase.storage();
           var storageRef = storage.ref();
             console.log(this.file.url)
-           storageRef.child('supportTicketImages/' + this.file.name).put(this.file.raw, metadata).then(function(snapshot) {
+           storageRef.child('salesTicketImages/' + this.file.name).put(this.file.raw, metadata).then(function(snapshot) {
             snapshot.ref.getDownloadURL().then(function(url) {
               vm.ruleForm.attachment = url
               vm.$alertify.success("file uploaded successfully")
@@ -307,10 +315,7 @@ export default {
     removeImage: function (e) {
       this.fileList = '';
     },
-      next(){
-         this.assign_project_officer = true
-         if (this.active++ > 2) this.active = 0;
-      },
+
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -318,16 +323,6 @@ export default {
         console.log(file);
       },
 
-      getProjectOfficers(){
-        const vm = this;
-        this.axios.get(`users`)
-          .then(response => {
-            this.allStaff = vm.generateData2(response.data)
-          })
-          .catch(e => {
-            alert(e);
-          }).finally(() => this.loading = false)
-      },
       serviceTypes(){
          this.axios.get(`serviceTypes`)
           .then(response =>  {
@@ -376,26 +371,25 @@ export default {
             }
         });
       },
-      submitsupportTicketForm(formName) {
+      submitSalesTicketForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const vm = this
-
-              this.ruleForm.project_officers = this.$localStorage.get().data.id.toString()
+            console.log(this.ruleForm)
+            return
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]
                 })
-                 console.log(this.ruleForm)
 
               this.loading = true
-              this.axios.post(`supportTickets`, this.ruleForm)
+              this.axios.post(`salesTickets`, this.ruleForm)
                .then(response => {
-                 this.$alertify.success("New support Ticket Created Successfully")
-                this.$router.push({ path: '/admin/company/ticket/support/manage' })
+                 this.$alertify.success("New Sales Ticket Created Successfully")
+                this.$router.push({ path: '/admin/company/ticket/sales/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create support Ticket Type")
+                 this.$alertify.error("Unable to Create Sales Ticket Type")
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -423,22 +417,15 @@ export default {
         this.$refs[formName].resetFields();
       },
       generateData2(allStaff) {
-       const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
-        const userRole = this.$localStorage.get().data.role.toLowerCase() == 'staff';
-
+        const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
         const data = allStaff.map((staff, index) => {
-          const formedStaff = {
+          return {
             label: staff.name,
             key: staff.id,
             value: staff.id,
-            initial: initials[index],
+            initial: initials[index]
           };
-
-          return userRole
-            ? Object.assign({}, formedStaff, {disabled: 2})
-            : formedStaff;
         });
-        console.log({data})
 
         return data;
       },

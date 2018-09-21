@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { createClient } from 'http';
-
 const changePassword = () => import('@/views/settings/changePassword')
 const manageStaff = () => import('@/views/admin/manageStaff')
 const createStaff = () => import('@/views/admin/createStaff')
@@ -29,6 +28,11 @@ const manageSupportTicket = () => import('@/views/admin/manageSupportTicket')
 const createSupportTicket = () => import('@/views/admin/createSupportTicket')
 const editSupportTicket = () => import('@/views/admin/editSupportTicket')
 const viewSupportTicket = () => import('@/views/admin/viewSupportTicket')
+const createSalesTicketStaff = () => import('@/views/admin/createSalesTicketStaff')
+const manageSalesTicketStaff = () => import('@/views/admin/manageSalesTicketStaff')
+const createCass = () => import('@/views/admin/createCass')
+const manageCass = () => import('@/views/admin/manageCass')
+
 
 
 
@@ -102,7 +106,6 @@ const User = () => import('@/views/users/User')
 Vue.use(Router)
 
 
-
 export default new Router({
   mode: 'hash', // https://router.vuejs.org/api/#mode
   linkActiveClass: 'open active',
@@ -117,7 +120,10 @@ export default new Router({
         {
           path: 'dashboard',
           name: 'Dashboard',
-          component: Dashboard
+          component: Dashboard,
+          meta:{
+            role: ['Staff','Admin']
+          }
         },
         {
           path: 'theme',
@@ -376,6 +382,7 @@ export default new Router({
               path: 'staff',
               redirect: '/admin/staff/manage',
               name: 'staff',
+
               component: {
                 render (c) { return c('router-view') }
               },
@@ -383,11 +390,17 @@ export default new Router({
                 {
                   path: 'manage',
                   name: 'Manage Staff',
+                  meta:{
+                    role: ['Admin']
+                  },
                   component: manageStaff,
                 },
                 {
                   path: 'add',
                   name: 'Create Staff',
+                  meta:{
+                    role: ['Admin']
+                  },
                   component: createStaff
                 },
                 {
@@ -402,6 +415,9 @@ export default new Router({
         {
           path: 'admin',
           redirect: '/admin/sector/manage',
+          meta:{
+            role: ['Admin']
+          },
           name: 'admin',
           component: {
             render (c) { return c('router-view') }
@@ -418,16 +434,25 @@ export default new Router({
                 {
                   path: 'manage',
                   name: 'Manage Sector',
+                  meta:{
+                    role: ['Staff','Admin']
+                  },
                   component: manageSector,
                 },
                 {
                   path: 'add',
                   name: 'Create Sector',
+                  meta:{
+                    role: ['Staff','Admin']
+                  },
                   component: createSector
                 },
                 {
                   path: 'edit',
                   name: 'Edit Sector',
+                  meta:{
+                    role: ['Staff','Admin']
+                  },
                   component: editSector
                 },
 
@@ -439,6 +464,7 @@ export default new Router({
           path: 'admin',
           redirect: '/admin/company/clients/manage',
           name: 'Admin',
+
           component: {
             render (c) { return c('router-view') }
           },
@@ -462,15 +488,57 @@ export default new Router({
                     {
                       path: 'manage',
                       name: 'Manage Prospects',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
                       component: manageProspects,
                     },
                     {
                       path: 'edit',
                       name: 'Edit Prospects',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
                       component: editProspects,
                     }
                   ]
                 },
+                {
+                  path: 'cass',
+                  redirect: '/admin/cass/manage',
+                  name: 'cass',
+                  component: {
+                    render (c) { return c('router-view') }
+                  },
+                  children: [
+                    {
+                      path: 'manage',
+                      name: 'Manage',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
+                      component: manageCass,
+                    },
+                    {
+                      path: 'add',
+                      name: 'Create',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
+                      component: createCass
+                    },
+                    {
+                      path: 'edit',
+                      name: 'Edit',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
+                      component: createCass
+                    },
+
+                  ]
+                },
+
                 {
                   path: 'clients',
                   redirect: '/admin/company/clients/manage',
@@ -482,16 +550,25 @@ export default new Router({
                     {
                       path: 'manage',
                       name: 'Manage Clients',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
                       component: manageClients,
                     },
                     {
                       path: 'add',
                       name: 'Create Clients',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
                       component: createClients
                     },
                     {
                       path: 'edit',
                       name: 'Edit Clients',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
                       component: editClient
                     },
 
@@ -509,6 +586,9 @@ export default new Router({
                     {
                       path: 'manage',
                       name: 'Manage Company Assignment',
+                      meta:{
+                        role: ['Admin']
+                      },
                       component: manageCompanyAssignment,
                     },
 
@@ -526,16 +606,25 @@ export default new Router({
                     {
                       path: 'manage',
                       name: 'Manage devices',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
                       component: manageDevices,
                     },
                     {
                       path: 'add',
                       name: 'Create devices',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
                       component: createDevice
                     },
                     {
                       path: 'edit',
                       name: 'Edit devices',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
                       component: editDevice
                     },
                     {
@@ -548,15 +637,24 @@ export default new Router({
                         {
                           path: 'manage',
                           name: 'Manage Service Types',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
                           component: manageServiceTypes,
                         },
                         {
                           path: 'add',
                           name: 'Create',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
                           component: createServiceType,
                         },
                         {
                           path: 'edit',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
                           name: 'Edit Service Type',
                           component: editServiceType,
                         },
@@ -585,22 +683,34 @@ export default new Router({
                       children: [
                         {
                           path: 'manage',
-                          name: 'Manage Sales Ticket',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
+                          name: 'Manage',
                           component: manageSalesTicket,
                         },
                         {
                           path: 'add',
-                          name: 'Create Sales Ticket',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
+                          name: 'Create',
                           component: createSalesTicket,
-                        },
-                        {
+                          },
+                          {
                           path: 'edit',
-                          name: 'Edit Sales Ticket',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
+                          name: 'Edit',
                           component: editSalesTicket,
                         },
                         {
                           path: 'view',
-                          name: 'View Sales Ticket',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
+                          name: 'View',
                           component: viewSalesTicket,
                         },
                       ],
@@ -614,21 +724,33 @@ export default new Router({
                       children: [
                         {
                           path: 'manage',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
                           name: 'Manage Support Ticket',
                           component: manageSupportTicket,
                         },
                         {
                           path: 'add',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
                           name: 'Create Support Ticket',
                           component: createSupportTicket,
                         },
                         {
                           path: 'edit',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
                           name: 'Edit Support Ticket',
                           component: editSupportTicket,
                         },
                         {
                           path: 'view',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
                           name: 'View Support Ticket',
                           component: viewSupportTicket,
                         }
@@ -690,6 +812,7 @@ export default new Router({
         }
       ]
     },
+
   ]
 })
 

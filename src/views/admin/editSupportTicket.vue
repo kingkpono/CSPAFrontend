@@ -54,7 +54,7 @@
                               <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
                             </el-upload>
                           </el-form-item>
-                      <el-form-item align="center">   
+                      <el-form-item align="center">
                         <el-button v-show="!assign_project_officer" type="info" size="small" @click="next">Next step</el-button>
                       </el-form-item>
                      <div style="margin-top:50px;width:30px" @click="assign_project_officer = !assign_project_officer" v-show="assign_project_officer"><i class="icon-logout"></i></div>
@@ -81,7 +81,7 @@
 
 
 export default {
-  name: 'Create support Ticket',
+  name: 'Edit',
 
    data() {
       return {
@@ -213,7 +213,9 @@ export default {
         this.ruleForm.client_id = this.$store.state.supportTicketEditScope.client_id
         this.ruleForm.device = this.$store.state.supportTicketEditScope.device
         this.ruleForm.service_type_id = this.$store.state.supportTicketEditScope.service_type_id
-        this.ruleForm.project_officers = this.$store.state.supportTicketEditScope.project_officers
+        if(this.$localStorage.get().data.role == 'Staff'){
+           this.ruleForm.project_officers =  this.$localStorage.get().data.id.toString()
+        }
         this.fileList.push({'name':'Attachment','url':this.$store.state.supportTicketEditScope.attachment})
         this.ruleForm.duration.push(this.$store.state.supportTicketEditScope.start_date+ ' '+ '9:30:30',this.$store.state.supportTicketEditScope.end_date+' '+'9:30:30')
         this.ruleForm.start_date = this.ruleForm.duration[0]
@@ -325,11 +327,15 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const vm = this
-            this.ruleForm.project_officers = this.ruleForm.project_officers.split("").join()
+            if(this.$localStorage.get().data.role == 'Admin'){
+              this.ruleForm.project_officers = this.ruleForm.project_officers.join()
+            }
+            this.ruleForm.project_officers = this.ruleForm.project_officers.split("").filter(value => value != ',').join()
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]
                 })
+                console.log(this.ruleForm.project_officers)
               this.loading = true
               this.axios.put(`supportTickets/`+ this.$store.state.supportTicketEditScope.id, this.ruleForm)
                .then(response => {
@@ -365,15 +371,22 @@ export default {
         this.$refs[formName].resetFields();
       },
       generateData2(allStaff) {
-        const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
+       const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
+        const userRole = this.$localStorage.get().data.role.toLowerCase() == 'staff';
+
         const data = allStaff.map((staff, index) => {
-          return {
+          const formedStaff = {
             label: staff.name,
             key: staff.id,
             value: staff.id,
-            initial: initials[index]
+            initial: initials[index],
           };
+
+          return userRole
+            ? Object.assign({}, formedStaff, {disabled: 2})
+            : formedStaff;
         });
+        console.log({data})
 
         return data;
       },

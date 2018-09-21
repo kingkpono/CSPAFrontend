@@ -20,14 +20,7 @@
                       <template slot-scope="scope">
                        <el-button @click="handleView(scope.row)" style="width:10%;padding:5px 9px;margin-right:-7px" class="el-button--mini center" type="success" block> <i style="margin-left:-5px" class="icon-eye"></i></el-button>
                         <el-button @click=" handleClick(scope.row)" style="width:10%;padding:5px 9px;margin-right:3px" class="el-button--mini" type="primary" block> <i style="margin-left:-5px" class="icon-pencil"></i></el-button>
-                        <el-popover placement="top" width="160">
-                          <p>Are you sure to delete this?</p>
-                          <div style="text-align: right; margin: 0">
-                            <el-button size="mini" type="text" >cancel</el-button>
-                            <el-button type="primary" size="mini" @click="handleDelete(scope.row)" >confirm</el-button>
-                          </div>
-                          <el-button slot="reference" class="el-button--mini" style="width:10%;padding:5px 9px" type="danger" block><i style="margin-left:-5px" class="icon-trash"></i></el-button>
-                        </el-popover>
+                     
                       </template>
                     </el-table-column>
                       <el-table-column type="index" label="S/N" > </el-table-column>
@@ -35,7 +28,13 @@
                        <el-table-column prop="service_type.service_type" label="Service Type" > </el-table-column>
                       <el-table-column prop="start_date" label="Start Date" > </el-table-column>
                       <el-table-column prop="end_date" label="End Date" > </el-table-column>
-                       <el-table-column prop="status" label="Status" > </el-table-column>
+                      <el-table-column prop="status" label="Status" :filters="[{ text: 'Closed', value: 'Closed' }, { text: 'Open', value: 'Pending' }]" :filter-method="filterTag" filter-placement="bottom-end">
+                          <template slot-scope="scope" v-bind:class="{'el-tag el-tag--danger':scope.row.status == 'Closed'}">
+                            <el-tag>
+                              {{scope.row.status }}
+                            </el-tag>
+                          </template>
+                       </el-table-column>
                   </el-table>
                 </el-card>
               </div>
@@ -48,7 +47,7 @@
 
 <script>
 export default {
-  name: 'Manage support Ticket',
+  name: 'Manage',
  data() {
 
       return {
@@ -66,19 +65,33 @@ export default {
 
     mounted:function() {
           this.loading = true
-          this.axios.get(`supportTickets`)
-          .then(response => {
-            this.tableData = response.data
-            console.log(this.tableData)
-            this.tableData.filter(id =>{
-              this.fetchsupportTicketClient(id.client_id)
-              this.fetchsupportTicketServiceType(id.service_type_id)
-              //this.fetchsupportTicketProjectOfficer(id.project_officers)
+          const userId = this.$localStorage.get().data.id
+          const role = this.$localStorage.get().data.role
+            if(role == 'Staff'){
+            this.axios.get(`supportTickets-by-user/`+ userId)
+            .then(response => {
+              this.tableData = response.data
+              console.log(this.tableData)
+
             })
-          })
-          .catch(e => {
-            alert(e);
-          }).finally(() => this.loading = false)
+            .catch(e => {
+              alert(e);
+            }).finally(() => this.loading = false)
+          }else{
+            this.axios.get(`supportTickets`)
+            .then(response => {
+              this.tableData = response.data
+              console.log(this.tableData)
+              this.tableData.filter(id =>{
+                this.fetchsupportTicketClient(id.client_id)
+                this.fetchsupportTicketServiceType(id.service_type_id)
+              })
+            })
+            .catch(e => {
+              alert(e);
+            }).finally(() => this.loading = false)
+          }
+
     },
     methods: {
 

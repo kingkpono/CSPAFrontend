@@ -1,5 +1,6 @@
 <template>
   <div class="animated fadeIn">
+    <!--
     <b-row>
       <b-col sm="6" lg="3">
         <b-card no-body class="bg-primary">
@@ -123,89 +124,84 @@
         </b-row>
       </div>
     </b-card>
+    -->
     <b-row>
-      <b-col sm="6" lg="3">
-        <div class="brand-card">
+      <b-col sm="6" lg="3" v-show="staffData.length !== null">
+        <div class="brand-card"v-show="staffData.length !== null" >
           <div class="brand-card-header bg-facebook">
-            <i class="fa fa-facebook"></i>
+            <h5 class="text-uppercase large" style="color:white">Staff</h5>
             <div class="chart-wrapper">
               <social-box-chart-example chartId="box-chart-01" :data="[65, 59, 84, 84, 51, 55, 40]" height="90"/>
             </div>
           </div>
           <div class="brand-card-body">
             <div>
-              <div class="text-value">89k</div>
+              <div class="text-value" v-show="staffData.length !== null">{{ staffData.staffCount}}</div>
+              <div class="text-value" v-show="adminData.length !== null">{{ adminData.staffCount}}</div>
+              <div class="text-uppercase text-muted small">Staff</div>
+            </div>
+
+          </div>
+        </div>
+      </b-col>
+    <b-col sm="6" lg="3">
+        <div class="brand-card">
+          <div class="brand-card-header bg-facebook">
+            <h5 class="text-uppercase large" style="color:white">Clients</h5>
+            <div class="chart-wrapper">
+              <social-box-chart-example chartId="box-chart-01" :data="[65, 59, 84, 84, 51, 55, 40]" height="90"/>
+            </div>
+          </div>
+          <div class="brand-card-body">
+            <div>
+                <div class="text-value" v-show="staffData.length !== null">{{ staffData.clientsCount}}</div>
+              <div class="text-value" v-show="adminData.length !== null">{{ adminData.clientsCount}}</div>
+              <div class="text-uppercase text-muted small">Clients</div>
+            </div>
+
+          </div>
+        </div>
+      </b-col>
+      <b-col sm="6" lg="3">
+        <div class="brand-card">
+          <div class="brand-card-header bg-facebook">
+             <h5 class="text-uppercase large" style="color:white">Open Sales Ticket</h5>
+            <div class="chart-wrapper">
+              <social-box-chart-example chartId="box-chart-01" :data="[65, 59, 84, 84, 51, 55, 40]" height="90"/>
+            </div>
+          </div>
+          <div class="brand-card-body">
+            <div>
+              <div class="text-value" v-show="staffData.length !== null">{{ staffData.openSalesTicketsCount}}</div>
+              <div class="text-value" v-show="adminData.length !== null">{{ adminData.openSalesTicketsCount}}</div>
               <div class="text-uppercase text-muted small">friends</div>
             </div>
-            <div>
-              <div class="text-value">459</div>
-              <div class="text-uppercase text-muted small">feeds</div>
-            </div>
+
           </div>
         </div>
       </b-col>
       <b-col sm="6" lg="3">
         <div class="brand-card">
-          <div class="brand-card-header bg-twitter">
-            <i class="fa fa-twitter"></i>
+          <div class="brand-card-header bg-facebook">
+             <h5 class="text-uppercase large" style="color:white">Open Support Ticket</h5>
             <div class="chart-wrapper">
-              <social-box-chart-example chartId="box-chart-02" :data="[1, 13, 9, 17, 34, 41, 38]" height="90"/>
+              <social-box-chart-example chartId="box-chart-01" :data="[65, 59, 84, 84, 51, 55, 40]" height="90"/>
             </div>
           </div>
           <div class="brand-card-body">
             <div>
-              <div class="text-value">973k</div>
-              <div class="text-uppercase text-muted small">followers</div>
+              <div class="text-value" v-show="staffData.length !== null">{{ staffData.myOpenSupportTicketsCount}}</div>
+              <div class="text-value" v-show="adminData.length !== null">{{ adminData.openSupportTicketsCount}}</div>
+              <div class="text-uppercase text-muted small">friends</div>
             </div>
-            <div>
-              <div class="text-value">1.792</div>
-              <div class="text-uppercase text-muted small">tweets</div>
-            </div>
-          </div>
-          </div>
-      </b-col>
-      <b-col sm="6" lg="3">
-        <div class="brand-card">
-          <div class="brand-card-header bg-linkedin">
-            <i class="fa fa-linkedin"></i>
-            <div class="chart-wrapper">
-              <social-box-chart-example chartId="box-chart-03" :data="[78, 81, 80, 45, 34, 12, 40]" height="90"/>
-            </div>
-          </div>
-          <div class="brand-card-body">
-            <div>
-              <div class="text-value">500+</div>
-              <div class="text-uppercase text-muted small">contacts</div>
-            </div>
-            <div>
-              <div class="text-value">292</div>
-              <div class="text-uppercase text-muted small">feeds</div>
-            </div>
+
           </div>
         </div>
       </b-col>
-      <b-col sm="6" lg="3">
-        <div class="brand-card">
-          <div class="brand-card-header bg-google-plus">
-            <i class="fa fa-google-plus"></i>
-            <div class="chart-wrapper">
-              <social-box-chart-example chartId="box-chart-04" :data="[35, 23, 56, 22, 97, 23, 64]" height="90"/>
-            </div>
-          </div>
-          <div class="brand-card-body">
-            <div>
-              <div class="text-value">894</div>
-              <div class="text-uppercase text-muted small">followers</div>
-            </div>
-            <div>
-              <div class="text-value">92</div>
-              <div class="text-uppercase text-muted small">circles</div>
-            </div>
-          </div>
-        </div>
-      </b-col>
+
     </b-row>
-    <b-row>
+
+     <b-row>
       <b-col md="12">
         <b-card header="Traffic &amp; Sales">
           <b-row>
@@ -445,6 +441,7 @@
         </b-card>
       </b-col>
     </b-row>
+    -->
   </div>
 </template>
 
@@ -472,6 +469,8 @@ export default {
   },
   data: function () {
     return {
+      adminData:[],
+      staffData:[],
       selected: 'Month',
       tableItems: [
         {
@@ -547,6 +546,32 @@ export default {
         }
       }
     }
+  },
+  mounted:function(){
+    this.loading = true
+          const userId = this.$localStorage.get().data.id
+          const role = this.$localStorage.get().data.role
+            if(role == 'Staff'){
+            this.axios.get(`staff-dashboard-reports/`+ userId)
+            .then(response => {
+              this.staffData = response.data
+                console.log(this.staffData)
+            })
+            .catch(e => {
+              alert(e);
+            }).finally(() => this.loading = false)
+          }else{
+            this.axios.get(`dashboard-reports`)
+            .then(response => {
+              this.adminData = response.data
+               console.log(this.adminData)
+
+            })
+            .catch(e => {
+              alert(e);
+            }).finally(() => this.loading = false)
+          }
+
   },
   methods: {
     variant (value) {

@@ -20,11 +20,6 @@ export default {
     },
 
     {
-      name: 'Manage Staff',
-      url: '/admin/staff/manage',
-      icon: 'icon-user',
-    },
-    {
       name: 'Manage Sector',
       url: '/admin/sector/manage',
       icon: 'icon-layers'
@@ -43,23 +38,8 @@ export default {
           name: 'Prospects',
           url: '/admin/company/prospects/manage'
         },
-        {
-          name: 'Company Assignment',
-          url: '/admin/company/company-assignment/manage'
-        },
-        {
-          name: 'Registration Status',
-          url: '/buttons/brand-buttons'
-        },
-        {
-          name: 'Weekly Trail',
-          url: '/buttons/brand-buttons'
-        },
 
-        {
-          name: 'Assigned Companies',
-          url: '/buttons/brand-buttons'
-        }
+
       ]
     },
     {
@@ -68,10 +48,7 @@ export default {
       icon: 'icon-cursor',
       children: [
 
-        {
-          name: 'Devices',
-          url: '/admin/company/devices/manage'
-        },
+
         {
           name: 'Service Types',
           url: '/admin/company/devices/service-types/manage'
@@ -80,18 +57,7 @@ export default {
           name: 'Check Device Info',
           url: '/buttons/brand-buttons'
         },
-        {
-          name: 'Service Cheklist',
-          url: '/buttons/brand-buttons'
-        },
-        {
-          name: 'Assign Companies',
-          url: '/buttons/brand-buttons'
-        },
-        {
-          name: 'Assigned Companies',
-          url: '/buttons/brand-buttons'
-        }
+
       ]
     },
     {
@@ -99,7 +65,7 @@ export default {
       url: '/admin/company/ticket/sales/manage',
       icon: 'icon-cursor',
       children: [
-
+ 
         {
           name: 'Sales Ticket',
           url: '/admin/company/ticket/sales/manage'
@@ -111,10 +77,6 @@ export default {
 
       ]
     },
-    {
-      name: 'Manage Cass',
-      url: '/admin/company/cass/manage',
-      icon: 'icon-user'
-    },
+
   ]
 }

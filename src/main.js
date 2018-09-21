@@ -106,13 +106,21 @@ Vue.use(ElementUI, { locale })
 Vue.use(qs);
 Vue.use(BootstrapVue)
 
-router.beforeEach((to, from, next) => {
+
+
+
+router.beforeEach( (to, from, next) => {
   if(to.path !== '/auth/login'){
-    localStorage.get() ?  next() :  next({ path:'/auth/login'})
+    const assignedRole = localStorage.get().data.role;
+    console.log(to)
+    const meta = to.meta.role;
+    const haveRole = meta.indexOf(assignedRole)!=-1;
+    haveRole ? next(): next({ path:'/auth/login'})
   }else{
     next();
   }
 })
+
 /* eslint-disable no-new */
 Vue.prototype.$localStorage = localStorage;
 Vue.prototype.$firebase = firebase;
