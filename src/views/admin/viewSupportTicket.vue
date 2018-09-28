@@ -157,7 +157,7 @@ export default {
             "user_id":this.$localStorage.get().data.id
         },
         ruleForm2:{
-          status:"Closed"
+          "status":"Closed"
         },
         remarks:[],
         requestError : [],
@@ -178,6 +178,7 @@ export default {
     },
     methods: {
        closeSupportTicket(){
+
           this.loading = true
           this.axios.put(`supportTickets/`+ this.$store.state.supportTicketEditScope.id, this.ruleForm2)
             .then(response => {

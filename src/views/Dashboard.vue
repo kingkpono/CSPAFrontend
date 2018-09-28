@@ -200,7 +200,7 @@
       </b-col>
 
     </b-row>
-
+<!--
      <b-row>
       <b-col md="12">
         <b-card header="Traffic &amp; Sales">
@@ -213,7 +213,7 @@
                     <strong class="h4">9,123</strong>
                     <div class="chart-wrapper" :style="{ top: '-10px'}">
                       <!--<callout-chart-example :data="[35, 23, 56, 22, 97, 23, 64]" variant="#20a8d8" width="80" height="30" />-->
-                      <callout-chart-example chartId="callout-chart-01" :data="[35, 23, 56, 22, 97, 23, 64]" variant="info" width="80" height="30" />
+                     <!-- <callout-chart-example chartId="callout-chart-01" :data="[35, 23, 56, 22, 97, 23, 64]" variant="info" width="80" height="30" />
                     </div>
                   </Callout>
                 </b-col>
@@ -549,8 +549,8 @@ export default {
   },
   mounted:function(){
     this.loading = true
-          const userId = this.$localStorage.get().data.id
-          const role = this.$localStorage.get().data.role
+          const userId = this.$localStorage.get().id
+          const role = this.$localStorage.get().role
             if(role == 'Staff'){
             this.axios.get(`staff-dashboard-reports/`+ userId)
             .then(response => {

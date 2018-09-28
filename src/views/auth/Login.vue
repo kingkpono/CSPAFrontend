@@ -16,7 +16,7 @@
                     <el-form-item label="" prop="email">
                       <el-input v-model="ruleForm2.email" class="el-input--small">
                         <template slot="prepend"><i class="icon-user"></i></template>
-                      </el-input> 
+                      </el-input>
                     </el-form-item>
                   <el-form-item label="" prop="pass">
                     <el-input type="password"  v-model="ruleForm2.password" auto-complete="off" class="el-input--small">
@@ -84,6 +84,7 @@ export default {
         }
       };
     },
+
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -92,7 +93,11 @@ export default {
               this.loading = true
               this.axios.post(`login`, this.ruleForm2)
                 .then(response => {
-                this.$localStorage.set(response.data)
+                this.$localStorage.set(response.data.data)
+                console.log(response.data.data)
+
+                this.$store.commit('userRole', response.data.data)
+
                 this.$alertify.success("login Successfull");
                 this.$router.push({ path: '/dashboard' })
               })

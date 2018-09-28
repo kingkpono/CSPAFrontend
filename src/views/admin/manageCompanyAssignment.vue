@@ -12,7 +12,7 @@
                      <el-form :inline="true" class="demo-form-inline" v-show="multipleSelection.length" style="border:1px solid #ddd;padding:10px;margin-bottom:20px;height:60px">
                       <el-form-item label="BDM manager:">
                         <el-select v-model="bdm_person_to_assign" placeholder="BDM manager">
-                           <el-option v-for="item in bdm_persons"  :key="item.id" :value="item.id" :label="item.name" element-loading-spinner="el-icon-loading" v-loading="fetchQueryValueLoader"></el-option>
+                           <el-option v-for="item in bdm_persons"  :key="item.id" :value="item.user.id" :label="item.user.name" element-loading-spinner="el-icon-loading" v-loading="fetchQueryValueLoader"></el-option>
                         </el-select>
                         <el-form-item label="">
                          <el-button style="margin-left:20px" class="el-button--mini" type="success" block @click="AssignCompany">Assign</el-button>

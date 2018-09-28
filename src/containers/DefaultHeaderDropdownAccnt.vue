@@ -41,7 +41,7 @@ export default {
     }
   },
    created: function(){
-     this.username = this.$localStorage.get().data.name
+     this.username = this.$localStorage.get().name
     },
     methods: {
       logOut(){

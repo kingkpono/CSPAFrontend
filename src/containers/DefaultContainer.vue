@@ -71,17 +71,20 @@ export default {
   },
   data () {
     return {
-      nav:[]
     }
   },
    mounted:function() {
-     if(this.$localStorage.get().data.role == 'Admin'){
-       this.nav = Adminnav.items
-     }else if(this.$localStorage.get().data.role == 'Staff'){
-       this.nav = Staffnav.items
-     }
+     console.log(this.$store.state.user.role)
    },
   computed: {
+    nav(){
+      console.log(this.$store.state.user.role)
+      if(this.$store.state.user.role == 'Admin'){
+        return Adminnav.items
+      }else if(this.$store.state.user.role == 'Staff'){
+        return Staffnav.items
+      }
+    },
     name () {
       return this.$route.name
     },

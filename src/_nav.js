@@ -76,22 +76,8 @@ export default {
           name: 'Service Types',
           url: '/admin/company/devices/service-types/manage'
         },
-        {
-          name: 'Check Device Info',
-          url: '/buttons/brand-buttons'
-        },
-        {
-          name: 'Service Cheklist',
-          url: '/buttons/brand-buttons'
-        },
-        {
-          name: 'Assign Companies',
-          url: '/buttons/brand-buttons'
-        },
-        {
-          name: 'Assigned Companies',
-          url: '/buttons/brand-buttons'
-        }
+
+
       ]
     },
     {
@@ -116,5 +102,26 @@ export default {
       url: '/admin/company/cass/manage',
       icon: 'icon-user'
     },
+    {
+      name: 'Manage Flexcom',
+      url: '/admin/company/flexcom/manage',
+      icon: 'icon-cursor',
+      children: [
+
+        {
+          name: 'Flexcom Clients',
+          url: '/admin/company/flexcom/clients'
+        },
+        {
+          name: 'Flexcom Lines',
+          url: '/admin/company/flexcom/lines/manage',
+        },
+        {
+          name: 'Flexcom Summary',
+          url: '/admin/company/flexcom/summary',
+        }
+      ]
+    },
+
   ]
 }

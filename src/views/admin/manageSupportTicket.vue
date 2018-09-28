@@ -20,12 +20,18 @@
                       <template slot-scope="scope">
                        <el-button @click="handleView(scope.row)" style="width:10%;padding:5px 9px;margin-right:-7px" class="el-button--mini center" type="success" block> <i style="margin-left:-5px" class="icon-eye"></i></el-button>
                         <el-button @click=" handleClick(scope.row)" style="width:10%;padding:5px 9px;margin-right:3px" class="el-button--mini" type="primary" block> <i style="margin-left:-5px" class="icon-pencil"></i></el-button>
-                     
                       </template>
                     </el-table-column>
                       <el-table-column type="index" label="S/N" > </el-table-column>
                       <el-table-column prop="client.name" label="Client Name" > </el-table-column>
-                       <el-table-column prop="service_type.service_type" label="Service Type" > </el-table-column>
+                        <el-table-column prop="client.name" label="Client Name" > </el-table-column>
+                       <el-table-column prop="service_type.service_type" label="Service Type" :filters="[{ text: 'TAMS', value: 'TAMS' }, { text: 'CCTV', value: 'CCTV' }, { text: 'Flexcom', value: 'Flexcom' }]" :filter-method="filterServiceType" filter-placement="bottom-end">
+                          <template slot-scope="scope" v-bind:class="{'el-tag el-tag--success':scope.row.service_type.service_type == 'TAMS','el-tag el-tag--primary':scope.row.service_type.service_type == 'CCTV','el-tag el-tag--danger':scope.row.service_type.service_type == 'Flexcom'}">
+                            <el-tag>
+                              {{scope.row.service_type.service_type }}
+                            </el-tag>
+                          </template>
+                       </el-table-column>
                       <el-table-column prop="start_date" label="Start Date" > </el-table-column>
                       <el-table-column prop="end_date" label="End Date" > </el-table-column>
                       <el-table-column prop="status" label="Status" :filters="[{ text: 'Closed', value: 'Closed' }, { text: 'Open', value: 'Pending' }]" :filter-method="filterTag" filter-placement="bottom-end">
@@ -115,6 +121,9 @@ export default {
           }).finally(() =>
           this.loading = false
           )
+      },
+      filterServiceType(value, row){
+        return row.service_type.service_type === value;
       },
        fetchsupportTicketProjectOfficer(id){
          const projectOfficers = {'officers':id}

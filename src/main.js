@@ -59,7 +59,10 @@ const store = new Vuex.Store({
     deviceEditScope: [],
     serviceTypeEditScope:[],
     salesTicketEditScope:[],
-    supportTicketEditScope:[]
+    supportTicketEditScope:[],
+    cassEditScope:[],
+    flexcomLineEditScope:[],
+    user:localStorage.get()
   },
   mutations: {
     increment (state) {
@@ -88,7 +91,17 @@ const store = new Vuex.Store({
     },
     editServiceTypeScope(state, scope){
       state.serviceTypeEditScope = scope
-    }
+    },
+    editCassScope(state,scope){
+      state.cassEditScope = scope
+    },
+    editFlexcomLineScope(state,scope){
+      state.flexcomLineEditScope = scope
+    },
+    userRole(state,scope){
+      state.user = scope
+    },
+
 
   }
 })
@@ -111,7 +124,7 @@ Vue.use(BootstrapVue)
 
 router.beforeEach( (to, from, next) => {
   if(to.path !== '/auth/login'){
-    const assignedRole = localStorage.get().data.role;
+    const assignedRole = localStorage.get().role;
     console.log(to)
     const meta = to.meta.role;
     const haveRole = meta.indexOf(assignedRole)!=-1;

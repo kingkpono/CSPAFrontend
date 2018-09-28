@@ -18,12 +18,17 @@
                     </el-form-item>
                     <el-form-item label="BDM person" prop="bdm_person_id" >
                       <el-select v-model="ruleForm.bdm_person_id" clearable placeholder="Select" v-loading="loading" >
-                        <el-option v-for="item in bdmpersons" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                        <el-option v-for="item in bdmpersons" :key="item.user.id" :value="item.user.id" :label="item.user.name"></el-option>
                       </el-select>
                     </el-form-item>
                      <el-form-item label="Sector" prop="sector_id">
                       <el-select v-model="ruleForm.sector_id" clearable placeholder="Select" v-loading="loading">
                         <el-option v-for="item in sectors" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                      </el-select>
+                    </el-form-item>
+                     <el-form-item label="Service Type" prop="service_type">
+                      <el-select v-model="ruleForm.service_type" clearable placeholder="Select" v-loading="loading">
+                        <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type"></el-option>
                       </el-select>
                     </el-form-item>
                      <el-form-item label="Vendor-Status" prop="vendor_status">
@@ -70,6 +75,7 @@ export default {
       return {
         loading:false,
         requestError : [],
+        service_types:[],
         bdmpersons: [],
         bdmperson: '',
         sector: '',
@@ -77,6 +83,7 @@ export default {
          ruleForm: {
           name: '',
           email: '',
+          service_type_id:'',
           client_type: '',
           sector_id: '',
           vendor_status: '',
@@ -107,6 +114,9 @@ export default {
           contact_person: [
             { required: true, message: 'Please input a Contact person', trigger: 'blur' }
           ],
+          service_type: [
+            { required: true, message: 'Please select a service type', trigger: 'change' },
+          ],
           mobile: [
             { required: true, message: 'Please input the phone-number', trigger: 'blur' },
             { min: 11, message: 'Length should be a minimum of 11', trigger: 'blur' }
@@ -131,9 +141,11 @@ export default {
           this.ruleForm.bdm_person_id = this.$store.state.clientEditScope.bdm_person_id
            this.ruleForm.address = this.$store.state.clientEditScope.address
            this.ruleForm.client_type = this.$store.state.clientEditScope.client_type
+           this.ruleForm.service_type_id = this.$store.state.clientEditScope.service_type_id
            this.bdmperson = this.$store.state.clientEditScope.bdmperson.name
            this.sector = this.$store.state.clientEditScope.sector.name
            this.initOnCreated()
+           this.getservicetypes()
     },
     methods: {
       initOnCreated(){
@@ -152,6 +164,17 @@ export default {
             this.$alertify.error(error.response.message);
           })
           .finally( () => this.loading = false);
+      },
+      getservicetypes(){
+         this.loading = true
+        this.axios.get(`serviceTypes`)
+        .then(response => {
+          console.log(response.data);
+          this.service_types = response.data
+        })
+        .catch(e => {
+          alert(e);
+        }).finally(() => this.loading = false)
       },
       fillUpFields(){
          this.editData = this.$store.state.staffEditScope

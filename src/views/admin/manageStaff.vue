@@ -9,8 +9,9 @@
               </div>
               <div class="card-body">
                   <el-row>
+                    <el-button  v-show="multipleSelection.length" @click="makeTicketManager" style="margin-bottom:20px" class="el-button--mini pull-right" type="info" block ><i class="icon-plus" block></i> Make Ticket Manager</el-button>
                   <router-link to="/admin/staff/add">
-                     <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
+                     <el-button v-show="!multipleSelection.length" style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
                   </router-link>
                   </el-row>
 
@@ -58,7 +59,6 @@ export default {
 
       return {
         loading:false,
-        //visible: false,
         multipleSelection: [],
          tableData: [],
       };
@@ -69,26 +69,38 @@ export default {
         }
     },
     mounted:function() {
-          this.loading = true
-              this.axios.get(`users`)
-              .then(response => {
-                this.tableData = response.data
-              })
-              .catch(e => {
-                alert(e);
-              }).finally(() => this.loading = false)
+      this.loading = true
+          this.axios.get(`users`)
+          .then(response => {
+            this.tableData = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
     },
     methods: {
        handleClick(scope) {
          this.$store.commit('editStaffScope', scope)
          this.$router.push({ path: '/admin/staff/edit' })
       },
+      makeTicketManager(){
+         var client_id = {
+          'user_id': this.multipleSelection[0].id
+         };
 
+        this.loading = true
+          this.axios.post(`bdmpersons`,client_id)
+          .then(response => {
+             this.$alertify.success("Ticket Manager Assigned Successfully")
+          })
+          .catch(e => {
+            this.$alertify.danger("Unable to Assgign Staff")
+          }).finally(() => this.loading = false)
+      },
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-       handleSelectionChange(val) {
-         console.log(this.multipleSelection);
+      handleSelectionChange(val) {
          this.multipleSelection = val;
       },
        filterTag(value, row) {

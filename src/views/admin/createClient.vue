@@ -26,6 +26,11 @@
                         <el-option v-for="item in sectors" :key="item.id" :value="item.id" :label="item.name"></el-option>
                       </el-select>
                     </el-form-item>
+                     <el-form-item label="Service Type" prop="service_type_id">
+                      <el-select v-model="ruleForm.service_type_id" clearable placeholder="Select" v-loading="loading">
+                        <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type"></el-option>
+                      </el-select>
+                    </el-form-item>
                      <el-form-item label="Vendor-Status" prop="vendor_status">
                       <el-radio-group v-model="ruleForm.vendor_status" size="medium">
                         <el-radio border label="Pending"></el-radio>
@@ -70,11 +75,13 @@ export default {
       return {
         loading:false,
         requestError : [],
+        service_types:[],
         bdmpersons: [],
         sectors: [],
         ruleForm: {
           name: '',
           email: '',
+          service_type_id:'',
           client_type: '',
           sector_id: '',
           vendor_status: '',
@@ -96,6 +103,9 @@ export default {
            client_type: [
             { required: true, message: 'Please input a client type', trigger: 'change' },
           ],
+         service_type_id: [
+            { required: true, message: 'Please select a service type', trigger: 'change' },
+          ],
           sector_id: [
             { required: true, message: 'Please select a sector', trigger: 'change' }
           ],
@@ -110,7 +120,7 @@ export default {
             { min: 11, message: 'Length should be a minimum of 11', trigger: 'blur' }
           ],
           bdm_person_id: [
-            { required: true, message: 'Please input the BDM person', trigger: 'change' }
+            { required: true, message: 'Please select a BDM person', trigger: 'change' }
           ],
           address: [
             { required: true, message: 'Please input an address', trigger: 'blur' }
@@ -120,6 +130,7 @@ export default {
     },
     mounted:function() {
       this.initOnMounted()
+      this.getservicetypes()
   },
     methods: {
       initOnMounted(){
@@ -156,6 +167,17 @@ export default {
         .then(response => {
           console.log(response.data);
           this.bdmpersons = response.data
+        })
+        .catch(e => {
+          alert(e);
+        }).finally(() => this.loading = false)
+      },
+      getservicetypes(){
+         this.loading = true
+        this.axios.get(`serviceTypes`)
+        .then(response => {
+          console.log(response.data);
+          this.service_types = response.data
         })
         .catch(e => {
           alert(e);

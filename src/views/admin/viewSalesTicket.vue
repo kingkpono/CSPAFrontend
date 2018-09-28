@@ -196,7 +196,8 @@ export default {
           device:'',
           device_description:'',
           device_warranty:'',
-          serial_number:''
+          serial_number:'',
+          officer1:''
         },
         remarks:[],
          ruleForm:{
@@ -205,7 +206,7 @@ export default {
             "user_id":this.$localStorage.get().data.id
         },
         ruleForm2:{
-          status:"Closed"
+          "status":"Closed"
         },
         requestError : [],
         projectOfficers:[],
@@ -244,9 +245,9 @@ export default {
       },
       fetchSalesTicketProjectOfficer(){
          const projectOfficers = {"officers":''}
-       this.$store.state.salesTicketEditScope.officer1.map(value => {
-          return projectOfficers.officers = value
-       })
+        this.$store.state.salesTicketEditScope.officer1.map(value => {
+            return projectOfficers.officers = value
+        })
 
          console.log(projectOfficers)
          this.axios.post(`users/officers`, projectOfficers)

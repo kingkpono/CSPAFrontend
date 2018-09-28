@@ -5,20 +5,13 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Manage Cass
+                 <i class="icon-user"></i>Manage Flexcom Lines
               </div>
               <div class="card-body">
                 <el-row>
                    <div class="card-body">
-                      <div slot="header" class="card-header pull-left demo-form-inline" style="background:#E6F0F3;width:30%;margin:-30px 0px 20px -10px">
-                        <h6>Check Due Cass for the month of</h6>
-                          <el-form>
-                              <el-form-item prop="date">
-                                <el-date-picker  v-model="ruleForm.date" @change="viewDueCass()" type="month" placeholder="Pick a date"> </el-date-picker>
-                              </el-form-item>
-                          </el-form>
-                      </div>
-                  <router-link to="/admin/company/cass/add">
+
+                  <router-link to="/admin/company/flexcom/lines/add">
                     <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
                   </router-link>
                    </div>
@@ -42,11 +35,10 @@
                     </el-table-column>
                       <el-table-column type="index" label="S/N" > </el-table-column>
                       <el-table-column prop="client.name" label="Client" width="170"> </el-table-column>
-                      <el-table-column prop="service_type.service_type" label="Service Type" width="170"> </el-table-column>
-                      <el-table-column prop="user.name" label="User" width="170"> </el-table-column>
-                      <el-table-column prop="cass_type.cass_type" label="CASS Policy" width="170" > </el-table-column>
-                      <el-table-column prop="due_month" label="Due Month" width="170" > </el-table-column>
-                      <el-table-column prop="due_year" label="Due Year" width="170" > </el-table-column>
+                      <el-table-column prop="platform" label="Platform" width="170"> </el-table-column>
+                      <el-table-column prop="status" label="Status" width="170" > </el-table-column>
+                      <el-table-column prop="mobile_number" label="Mobile" width="170"> </el-table-column>
+                      <el-table-column prop="activation_date" label="Activation Date" width="170" > </el-table-column>
                   </el-table>
                 </el-card>
               </div>
@@ -59,14 +51,11 @@
 
 <script>
 export default {
-  name: 'Manage-Cass',
+  name: 'Manage Flexcom Lines',
  data() {
 
       return {
-        monthNames : ["January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
-        ],
-        due_cass:false,
+
         serialNumber:'',
         loading:false,
         tableData: [],
@@ -82,7 +71,7 @@ export default {
 
     mounted:function() {
           this.loading = true
-          this.axios.get(`cass`)
+          this.axios.get(`flexcom/lines`)
           .then(response => {
             this.tableData = response.data
           })
@@ -106,7 +95,7 @@ export default {
       },
       handleClick(scope) {
          this.$store.commit('editFlexcomLineScope', scope)
-         this.$router.push({ path: '/admin/company/flexcom/line/edit' })
+         this.$router.push({ path: '/admin/company/flexcom/lines/edit' })
       },
 
       resetForm(formName) {
@@ -132,7 +121,7 @@ export default {
               this.axios.delete('cass/'+ row.id)
               .then(response => {
                  this.$alertify.success("Record Deleted Successfully")
-                this.$router.push({ path: '/admin/company/cass/manage' })
+                this.$router.push({ path: '/admin/company/flexcom/lines/manage' })
               })
               .catch(e => {
                  this.$alertify.error("Unable to Delete Record")

@@ -32,6 +32,17 @@ const createSalesTicketStaff = () => import('@/views/admin/createSalesTicketStaf
 const manageSalesTicketStaff = () => import('@/views/admin/manageSalesTicketStaff')
 const createCass = () => import('@/views/admin/createCass')
 const manageCass = () => import('@/views/admin/manageCass')
+const editCass = () => import('@/views/admin/editCass')
+const manageFlexcom = () => import('@/views/admin/manageFlexcom')
+const manageFlexcomLines = () => import('@/views/admin/manageFlexcomLines')
+const createFlexcomLines = () => import('@/views/admin/createFlexcomLines')
+const editFlexcomLine = () => import('@/views/admin/editFlexcomLine')
+const flexcomSummary = () => import('@/views/admin/flexcomSummary')
+
+
+
+
+
 
 
 
@@ -382,7 +393,6 @@ export default new Router({
               path: 'staff',
               redirect: '/admin/staff/manage',
               name: 'staff',
-
               component: {
                 render (c) { return c('router-view') }
               },
@@ -406,6 +416,9 @@ export default new Router({
                 {
                   path: 'edit',
                   name: 'Edit Staff',
+                  meta:{
+                    role: ['Admin']
+                  },
                   component: editStaff
                 }
               ]
@@ -505,7 +518,7 @@ export default new Router({
                 },
                 {
                   path: 'cass',
-                  redirect: '/admin/cass/manage',
+                  redirect: '/admin/company/cass/manage',
                   name: 'cass',
                   component: {
                     render (c) { return c('router-view') }
@@ -533,9 +546,69 @@ export default new Router({
                       meta:{
                         role: ['Staff','Admin']
                       },
-                      component: createCass
+                      component: editCass
                     },
 
+                  ]
+                },
+                {
+                  path: 'flexcom',
+                  redirect: '/admin/company/flexcom/clients',
+                  name: 'flexcom',
+                  component: {
+                    render (c) { return c('router-view') }
+                  },
+                  children: [
+                    {
+                      path: 'summary',
+                      name: 'Flexcom Summary',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
+                      component: flexcomSummary,
+                    },
+                    {
+                      path: 'clients',
+                      name: 'Flexcom Clients',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
+                      component: manageFlexcom,
+                    },
+                    {
+                      path: 'lines',
+                      name: 'Lines',
+                      redirect: '/admin/company/flexcom/manage',
+                      component: {
+                        render (c) { return c('router-view') }
+                      },
+                      children: [
+                        {
+                          path: 'manage',
+                          name: 'Manage',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
+                          component: manageFlexcomLines,
+                        },
+                        {
+                          path: 'add',
+                          name: 'Add',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
+                          component: createFlexcomLines,
+                        },
+                        {
+                          path: 'edit',
+                          name: 'Edit',
+                          meta:{
+                            role: ['Staff','Admin']
+                          },
+                          component: editFlexcomLine,
+                        }
+                      ]
+                    }
                   ]
                 },
 

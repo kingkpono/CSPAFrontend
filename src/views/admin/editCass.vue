@@ -5,7 +5,7 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Create Cass
+                 <i class="icon-user"></i>Edit Cass
               </div>
               <div class="card-body">
                 <el-card class="box-card" style="width:60%;margin:auto" >
@@ -35,7 +35,7 @@
                       <el-input placeholder="Remark" v-model="ruleForm.remark"></el-input>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="primary" @click="submitForm('ruleForm')">Create</el-button>
+                      <el-button type="primary" @click="submitForm('ruleForm')">Update</el-button>
                       <el-button @click="resetForm('ruleForm')">Reset</el-button>
                     </el-form-item>
                   </el-form>
@@ -52,7 +52,7 @@
 
 
 export default {
-  name: 'Create-Cass',
+  name: 'Edit-Cass',
    data() {
       return {
         loading:false,
@@ -97,10 +97,16 @@ export default {
       };
     },
      mounted:function(){
-
-       this.getClients()
-       this.serviceTypes()
-       this.cassTypes()
+        this.ruleForm.location = this.$store.state.cassEditScope.location
+        this.ruleForm.remark = this.$store.state.cassEditScope.remark
+        this.ruleForm.client_id = this.$store.state.cassEditScope.client_id
+        this.ruleForm.due_month = this.$store.state.cassEditScope.due_month
+        this.ruleForm.due_year = this.$store.state.cassEditScope.due_year
+        this.ruleForm.cass_type_id = this.$store.state.cassEditScope.cass_type_id
+        this.ruleForm.service_type_id = this.$store.state.cassEditScope.service_type_id
+        this.getClients()
+        this.serviceTypes()
+        this.cassTypes()
 
     },
     methods: {
@@ -109,10 +115,10 @@ export default {
 
         this.$refs[formName].validate((valid) => {
           if (valid) {
-              this.ruleForm.due_year = this.ruleForm.date.getFullYear().toString()
-              this.ruleForm.due_month = this.monthNames[this.ruleForm.date.getMonth()]
+            this.ruleForm.due_year = this.ruleForm.date.getFullYear().toString()
+            this.ruleForm.due_month = this.monthNames[this.ruleForm.date.getMonth()]
               this.loading = true
-              this.axios.post(`cass`, this.ruleForm)
+              this.axios.put(`cass/` + this.$store.state.cassEditScope.id, this.ruleForm)
                .then(response => {
                  this.$alertify.success("Cass Created Successfully")
                 this.$router.push({ path: '/admin/company/cass/manage' })

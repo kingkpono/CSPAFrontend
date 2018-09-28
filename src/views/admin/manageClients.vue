@@ -18,15 +18,16 @@
                      <el-form :inline="true" class="demo-form-inline" style="border:1px solid #ddd;padding:10px;margin-bottom:20px;height:60px">
                       <el-form-item label="Filter by:">
                         <el-select v-model="query_params" placeholder="Query option" @change="fetchQuery">
-                          <el-option label="Sector" value="Sector"></el-option>
+                          <el-option label="Sector" value="Sector" selected=""></el-option>
                           <el-option label="BDM Manager" value="bdmperson"></el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item label="">
-                        <el-select v-model="value" placeholder="Select" @change="fetchQueryValue"  >
+                        <el-select v-model="value" placeholder="Select" @change="fetchQueryValue">
                           <el-option v-for="item in query_value" :key="item.id" :value="item.id" :label="item.name" element-loading-spinner="el-icon-loading" v-loading="fetchQueryValueLoader"></el-option>
                         </el-select>
                       </el-form-item>
+
                     </el-form>
                       <el-table :data="tableData" style="width: 100%"  v-loading="loading"  ref="multipleTable" @selection-change="handleSelectionChange">
                        <el-table-column type="selection" width="55"></el-table-column>
@@ -137,6 +138,10 @@ export default {
           this.axios.get(`bdmpersons`)
           .then(response => {
             this.query_value = response.data
+            var vm = this
+             this.query_value =  response.data.map(value => {
+                return value.user
+            })
           })
           .catch(e => {
             alert(e);

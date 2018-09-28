@@ -27,10 +27,7 @@
                     <el-form-item label="Department" prop="department">
                       <el-input placeholder="Department" v-model="ruleForm.department"></el-input>
                     </el-form-item>
-                    <el-form-item label="Password" prop="password">
-                        <el-input type="password" placeholder="Password" v-model="ruleForm.password" auto-complete="off" class="el-input--small">
-                        </el-input>
-                    </el-form-item>
+
                     <el-form-item>
                       <el-button type="primary" @click="submitForm('ruleForm')">Update</el-button>
                       <el-button @click="resetForm('ruleForm')">Reset</el-button>
@@ -59,7 +56,6 @@ export default {
           name: '',
           email: '',
           role: '',
-          password: '',
           status: '1'
         },
         rules: {
@@ -71,10 +67,7 @@ export default {
             { required: true, message: 'Please input a name', trigger: 'blur' },
             { min: 3, message: 'Length should be a minimum of 3', trigger: 'blur' }
           ],
-         password: [
-           { required: true, message: 'Please input a Password', trigger: 'blur' },
-           { min: 3, message: 'Length should be a minimum of 3', trigger: 'blur' }
-          ],
+       
           resource: [
             { required: true, message: 'Please select a role', trigger: 'change' }
           ],

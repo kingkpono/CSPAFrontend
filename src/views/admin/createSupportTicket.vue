@@ -36,6 +36,20 @@
                               <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type" element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader"></el-option>
                             </el-select>
                           </el-form-item>
+                          <el-form-item label="Issue Type"  v-show="ruleForm.service_type_id == 2">
+                            <el-select v-model="ruleForm.issue_type" clearable placeholder="Select">
+                              <el-option  value="Sim Damaged"  element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader">Damaged Sim</el-option>
+                              <el-option  value="Sim Swap"  element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader">Sim Swap</el-option>
+                              <el-option  value="Puk Request"  element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader">Puk Request</el-option>
+                              <el-option  value="Network Compalint"  element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader">Network Compalint</el-option>
+                              <el-option  value="Unable to make Call"  element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader">Unable to make Call</el-option>
+                              <el-option  value="Unable to receive Call"  element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader">Unable to receive Call</el-option>
+                              <el-option  value="Others"  element-loading-spinner="el-icon-loading" v-loading="loadAllValuesLoader">Others</el-option>
+                            </el-select>
+                          </el-form-item>
+                          <el-form-item label="Mobile" v-show="ruleForm.service_type_id == 2">
+                            <el-input placeholder="Seperate more than one number with a comma" v-model="ruleForm.mobile_numbers"></el-input>
+                          </el-form-item>
                           <el-form-item label="Project Details" prop="project_details">
                             <el-input type="textarea" autosize placeholder="Please input the project details" v-model="ruleForm.project_details"></el-input>
                           </el-form-item>
@@ -94,6 +108,11 @@
                      <el-form-item label="Sector" prop="sector_id">
                       <el-select v-model="ruleForm2.sector_id" clearable placeholder="Select" v-loading="loading">
                         <el-option v-for="item in sectors" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                      </el-select>
+                    </el-form-item>
+                     <el-form-item label="Service Type" >
+                      <el-select v-model="ruleForm2.service_type_id" clearable placeholder="Select" v-loading="loading">
+                        <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type"></el-option>
                       </el-select>
                     </el-form-item>
                      <el-form-item label="Vendor-Status" prop="vendor_status">
@@ -197,6 +216,7 @@ export default {
           end_date:'',
           project_officers:[],
           service_type_id:[],
+          mobile_numbers:'',
           attachment:'',
           duration:'',
           projectStaff:[],
@@ -207,6 +227,7 @@ export default {
           email: '',
           client_type: '',
           sector_id: '',
+          service_type_id:'',
           vendor_status: '',
           contact_person: '',
           mobile: '',
@@ -252,7 +273,7 @@ export default {
           client_id: [
             { required: true, message: 'Please select a client', trigger: 'blur' }
           ],
-           service_type_id: [
+          service_type_id: [
             { required: true, message: 'Please select a service type', trigger: 'blur' }
           ],
            duration: [
@@ -380,16 +401,15 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const vm = this
-
               this.ruleForm.project_officers = this.$localStorage.get().data.id.toString()
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]
                 })
-                 console.log(this.ruleForm)
 
-              this.loading = true
-              this.axios.post(`supportTickets`, this.ruleForm)
+              if(this.ruleForm.service_type_id == 2){
+                this.loading = true
+                this.axios.post(`flexcom/tickets`, this.ruleForm)
                .then(response => {
                  this.$alertify.success("New support Ticket Created Successfully")
                 this.$router.push({ path: '/admin/company/ticket/support/manage' })
@@ -397,6 +417,18 @@ export default {
               .catch(e => {
                  this.$alertify.error("Unable to Create support Ticket Type")
               }).finally(() => this.loading = false)
+              }else{
+                 this.loading = true
+                  this.axios.post(`supportTickets`, this.ruleForm)
+                .then(response => {
+                  this.$alertify.success("New support Ticket Created Successfully")
+                  this.$router.push({ path: '/admin/company/ticket/support/manage' })
+                })
+                .catch(e => {
+                  this.$alertify.error("Unable to Create support Ticket Type")
+                }).finally(() => this.loading = false)
+              }
+
             } else {
               this.$alertify.error("Please complete the fields")
               this.active--

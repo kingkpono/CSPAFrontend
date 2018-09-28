@@ -50,12 +50,8 @@ export default {
 
 
         {
-          name: 'Service Types',
-          url: '/admin/company/devices/service-types/manage'
-        },
-        {
-          name: 'Check Device Info',
-          url: '/buttons/brand-buttons'
+          name: 'Devices',
+          url: '/admin/company/devices/manage'
         },
 
       ]
@@ -65,18 +61,35 @@ export default {
       url: '/admin/company/ticket/sales/manage',
       icon: 'icon-cursor',
       children: [
- 
+
         {
-          name: 'Sales Ticket',
+          name: 'My Sales Ticket',
           url: '/admin/company/ticket/sales/manage'
         },
         {
-          name: 'Support Ticket',
+          name: 'My Support Ticket',
           url: '/admin/company/ticket/support/manage'
         },
 
       ]
     },
+    {
+      name: 'Manage Flexcom',
+      url: '/admin/company/flexcom/manage',
+      icon: 'icon-cursor',
+      children: [
+
+        {
+          name: 'My Flexcom Clients',
+          url: '/admin/company/flexcom/clients'
+        },
+        {
+          name: 'My Flexcom Lines',
+          url: '/admin/company/flexcom/lines/manage',
+        }
+      ]
+    },
+
 
   ]
 }
