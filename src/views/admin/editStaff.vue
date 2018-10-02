@@ -67,7 +67,7 @@ export default {
             { required: true, message: 'Please input a name', trigger: 'blur' },
             { min: 3, message: 'Length should be a minimum of 3', trigger: 'blur' }
           ],
-       
+
           resource: [
             { required: true, message: 'Please select a role', trigger: 'change' }
           ],
@@ -105,7 +105,7 @@ export default {
                  console.log(5);
                  console.log(e);
               }).finally(() => this.loading = false)
-               this.$alertify.success("Staff Record Updated Successfully")
+               this.$alertify.error("Unable to update Staff record")
                this.$router.push({ path: '/admin/staff/manage' })
             } else {
               this.$alertify.error("Please complete the fields")

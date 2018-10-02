@@ -167,9 +167,8 @@ export default {
                 this.$router.push({ path: '/admin/company/prospects/manage'})
               })
               .catch(e => {
-
+                 this.$alertify.error("Unable to Update Client")
               }).finally(() => this.loading = false)
-
             } else {
               this.$alertify.error("Please complete the fields")
               console.log('error submit!!');

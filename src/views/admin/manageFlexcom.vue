@@ -11,9 +11,7 @@
                 <el-row>
                    <div class="card-body">
 
-                  <router-link to="/admin/company/cass/add">
-                    <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
-                  </router-link>
+
                    </div>
 
                 </el-row>
@@ -108,7 +106,7 @@ export default {
               this.axios.delete('cass/'+ row.id)
               .then(response => {
                  this.$alertify.success("Record Deleted Successfully")
-                this.$router.push({ path: '/admin/company/cass/manage' })
+                this.$router.push({ path: '/admin/company/flexcom/clients' })
               })
               .catch(e => {
                  this.$alertify.error("Unable to Delete Record")

@@ -252,8 +252,8 @@ export default {
         this.ruleForm.client_id = this.$store.state.salesTicketEditScope.client_id
         this.ruleForm.device = this.$store.state.salesTicketEditScope.device
         this.ruleForm.service_type_id = this.$store.state.salesTicketEditScope.service_type_id
-        if(this.$localStorage.get().data.role == 'Staff'){
-                  this.ruleForm.project_officers =  this.$localStorage.get().data.id.toString()
+        if(this.$localStorage.get().role == 'Staff'){
+                  this.ruleForm.project_officers =  this.$localStorage.get().id.toString()
         }
         this.fileList.push({'name':'Attachment','url':this.$store.state.salesTicketEditScope.attachment})
         this.ruleForm.duration.push(this.$store.state.salesTicketEditScope.start_date+ ' '+ '9:30:30',this.$store.state.salesTicketEditScope.end_date+' '+'9:30:30')
@@ -366,7 +366,7 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const vm = this
-            if(this.$localStorage.get().data.role == 'Admin'){
+            if(this.$localStorage.get().role == 'Admin'){
               this.ruleForm.project_officers = this.ruleForm.project_officers.join()
             }
                         console.log(this.ruleForm.project_officers)
@@ -382,7 +382,7 @@ export default {
                 this.$router.push({ path: '/admin/company/ticket/sales/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Update Sales Ticket Type")
+                 this.$alertify.error("Unable to Update Sales Ticket")
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -411,7 +411,7 @@ export default {
       },
       generateData2(allStaff) {
         const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
-        const userRole = this.$localStorage.get().data.role.toLowerCase() == 'staff';
+        const userRole = this.$localStorage.get().role.toLowerCase() == 'staff';
 
         const data = allStaff.map((staff, index) => {
           const formedStaff = {

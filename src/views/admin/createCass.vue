@@ -69,7 +69,7 @@ export default {
           remark: '',
           service_type_id:'',
           cass_type_id:'',
-          user_id:this.$localStorage.get().data.id
+          user_id:this.$localStorage.get().id
         },
         monthNames : ["January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"

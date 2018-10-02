@@ -154,7 +154,7 @@ export default {
         ruleForm:{
            "support_ticket_id": this.$store.state.supportTicketEditScope.id,
             "remark":"",
-            "user_id":this.$localStorage.get().data.id
+            "user_id":this.$localStorage.get().id
         },
         ruleForm2:{
           "status":"Closed"

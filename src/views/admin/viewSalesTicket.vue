@@ -203,7 +203,7 @@ export default {
          ruleForm:{
            "sales_ticket_id": this.$store.state.salesTicketEditScope.id,
             "remark":"",
-            "user_id":this.$localStorage.get().data.id
+            "user_id":this.$localStorage.get().id
         },
         ruleForm2:{
           "status":"Closed"
@@ -221,6 +221,12 @@ export default {
     },
     created: function() {
        this.client = this.$store.state.salesTicketEditScope
+       const officer = [this.$store.state.salesTicketEditScope.officer1,this.$store.state.salesTicketEditScope.officer2,this.$store.state.salesTicketEditScope.officer3]
+       var vm = this
+       vm.projectOfficers = officer.map(value => {
+          return value.id
+      });
+      vm.projectOfficers = [...new Set(vm.projectOfficers)];
        this.fetchSalesTicketProjectOfficer()
        this.fetchsalesTicketRemarks()
     },
@@ -244,19 +250,13 @@ export default {
          alert(this.$store.state.staffEditScope)
       },
       fetchSalesTicketProjectOfficer(){
-         const projectOfficers = {"officers":''}
-        this.$store.state.salesTicketEditScope.officer1.map(value => {
-            return projectOfficers.officers = value
-        })
-
-         console.log(projectOfficers)
+         const projectOfficers = {"officers":this.projectOfficers.join()}
          this.axios.post(`users/officers`, projectOfficers)
           .then(response => {
             const vm = this
              this.projectOfficers = response.data.map(value => {
               return value.name
             })
-            console.log(vm.projectOfficers)
           })
           .catch(e => {
           }).finally(() =>

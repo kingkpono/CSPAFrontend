@@ -69,7 +69,7 @@ export default {
           remark: '',
           service_type_id:'',
           cass_type_id:'',
-          user_id:this.$localStorage.get().data.id
+          user_id:this.$localStorage.get().id
         },
         monthNames : ["January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"
@@ -120,11 +120,11 @@ export default {
               this.loading = true
               this.axios.put(`cass/` + this.$store.state.cassEditScope.id, this.ruleForm)
                .then(response => {
-                 this.$alertify.success("Cass Created Successfully")
+                 this.$alertify.success("Cass Updated Successfully")
                 this.$router.push({ path: '/admin/company/cass/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Cass")
+                 this.$alertify.error("Unable to Update Cass")
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")

@@ -74,7 +74,7 @@ export default {
                 this.$router.push({ path: '/admin/sector/manage' })
               })
               .catch(e => {
-
+                 this.$alertify.error("Unable to Update Sector")
               }).finally(() => this.loading = false)
 
             } else {

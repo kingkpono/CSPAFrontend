@@ -71,8 +71,8 @@ export default {
 
     mounted:function() {
           this.loading = true
-          const userId = this.$localStorage.get().data.id
-          const role = this.$localStorage.get().data.role
+          const userId = this.$localStorage.get().id
+          const role = this.$localStorage.get().role
             if(role == 'Staff'){
             this.axios.get(`supportTickets-by-user/`+ userId)
             .then(response => {

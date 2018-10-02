@@ -18,7 +18,7 @@
                     </el-form-item>
                     <el-form-item label="BDM person" prop="bdm_person_id" >
                       <el-select v-model="ruleForm.bdm_person_id" clearable placeholder="Select" v-loading="loading" >
-                        <el-option v-for="item in bdmpersons" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                        <el-option v-for="item in bdmpersons" :key="item.id" :value="item.user.id" :label="item.user.name"></el-option>
                       </el-select>
                     </el-form-item>
                      <el-form-item label="Sector" prop="sector_id">

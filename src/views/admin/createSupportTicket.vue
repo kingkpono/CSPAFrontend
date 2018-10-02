@@ -293,8 +293,8 @@ export default {
        this.getClients()
        this.serviceTypes()
        this.getProjectOfficers()
-       if(this.$localStorage.get().data.role == 'Staff'){
-         this.ruleForm.project_officers = this.$localStorage.get().data.id.toString()
+       if(this.$localStorage.get().role == 'Staff'){
+         this.ruleForm.project_officers = this.$localStorage.get().id.toString()
        }
 
     },
@@ -401,7 +401,7 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const vm = this
-              this.ruleForm.project_officers = this.$localStorage.get().data.id.toString()
+              this.ruleForm.project_officers = this.$localStorage.get().id.toString()
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]
@@ -456,7 +456,7 @@ export default {
       },
       generateData2(allStaff) {
        const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
-        const userRole = this.$localStorage.get().data.role.toLowerCase() == 'staff';
+        const userRole = this.$localStorage.get().role.toLowerCase() == 'staff';
 
         const data = allStaff.map((staff, index) => {
           const formedStaff = {

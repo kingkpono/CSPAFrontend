@@ -79,11 +79,10 @@ export default {
 
     mounted:function() {
           this.loading = true
-          if(this.$localStorage.get().data.role == 'Staff'){
-            this.axios.get(`salesTickets-by-user/`+ this.$localStorage.get().data.id)
+          if(this.$localStorage.get().role == 'Staff'){
+            this.axios.get(`salesTickets-by-user/`+ this.$localStorage.get().id)
             .then(response => {
               this.tableData = response.data
-              console.log(this.tableData)
               this.tableData.filter(id =>{
                 this.fetchSalesTicketClient(id.client_id)
                 this.fetchSalesTicketServiceType(id.service_type_id)

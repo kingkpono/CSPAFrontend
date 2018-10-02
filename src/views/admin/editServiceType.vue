@@ -49,7 +49,7 @@ export default {
             { required: true, message: 'Please input a name', trigger: 'blur' },
             { min: 3, message: 'Length should be a minimum of 3', trigger: 'blur' }
           ],
-         
+
         }
       };
     },
@@ -65,11 +65,11 @@ export default {
               this.loading = true
               this.axios.put('serviceType/'+ this.$store.state.serviceTypeEditScope.id, this.ruleForm)
              .then(response => {
-                 this.$alertify.success("Device Updated Successfully")
+                 this.$alertify.success("Service Type Updated Successfully")
                 this.$router.push({ path: '/admin/company/devices/manage' })
               })
               .catch(e => {
-
+                 this.$alertify.error("Unable to Update Service Type")
               }).finally(() => this.loading = false)
 
             } else {

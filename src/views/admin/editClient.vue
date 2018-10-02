@@ -190,7 +190,7 @@ export default {
                 this.$router.push({ path: '/admin/company/clients/manage'})
               })
               .catch(e => {
-
+                this.$alertify.success("Unable to update client")
               }).finally(() => this.loading = false)
 
             } else {

@@ -174,7 +174,7 @@
             <div>
               <div class="text-value" v-show="staffData.length !== null">{{ staffData.openSalesTicketsCount}}</div>
               <div class="text-value" v-show="adminData.length !== null">{{ adminData.openSalesTicketsCount}}</div>
-              <div class="text-uppercase text-muted small">friends</div>
+              <div class="text-uppercase text-muted small">tickets</div>
             </div>
 
           </div>
@@ -192,7 +192,7 @@
             <div>
               <div class="text-value" v-show="staffData.length !== null">{{ staffData.myOpenSupportTicketsCount}}</div>
               <div class="text-value" v-show="adminData.length !== null">{{ adminData.openSupportTicketsCount}}</div>
-              <div class="text-uppercase text-muted small">friends</div>
+              <div class="text-uppercase text-muted small">tickets</div>
             </div>
 
           </div>

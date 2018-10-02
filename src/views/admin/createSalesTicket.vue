@@ -308,8 +308,8 @@ export default {
        this.getClients()
        this.serviceTypes()
        this.getProjectOfficers()
-       if(this.$localStorage.get().data.role == 'Staff'){
-         this.ruleForm.project_officers = this.$localStorage.get().data.id.toString()
+       if(this.$localStorage.get().role == 'Staff'){
+         this.ruleForm.project_officers = this.$localStorage.get().id.toString()
        }
 
     },
@@ -414,7 +414,7 @@ export default {
       },
       submitSalesTicketForm(formName) {
         this.$refs[formName].validate((valid) => {
-           this.ruleForm.project_officers = this.$localStorage.get().data.id.toString()
+           this.ruleForm.project_officers = this.$localStorage.get().id.toString()
 
           if (valid) {
             const vm = this
@@ -460,7 +460,7 @@ export default {
       },
       generateData2(allStaff) {
         const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
-        const userRole = this.$localStorage.get().data.role.toLowerCase() == 'staff';
+        const userRole = this.$localStorage.get().role.toLowerCase() == 'staff';
 
         const data = allStaff.map((staff, index) => {
           const formedStaff = {
