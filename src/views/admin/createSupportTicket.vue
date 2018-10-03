@@ -401,7 +401,11 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const vm = this
-              this.ruleForm.project_officers = this.$localStorage.get().id.toString()
+              if(this.$localStorage.get().role.toLowerCase() == 'staff'){
+                 this.ruleForm.project_officers = this.$localStorage.get().id.toString()
+              }else{
+                this.ruleForm.project_officers = this.ruleForm.project_officers.join()
+              }
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]

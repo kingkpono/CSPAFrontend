@@ -25,6 +25,11 @@ export default {
       icon: 'icon-user',
     },
     {
+      name: 'Ticket Managers',
+      url: '/admin/staff/ticket-managers',
+      icon: 'icon-user',
+    },
+    {
       name: 'Manage Sector',
       url: '/admin/sector/manage',
       icon: 'icon-layers'
@@ -46,19 +51,6 @@ export default {
         {
           name: 'Company Assignment',
           url: '/admin/company/company-assignment/manage'
-        },
-        {
-          name: 'Registration Status',
-          url: '/buttons/brand-buttons'
-        },
-        {
-          name: 'Weekly Trail',
-          url: '/buttons/brand-buttons'
-        },
-
-        {
-          name: 'Assigned Companies',
-          url: '/buttons/brand-buttons'
         }
       ]
     },

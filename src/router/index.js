@@ -38,6 +38,7 @@ const manageFlexcomLines = () => import('@/views/admin/manageFlexcomLines')
 const createFlexcomLines = () => import('@/views/admin/createFlexcomLines')
 const editFlexcomLine = () => import('@/views/admin/editFlexcomLine')
 const flexcomSummary = () => import('@/views/admin/flexcomSummary')
+const ticketManagers = () => import('@/views/admin/ticketManagers')
 
 
 
@@ -420,6 +421,14 @@ export default new Router({
                     role: ['Admin']
                   },
                   component: editStaff
+                },
+                {
+                  path: 'ticket-managers',
+                  name: 'Ticket Managers',
+                  meta:{
+                    role: ['Admin']
+                  },
+                  component: ticketManagers
                 }
               ]
             }

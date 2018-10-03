@@ -37,7 +37,12 @@ export default {
   data: () => {
     return {
       itemsCount: 42,
-      username: []
+    }
+  },
+  computed:{
+    username(){
+
+      return this.$store.state.user.name
     }
   },
    created: function(){

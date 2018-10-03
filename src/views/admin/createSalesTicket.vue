@@ -116,12 +116,17 @@
                     </el-form-item>
                     <el-form-item label="BDM person" prop="bdm_person_id" >
                       <el-select v-model="ruleForm2.bdm_person_id" clearable placeholder="Select" v-loading="loading" >
-                        <el-option v-for="item in bdmpersons" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                        <el-option v-for="item in bdmpersons" :key="item.user.id" :value="item.user.id" :label="item.user.name"></el-option>
                       </el-select>
                     </el-form-item>
                      <el-form-item label="Sector" prop="sector_id">
                       <el-select v-model="ruleForm2.sector_id" clearable placeholder="Select" v-loading="loading">
                         <el-option v-for="item in sectors" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="Service Type" prop="service_type_id">
+                      <el-select v-model="ruleForm2.service_type_id" clearable placeholder="Select" v-loading="loading">
+                        <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type"></el-option>
                       </el-select>
                     </el-form-item>
                      <el-form-item label="Vendor-Status" prop="vendor_status">
@@ -239,6 +244,7 @@ export default {
           vendor_status: '',
           contact_person: '',
           mobile: '',
+          service_type_id:'',
           bdm_person_id: '',
           address: ''
         },
@@ -414,8 +420,12 @@ export default {
       },
       submitSalesTicketForm(formName) {
         this.$refs[formName].validate((valid) => {
+          if(this.$localStorage.get().role.toLowerCase() == 'staff'){
            this.ruleForm.project_officers = this.$localStorage.get().id.toString()
-
+          }else{
+            this.ruleForm.project_officers = this.ruleForm.project_officers.join()
+          }
+ 
           if (valid) {
             const vm = this
 

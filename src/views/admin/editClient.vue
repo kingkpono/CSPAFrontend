@@ -27,7 +27,7 @@
                       </el-select>
                     </el-form-item>
                      <el-form-item label="Service Type" prop="service_type">
-                      <el-select v-model="ruleForm.service_type" clearable placeholder="Select" v-loading="loading">
+                      <el-select v-model="ruleForm.service_type_id" clearable placeholder="Select" v-loading="loading">
                         <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type"></el-option>
                       </el-select>
                     </el-form-item>
@@ -114,7 +114,7 @@ export default {
           contact_person: [
             { required: true, message: 'Please input a Contact person', trigger: 'blur' }
           ],
-          service_type: [
+          service_type_id: [
             { required: true, message: 'Please select a service type', trigger: 'change' },
           ],
           mobile: [

@@ -173,6 +173,12 @@ export default {
     },
     created: function() {
        this.client = this.$store.state.supportTicketEditScope
+       const officer = [this.$store.state.supportTicketEditScope.officer1,this.$store.state.supportTicketEditScope.officer2,this.$store.state.supportTicketEditScope.officer3]
+       var vm = this
+       vm.projectOfficers = officer.map(value => {
+          return value.id
+      });
+       vm.projectOfficers = [...new Set(vm.projectOfficers)];
        this.fetchsupportTicketProjectOfficer(this.client.project_officers)
        this.fetchsupportTicketRemarks()
     },
@@ -194,7 +200,7 @@ export default {
          alert(this.$store.state.staffEditScope)
       },
       fetchsupportTicketProjectOfficer(id){
-         const projectOfficers = {'officers':id}
+         const projectOfficers = {"officers":this.projectOfficers.join()}
          this.axios.post(`users/officers`, projectOfficers)
           .then(response => {
             const vm = this
