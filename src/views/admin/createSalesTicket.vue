@@ -100,7 +100,6 @@
                       <el-form-item  prop="project_officers">
                          <el-transfer   style="margin-bottom:30px"  :titles="['Project Managers', 'Target']" filterable :filter-method="filterMethod" filter-placeholder="Project Managers" v-model="ruleForm.project_officers" :data="allStaff"></el-transfer>
                       </el-form-item>
-
                       <el-form-item>
                         <el-button type="primary" @click="submitSalesTicketForm('ruleForm')">Create Ticket</el-button>
                         <el-button @click="resetForm('ruleForm')">Reset</el-button>
@@ -172,8 +171,6 @@ export default {
    data() {
       return {
         allStaff:[],
-        value5: '',
-        value2: [],
         fileList: [],
         filterMethod(query, item) {
           return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
@@ -321,10 +318,10 @@ export default {
     },
     methods: {
       changeStatus(){
-        if(this.ruleForm.client_type == 'Prospect'){
-          this.ruleForm.vendor_status = 'Pending'
+        if(this.ruleForm2.client_type == 'Prospect'){
+          this.ruleForm2.vendor_status = 'Pending'
         }else{
-          this.ruleForm.vendor_status = 'Completed'
+          this.ruleForm2.vendor_status = 'Completed'
         }
       },
       handleFileChange(e) {

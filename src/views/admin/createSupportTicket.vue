@@ -300,10 +300,10 @@ export default {
     },
     methods: {
      changeStatus(){
-        if(this.ruleForm.client_type == 'Prospect'){
-          this.ruleForm.vendor_status = 'Pending'
+        if(this.ruleForm2.client_type == 'Prospect'){
+          this.ruleForm2.vendor_status = 'Pending'
         }else{
-          this.ruleForm.vendor_status = 'Completed'
+          this.ruleForm2.vendor_status = 'Completed'
         }
       },
       handleFileChange(e) {
@@ -388,12 +388,14 @@ export default {
               this.loading = true
               this.axios.post(`clients`, this.ruleForm2)
                .then(response => {
+                  console.log(response + 'hi')
                  this.ruleForm.client_id = this.ruleForm2.client_id
                  this.$alertify.success("New Client Created Successfully")
                  this.isNewClient = false
                   location.reload()
               })
               .catch(e => {
+                console.log({e})
                  this.$alertify.error("Unable to Create Client")
               }).finally(() => this.loading = false)
             } else {

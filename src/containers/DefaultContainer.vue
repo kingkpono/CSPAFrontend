@@ -78,7 +78,6 @@ export default {
    },
   computed: {
     nav(){
-      console.log(this.$store.state.user.role)
       if(this.$store.state.user.role == 'Admin'){
         return Adminnav.items
       }else if(this.$store.state.user.role == 'Staff'){

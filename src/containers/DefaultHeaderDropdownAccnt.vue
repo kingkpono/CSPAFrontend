@@ -39,12 +39,7 @@ export default {
       itemsCount: 42,
     }
   },
-  computed:{
-    username(){
 
-      return this.$store.state.user.name
-    }
-  },
    created: function(){
      this.username = this.$localStorage.get().name
     },
