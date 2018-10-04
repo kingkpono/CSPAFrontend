@@ -26,12 +26,12 @@
                         <el-option v-for="item in sectors" :key="item.id" :value="item.id" :label="item.name"></el-option>
                       </el-select>
                     </el-form-item>
-                     <el-form-item label="Vendor-Status" prop="vendor_status">
+                     <!-- <el-form-item label="Vendor-Status" prop="vendor_status">
                       <el-radio-group v-model="ruleForm.vendor_status" size="medium">
                         <el-radio border label="Pending"></el-radio>
                         <el-radio border label="Completed"></el-radio>
                       </el-radio-group>
-                     </el-form-item>
+                     </el-form-item> -->
                     <el-form-item label="Contact Person" prop="contact_person">
                       <el-input placeholder="Contact Person" v-model="ruleForm.contact_person"></el-input>
                     </el-form-item>
@@ -39,7 +39,7 @@
                       <el-input placeholder="Mobile" v-model="ruleForm.mobile"></el-input>
                     </el-form-item>
                      <el-form-item label="Client-Type" prop="client_type">
-                      <el-radio-group v-model="ruleForm.client_type" size="medium">
+                      <el-radio-group v-model="ruleForm.client_type" size="medium" :change="changeStatus()">
                         <el-radio border label="Prospect"></el-radio>
                         <el-radio border label="Customer"></el-radio>
                       </el-radio-group>
@@ -136,6 +136,14 @@ export default {
            this.initOnCreated()
     },
     methods: {
+      changeStatus(){
+        if(this.ruleForm.client_type == 'Prospect'){
+          this.ruleForm.vendor_status = 'Pending'
+        }else{
+          this.ruleForm.vendor_status = 'Completed'
+        }
+        console.log(this.ruleForm.client_type)
+      },
       initOnCreated(){
         this.loading = true;
         Promise
@@ -163,7 +171,7 @@ export default {
               this.loading = true
               this.axios.put('clients/'+ this.$store.state.prospectsEditScope.id, this.ruleForm)
              .then(response => {
-                 this.$alertify.success("Client Updated Successfully")
+                 this.$alertify.success("Prospect Updated Successfully")
                 this.$router.push({ path: '/admin/company/prospects/manage'})
               })
               .catch(e => {

@@ -5,7 +5,7 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Edit Client
+                 <i class="icon-user"></i>Edit Company
               </div>
               <div class="card-body">
                 <el-card class="box-card" style="width:60%;margin:auto" >
@@ -16,14 +16,19 @@
                     <el-form-item label="Email" prop="email">
                       <el-input placeholder="Email" v-model="ruleForm.email"></el-input>
                     </el-form-item>
-                    <el-form-item label="BDM person" prop="bdm_person_id" >
+                    <!-- <el-form-item label="BDM person" prop="bdm_person_id" >
                       <el-select v-model="ruleForm.bdm_person_id" clearable placeholder="Select" v-loading="loading" >
-                        <el-option v-for="item in bdmpersons" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                        <el-option v-for="item in bdmpersons" :key="item.user.id" :value="item.user.id" :label="item.user.name"></el-option>
                       </el-select>
-                    </el-form-item>
+                    </el-form-item> -->
                      <el-form-item label="Sector" prop="sector_id">
                       <el-select v-model="ruleForm.sector_id" clearable placeholder="Select" v-loading="loading">
                         <el-option v-for="item in sectors" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                      </el-select>
+                    </el-form-item>
+                     <el-form-item label="Service Type" prop="service_type">
+                      <el-select v-model="ruleForm.service_type_id" clearable placeholder="Select" v-loading="loading">
+                        <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type"></el-option>
                       </el-select>
                     </el-form-item>
                      <!-- <el-form-item label="Vendor-Status" prop="vendor_status">
@@ -39,7 +44,7 @@
                       <el-input placeholder="Mobile" v-model="ruleForm.mobile"></el-input>
                     </el-form-item>
                      <el-form-item label="Client-Type" prop="client_type">
-                      <el-radio-group v-model="ruleForm.client_type" size="medium" :change="changeStatus()">
+                      <el-radio-group v-model="ruleForm.client_type" size="medium">
                         <el-radio border label="Prospect"></el-radio>
                         <el-radio border label="Customer"></el-radio>
                       </el-radio-group>
@@ -65,11 +70,12 @@
 
 
 export default {
-  name: 'Edit-Prospects',
+  name: 'Edit-Client',
    data() {
       return {
         loading:false,
         requestError : [],
+        service_types:[],
         bdmpersons: [],
         bdmperson: '',
         sector: '',
@@ -77,6 +83,7 @@ export default {
          ruleForm: {
           name: '',
           email: '',
+          service_type_id:'',
           client_type: '',
           sector_id: '',
           vendor_status: '',
@@ -107,6 +114,9 @@ export default {
           contact_person: [
             { required: true, message: 'Please input a Contact person', trigger: 'blur' }
           ],
+          service_type_id: [
+            { required: true, message: 'Please select a service type', trigger: 'change' },
+          ],
           mobile: [
             { required: true, message: 'Please input the phone-number', trigger: 'blur' },
             { min: 11, message: 'Length should be a minimum of 11', trigger: 'blur' }
@@ -121,19 +131,21 @@ export default {
       };
     },
     created: function() {
-          this.ruleForm.email = this.$store.state.clientEditScope.email
-          this.ruleForm.name = this.$store.state.clientEditScope.name
-           this.ruleForm.sector_id = this.$store.state.clientEditScope.sector_id
-          this.ruleForm.vendor_status = this.$store.state.clientEditScope.vendor_status
-           this.ruleForm.contact_person = this.$store.state.clientEditScope.contact_person
-          this.ruleForm.name = this.$store.state.clientEditScope.name
-           this.ruleForm.mobile = this.$store.state.clientEditScope.mobile
-          this.ruleForm.bdm_person_id = this.$store.state.clientEditScope.bdm_person_id
-           this.ruleForm.address = this.$store.state.clientEditScope.address
-           this.ruleForm.client_type = this.$store.state.clientEditScope.client_type
-           this.bdmperson = this.$store.state.clientEditScope.bdmperson.name
-           this.sector = this.$store.state.clientEditScope.sector.name
+          this.ruleForm.email = this.$store.state.companyEditScope.email
+          this.ruleForm.name = this.$store.state.companyEditScope.name
+           this.ruleForm.sector_id = this.$store.state.companyEditScope.sector_id
+          this.ruleForm.vendor_status = this.$store.state.companyEditScope.vendor_status
+           this.ruleForm.contact_person = this.$store.state.companyEditScope.contact_person
+          this.ruleForm.name = this.$store.state.companyEditScope.name
+           this.ruleForm.mobile = this.$store.state.companyEditScope.mobile
+          this.ruleForm.bdm_person_id = this.$store.state.companyEditScope.bdm_person_id
+           this.ruleForm.address = this.$store.state.companyEditScope.address
+           this.ruleForm.client_type = this.$store.state.companyEditScope.client_type
+           this.ruleForm.service_type_id = this.$store.state.companyEditScope.service_type_id
+           this.bdmperson = this.$store.state.companyEditScope.bdmperson.name
+           this.sector = this.$store.state.companyEditScope.sector.name
            this.initOnCreated()
+           this.getservicetypes()
     },
     methods: {
       changeStatus(){
@@ -142,7 +154,6 @@ export default {
         }else{
           this.ruleForm.vendor_status = 'Completed'
         }
-        console.log(this.ruleForm.client_type)
       },
       initOnCreated(){
         this.loading = true;
@@ -161,6 +172,17 @@ export default {
           })
           .finally( () => this.loading = false);
       },
+      getservicetypes(){
+         this.loading = true
+        this.axios.get(`serviceTypes`)
+        .then(response => {
+          console.log(response.data);
+          this.service_types = response.data
+        })
+        .catch(e => {
+          alert(e);
+        }).finally(() => this.loading = false)
+      },
       fillUpFields(){
          this.editData = this.$store.state.staffEditScope
          alert(this.$store.state.staffEditScope)
@@ -169,14 +191,15 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
               this.loading = true
-              this.axios.put('clients/'+ this.$store.state.clientEditScope.id, this.ruleForm)
+              this.axios.put('clients/'+ this.$store.state.companyEditScope.id, this.ruleForm)
              .then(response => {
-                 this.$alertify.success("Client Updated Successfully")
-                this.$router.push({ path: '/admin/company/client/manage'})
+                 this.$alertify.success("Company Updated Successfully")
+                this.$router.push({ path: '/admin/company/company/manage'})
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Update Client")
+                this.$alertify.success("Unable to update client")
               }).finally(() => this.loading = false)
+
             } else {
               this.$alertify.error("Please complete the fields")
               console.log('error submit!!');

@@ -5,7 +5,7 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Create Clients
+                 <i class="icon-user"></i>Create Company
               </div>
               <div class="card-body">
                 <el-card class="box-card" style="width:60%;margin:auto" >
@@ -16,35 +16,35 @@
                     <el-form-item label="Email" prop="email">
                       <el-input placeholder="Email" v-model="ruleForm.email"></el-input>
                     </el-form-item>
-                    <el-form-item label="BDM person" prop="bdm_person_id" >
+                    <!-- <el-form-item label="BDM person" prop="bdm_person_id" >
                       <el-select v-model="ruleForm.bdm_person_id" clearable placeholder="Select" v-loading="loading" >
                         <el-option v-for="item in bdmpersons" :key="item.id" :value="item.user.id" :label="item.user.name"></el-option>
                       </el-select>
-                    </el-form-item>
+                    </el-form-item> -->
                      <el-form-item label="Sector" prop="sector_id">
                       <el-select v-model="ruleForm.sector_id" clearable placeholder="Select" v-loading="loading">
                         <el-option v-for="item in sectors" :key="item.id" :value="item.id" :label="item.name"></el-option>
                       </el-select>
                     </el-form-item>
-                     <el-form-item label="Service Type" prop="service_type_id">
+                    <el-form-item label="Service Type" prop="service_type_id">
                       <el-select v-model="ruleForm.service_type_id" clearable placeholder="Select" v-loading="loading">
                         <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type"></el-option>
                       </el-select>
                     </el-form-item>
-                     <el-form-item label="Vendor-Status" prop="vendor_status">
+                     <!-- <el-form-item label="Vendor-Status" prop="vendor_status">
                       <el-radio-group v-model="ruleForm.vendor_status" size="medium">
-                        <el-radio border label="Pending"></el-radio>
+                        <el-radio border label="Pending" ></el-radio>
                         <el-radio border label="Completed"></el-radio>
                       </el-radio-group>
-                     </el-form-item>
+                     </el-form-item> -->
                     <el-form-item label="Contact Person" prop="contact_person">
                       <el-input placeholder="Contact Person" v-model="ruleForm.contact_person"></el-input>
                     </el-form-item>
                     <el-form-item label="Mobile" prop="mobile">
                       <el-input placeholder="Mobile" v-model="ruleForm.mobile"></el-input>
                     </el-form-item>
-                     <el-form-item label="Client-Type" prop="client_type">
-                      <el-radio-group v-model="ruleForm.client_type" size="medium">
+                     <el-form-item label="Company-Type" prop="client_type" >
+                      <el-radio-group v-model="ruleForm.client_type" size="medium" :change="changeStatus()">
                         <el-radio border label="Prospect"></el-radio>
                         <el-radio border label="Customer"></el-radio>
                       </el-radio-group>
@@ -87,7 +87,7 @@ export default {
           vendor_status: '',
           contact_person: '',
           mobile: '',
-          bdm_person_id: '',
+          bdm_person_id: '1',
           address: ''
         },
         rules: {
@@ -133,6 +133,14 @@ export default {
       this.getservicetypes()
   },
     methods: {
+      changeStatus(){
+        if(this.ruleForm.client_type == 'Prospect'){
+          this.ruleForm.vendor_status = 'Pending'
+        }else{
+          this.ruleForm.vendor_status = 'Completed'
+        }
+        console.log(this.ruleForm.client_type)
+      },
       initOnMounted(){
         this.loading = true;
         Promise
@@ -184,7 +192,7 @@ export default {
         }).finally(() => this.loading = false)
       },
       submitForm(formName) {
-        console.log(this.ruleForm);
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
               this.loading = true

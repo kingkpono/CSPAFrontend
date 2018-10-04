@@ -61,6 +61,8 @@ const store = new Vuex.Store({
     salesTicketEditScope:[],
     supportTicketEditScope:[],
     cassEditScope:[],
+    clientEditScope:[],
+    companyEditScope:[],
     flexcomLineEditScope:[],
     user:localStorage.get()
   },
@@ -82,6 +84,9 @@ const store = new Vuex.Store({
     },
     editClientScope(state, scope){
       state.clientEditScope = scope
+    },
+    editCompanyScope(state, scope){
+      state.companyEditScope = scope
     },
     editProspectsScope(state, scope){
       state.prospectsEditScope = scope

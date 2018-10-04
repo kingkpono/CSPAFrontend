@@ -100,11 +100,11 @@
                     <el-form-item label="Email" prop="email">
                       <el-input placeholder="Email" v-model="ruleForm2.email"></el-input>
                     </el-form-item>
-                    <el-form-item label="BDM person" prop="bdm_person_id" >
+                    <!-- <el-form-item label="BDM person" prop="bdm_person_id" >
                       <el-select v-model="ruleForm2.bdm_person_id" clearable placeholder="Select" v-loading="loading" >
                         <el-option v-for="item in bdmpersons" :key="item.id" :value="item.id" :label="item.name"></el-option>
                       </el-select>
-                    </el-form-item>
+                    </el-form-item> -->
                      <el-form-item label="Sector" prop="sector_id">
                       <el-select v-model="ruleForm2.sector_id" clearable placeholder="Select" v-loading="loading">
                         <el-option v-for="item in sectors" :key="item.id" :value="item.id" :label="item.name"></el-option>
@@ -115,12 +115,12 @@
                         <el-option v-for="item in service_types" :key="item.id" :value="item.id" :label="item.service_type"></el-option>
                       </el-select>
                     </el-form-item>
-                     <el-form-item label="Vendor-Status" prop="vendor_status">
+                     <!-- <el-form-item label="Vendor-Status" prop="vendor_status">
                       <el-radio-group v-model="ruleForm2.vendor_status" size="medium">
                         <el-radio border label="Pending"></el-radio>
                         <el-radio border label="Completed"></el-radio>
                       </el-radio-group>
-                     </el-form-item>
+                     </el-form-item> -->
                     <el-form-item label="Contact Person" prop="contact_person">
                       <el-input placeholder="Contact Person" v-model="ruleForm2.contact_person"></el-input>
                     </el-form-item>
@@ -128,7 +128,7 @@
                       <el-input placeholder="Mobile" v-model="ruleForm2.mobile"></el-input>
                     </el-form-item>
                      <el-form-item label="Client-Type" prop="client_type">
-                      <el-radio-group v-model="ruleForm2.client_type" size="medium">
+                      <el-radio-group v-model="ruleForm2.client_type" size="medium" :change="changeStatus()">
                         <el-radio border label="Prospect"></el-radio>
                         <el-radio border label="Customer"></el-radio>
                       </el-radio-group>
@@ -231,7 +231,7 @@ export default {
           vendor_status: '',
           contact_person: '',
           mobile: '',
-          bdm_person_id: '',
+          bdm_person_id: '1',
           address: ''
         },
 
@@ -299,9 +299,15 @@ export default {
 
     },
     methods: {
+     changeStatus(){
+        if(this.ruleForm.client_type == 'Prospect'){
+          this.ruleForm.vendor_status = 'Pending'
+        }else{
+          this.ruleForm.vendor_status = 'Completed'
+        }
+      },
       handleFileChange(e) {
        this.file = e
-        console.log(this.file)
       },
       handleFileUpload(){
         if(!this.file){

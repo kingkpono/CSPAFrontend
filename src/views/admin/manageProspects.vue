@@ -8,7 +8,6 @@
                  <i class="icon-user"></i>Manage Prospects
               </div>
               <div class="card-body">
-
                    <el-card class="box-card" style="width:90%;margin:auto" >
                       <el-table :data="tableData" style="width: 100%"  v-loading="loading"  ref="multipleTable" @selection-change="handleSelectionChange">
                        <el-table-column type="selection" width="55"></el-table-column>

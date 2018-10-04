@@ -1,0 +1,32 @@
+[debug] [2018-10-03T12:19:09.218Z] ----------------------------------------------------------------------
+[debug] [2018-10-03T12:19:09.226Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ADEPITAN-PC\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase deploy
+[debug] [2018-10-03T12:19:09.227Z] CLI Version:   4.2.1
+[debug] [2018-10-03T12:19:09.227Z] Platform:      win32
+[debug] [2018-10-03T12:19:09.227Z] Node Version:  v8.11.1
+[debug] [2018-10-03T12:19:09.228Z] Time:          Wed Oct 03 2018 13:19:09 GMT+0100 (W. Central Africa Standard Time)
+[debug] [2018-10-03T12:19:09.228Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-10-03T12:19:09.260Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-10-03T12:19:09.260Z] > authorizing via signed-in user
+[debug] [2018-10-03T12:19:09.265Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-10-03T12:19:09.265Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+
+[debug] [2018-10-03T12:19:09.855Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-03T12:19:09.862Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/cspa-95c03  
+ 
+[debug] [2018-10-03T12:19:11.210Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'cspa-95c03'...
+[info] 
+[info] i  deploying storage, firestore, hosting
+[debug] [2018-10-03T12:19:11.215Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/cspa-95c03  
+ 
+[debug] [2018-10-03T12:19:13.033Z] <<< HTTP RESPONSE 200
+[info] i  storage: checking Y for compilation errors...
+[debug] [2018-10-03T12:19:13.040Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/cspa-95c03:test  
+
+[debug] [2018-10-03T12:19:17.569Z] Error: getaddrinfo ENOTFOUND firebaserules.googleapis.com firebaserules.googleapis.com:443
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[error] 
+[error] Error: Server Error. getaddrinfo ENOTFOUND firebaserules.googleapis.com firebaserules.googleapis.com:443

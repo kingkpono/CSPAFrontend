@@ -24,11 +24,7 @@ export default {
       url: '/admin/staff/manage',
       icon: 'icon-user',
     },
-    {
-      name: 'Ticket Managers',
-      url: '/admin/staff/ticket-managers',
-      icon: 'icon-user',
-    },
+    
     {
       name: 'Manage Sector',
       url: '/admin/sector/manage',
@@ -41,17 +37,21 @@ export default {
       children: [
 
         {
-          name: 'Clients',
-          url: '/admin/company/clients/manage'
+          name: 'Company',
+          url: '/admin/company/company/manage'
         },
         {
           name: 'Prospects',
           url: '/admin/company/prospects/manage'
         },
         {
-          name: 'Company Assignment',
-          url: '/admin/company/company-assignment/manage'
+          name: 'Clients',
+          url: '/admin/company/client/manage'
         }
+        // {
+        //   name: 'Company Assignment',
+        //   url: '/admin/company/company-assignment/manage'
+        // }
       ]
     },
     {

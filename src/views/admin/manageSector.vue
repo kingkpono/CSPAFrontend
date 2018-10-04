@@ -15,20 +15,11 @@
                   </el-row>
 
                    <el-card class="box-card" style="width:90%;margin:auto" >
-                     
                       <el-table :data="tableData" style="width: 100%"  v-loading="loading"  ref="multipleTable" @selection-change="handleSelectionChange">
                        <el-table-column type="selection" width="55"></el-table-column>
                         <el-table-column fixed="right" label="Operations" width="120">
                           <template slot-scope="scope">
                             <el-button @click=" handleClick(scope.row)" class="el-button--mini" type="primary" block> <i class="icon-pencil"></i></el-button>
-                            <el-popover placement="top" width="160">
-                              <p>Are you sure to delete this?</p>
-                              <div style="text-align: right; margin: 0">
-                                <el-button size="mini" type="text" >cancel</el-button>
-                                <el-button type="primary" size="mini" @click="handleDelete(scope.row)" >confirm</el-button>
-                              </div>
-                              <el-button slot="reference" class="el-button--mini"  type="danger" block><i class="icon-trash"></i></el-button>
-                            </el-popover>
                           </template>
                         </el-table-column>
                           <el-table-column type="index" label="S/N" > </el-table-column>

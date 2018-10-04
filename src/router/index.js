@@ -8,11 +8,13 @@ const editStaff = () => import('@/views/admin/editStaff')
 const manageSector = () => import('@/views/admin/manageSector')
 const createSector = () => import('@/views/admin/createSector')
 const editSector = () => import('@/views/admin/editSector')
-const manageClients = () => import('@/views/admin/manageClients')
-const createClients = () => import('@/views/admin/createClient')
-const editClient = () => import('@/views/admin/editClient')
+const manageCompany = () => import('@/views/admin/manageCompany')
+const createCompany = () => import('@/views/admin/createCompany')
+const editCompany= () => import('@/views/admin/editCompany')
 const manageProspects = () => import('@/views/admin/manageProspects')
 const editProspects = () => import('@/views/admin/editProspects')
+const manageClient = () => import('@/views/admin/manageClients')
+const editClient = () => import('@/views/admin/editClient')
 const manageCompanyAssignment = () => import('@/views/admin/manageCompanyAssignment')
 const manageDevices = () => import('@/views/admin/manageDevices')
 const createDevice = () => import('@/views/admin/createDevices')
@@ -28,8 +30,6 @@ const manageSupportTicket = () => import('@/views/admin/manageSupportTicket')
 const createSupportTicket = () => import('@/views/admin/createSupportTicket')
 const editSupportTicket = () => import('@/views/admin/editSupportTicket')
 const viewSupportTicket = () => import('@/views/admin/viewSupportTicket')
-const createSalesTicketStaff = () => import('@/views/admin/createSalesTicketStaff')
-const manageSalesTicketStaff = () => import('@/views/admin/manageSalesTicketStaff')
 const createCass = () => import('@/views/admin/createCass')
 const manageCass = () => import('@/views/admin/manageCass')
 const editCass = () => import('@/views/admin/editCass')
@@ -620,11 +620,10 @@ export default new Router({
                     }
                   ]
                 },
-
                 {
-                  path: 'clients',
-                  redirect: '/admin/company/clients/manage',
-                  name: 'Clients',
+                  path: 'client',
+                  redirect: '/admin/company/client/manage',
+                  name: 'Client',
                   component: {
                     render (c) { return c('router-view') }
                   },
@@ -635,7 +634,7 @@ export default new Router({
                       meta:{
                         role: ['Staff','Admin']
                       },
-                      component: manageClients,
+                      component: manageClient,
                     },
                     {
                       path: 'add',
@@ -643,7 +642,7 @@ export default new Router({
                       meta:{
                         role: ['Staff','Admin']
                       },
-                      component: createClients
+                      component: createClient
                     },
                     {
                       path: 'edit',
@@ -655,7 +654,41 @@ export default new Router({
                     },
 
                   ],
+                },
+                {
+                  path: 'company',
+                  redirect: '/admin/company/company/manage',
+                  name: 'Company',
+                  component: {
+                    render (c) { return c('router-view') }
+                  },
+                  children: [
+                    {
+                      path: 'manage',
+                      name: 'Manage Company',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
+                      component: manageCompany,
+                    },
+                    {
+                      path: 'add',
+                      name: 'Create Company',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
+                      component: createCompany
+                    },
+                    {
+                      path: 'edit',
+                      name: 'Edit Company',
+                      meta:{
+                        role: ['Staff','Admin']
+                      },
+                      component: editCompany
+                    },
 
+                  ],
                 },
                 {
                   path: 'company-assignment',

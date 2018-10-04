@@ -170,6 +170,9 @@ export default {
           start_date:'',
           end_date:'',
           project_officers:[],
+          officer1:'',
+          officer2:'',
+          officer3:'',
           service_type_id:[],
           attachment:"",
           duration:[],
@@ -363,14 +366,27 @@ export default {
         });
       },
       submitSalesTicketForm(formName) {
+
         this.$refs[formName].validate((valid) => {
+           if(this.$localStorage.get().role == 'Admin'){
+
+               if(this.ruleForm.project_officers.length < 3 || this.ruleForm.project_officers.length > 3 ){
+                  this.$alertify.error("Project Officers Should not be less/more than three")
+                  return
+                }
+              this.ruleForm.officer1 = this.ruleForm.project_officers[0]
+              this.ruleForm.officer2 = this.ruleForm.project_officers[1]
+              this.ruleForm.officer3 = this.ruleForm.project_officers[2]
+            }else if(this.$localStorage.get().role == 'Staff'){
+              this.ruleForm.officer1 = this.$store.state.salesTicketEditScope.officer1.id
+              this.ruleForm.officer2 = this.$store.state.salesTicketEditScope.officer2.id
+              this.ruleForm.officer3 = this.$store.state.salesTicketEditScope.officer3.id
+              this.ruleForm.project_officers = this.ruleForm.project_officers.split("").filter(value => value != ',').join()
+            }
+
           if (valid) {
             const vm = this
-            if(this.$localStorage.get().role == 'Admin'){
-              this.ruleForm.project_officers = this.ruleForm.project_officers.join()
-            }
-                        console.log(this.ruleForm.project_officers)
-            this.ruleForm.project_officers = this.ruleForm.project_officers.split("").filter(value => value != ',').join()
+
                 this.ruleForm.duration.map((date,index) => {
                   vm.ruleForm.start_date = vm.ruleForm.duration[0]
                    vm.ruleForm.end_date = vm.ruleForm.duration[1]

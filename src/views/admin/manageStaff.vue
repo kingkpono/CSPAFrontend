@@ -9,7 +9,6 @@
               </div>
               <div class="card-body">
                   <el-row>
-                    <el-button  v-show="multipleSelection.length" @click="makeTicketManager" style="margin-bottom:20px" class="el-button--mini pull-right" type="info" block ><i class="icon-plus" block></i> Make Ticket Manager</el-button>
                   <router-link to="/admin/staff/add">
                      <el-button v-show="!multipleSelection.length" style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
                   </router-link>

@@ -5,11 +5,28 @@
         <b-col md="12">
           <div class="card" >
               <div class="card-header" >
-                 <i class="icon-user"></i>Manage Clients
-              </div>
+                 <i class="icon-user"></i>Manage Company
+              </div> 
               <div class="card-body">
-
+                  <el-row>
+                  <router-link to="/admin/company/company/add">
+                     <el-button style="margin-bottom:20px" class="el-button--mini pull-right" type="success" block ><i class="icon-plus" block></i> Create</el-button>
+                  </router-link>
+                  </el-row>
                    <el-card class="box-card" style="width:90%;margin:auto" >
+                     <el-form :inline="true" class="demo-form-inline" style="border:1px solid #ddd;padding:10px;margin-bottom:20px;height:60px">
+                      <el-form-item label="Filter by:">
+                        <el-select v-model="query_params" placeholder="Query option" @change="fetchQuery">
+                          <el-option label="Sector" value="Sector" selected=""></el-option>
+                          <el-option label="BDM Manager" value="bdmperson"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="">
+                        <el-select v-model="value" placeholder="Select" @change="fetchQueryValue">
+                          <el-option v-for="item in query_value" :key="item.id" :value="item.id" :label="item.name" element-loading-spinner="el-icon-loading" v-loading="fetchQueryValueLoader"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-form>
                       <el-table :data="tableData" style="width: 100%"  v-loading="loading"  ref="multipleTable" @selection-change="handleSelectionChange">
                        <el-table-column type="selection" width="55"></el-table-column>
                         <el-table-column fixed="right" label="Operations" width="120">
@@ -46,11 +63,15 @@
 
 <script>
 export default {
-  name: 'ManageClients',
+  name: 'Manage-Company',
  data() {
 
       return {
+        fetchQueryValueLoader: false,
         scope: '',
+        query_value: [],
+        query_params: '',
+        value: [],
         loading:false,
         bdm_person: '',
         sector: '',
@@ -65,10 +86,68 @@ export default {
       this.getClients()
     },
     methods: {
-
+      fetchQuery(){
+        this.fetchQueryValueLoader = true
+         this.value = ''
+        if(this.query_params == 'Sector' ){
+          this.getSectors()
+        }else if(this.query_params == 'bdmperson' ){
+           this.getbdmPersons()
+        }
+      },
+      fetchQueryValue(){
+        console.log(this.value)
+       if(this.query_params == 'Sector' ){
+           this.getClientBySector(this.value)
+        }else if(this.query_params == 'bdmperson' ){
+           this.getClientByBdmperson(this.value)
+        }
+      },
+      getClientByBdmperson(id){
+        this.loading = true
+         this.axios.get(`clients/bdm/`+ id)
+          .then(response => {
+            this.tableData = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
+      },
+      getClientBySector(id){
+        this.loading = true
+         this.axios.get(`clients/sector/`+ id)
+          .then(response => {
+            this.tableData = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.loading = false)
+      },
+      getSectors(){
+          this.axios.get(`sectors`)
+          .then(response => {
+            this.query_value = response.data
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.fetchQueryValueLoader = false)
+      },
+      getbdmPersons(){
+          this.axios.get(`bdmpersons`)
+          .then(response => {
+            this.query_value = response.data
+            var vm = this
+             this.query_value =  response.data.map(value => {
+                return value.user
+            })
+          })
+          .catch(e => {
+            alert(e);
+          }).finally(() => this.fetchQueryValueLoader = false)
+      },
       getClients(){
           this.loading = true
-          this.axios.get(`clients/type/customer`)
+          this.axios.get(`clients`)
           .then(response => {
             this.tableData = response.data
           })
@@ -77,21 +156,21 @@ export default {
           }).finally(() => this.loading = false)
       },
        handleClick(scope) {
-         this.$store.commit('editClientScope', scope)
-         this.$router.push({ path: '/admin/company/clients/edit' })
+         this.$store.commit('editCompanyScope', scope)
+         this.$router.push({ path: '/admin/company/company/edit' })
       },
 
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
        handleSelectionChange(val) {
-         console.log(this.multipleSelection);
          this.multipleSelection = val;
       },
        filterTag(value, row) {
         return row.status === value;
       },
       handleDelete(row){
+        this.loading = true
           let allData = []
           this.tableData.filter(value => {
             if(row.id !== value.id){
