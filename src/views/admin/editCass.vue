@@ -124,7 +124,14 @@ export default {
                 this.$router.push({ path: '/admin/company/cass/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Update Cass")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Update Cass")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -138,7 +145,14 @@ export default {
           this.service_types = response.data
         })
         .catch(e => {
-          alert(e);
+           var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Create Service Type")
+            }
         }).finally(() => this.loading = false)
       },
       cassTypes(){
@@ -147,7 +161,14 @@ export default {
           this.cass_types = response.data
         })
         .catch(e => {
-          alert(e);
+           var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Create Cass Type")
+            }
         }).finally(() => this.loading = false)
       },
       getClients(){
@@ -156,7 +177,14 @@ export default {
             this.AllClients = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Clients")
+              }
           }).finally(() => this.loadAllValuesLoader = false)
       },
       resetForm(formName) {

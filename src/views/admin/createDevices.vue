@@ -57,11 +57,18 @@ export default {
               this.loading = true
               this.axios.post(`devices`, this.ruleForm)
                .then(response => {
-                 this.$alertify.success("New Sector Created Successfully")
+                 this.$alertify.success("New Device Created Successfully")
                 this.$router.push({ path: '/admin/company/devices/service-type/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Device")
+                var vm = this 
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                   this.$alertify.error("Unable to Create Device")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")

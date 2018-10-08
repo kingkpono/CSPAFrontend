@@ -77,36 +77,55 @@ export default {
             this.axios.get(`supportTickets-by-user/`+ userId)
             .then(response => {
               this.tableData = response.data
-              console.log(this.tableData)
 
             })
             .catch(e => {
-              alert(e);
+               var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to fetch Support Ticket")
+                }
             }).finally(() => this.loading = false)
           }else{
             this.axios.get(`supportTickets`)
             .then(response => {
               this.tableData = response.data
-              console.log(this.tableData)
               this.tableData.filter(id =>{
                 this.fetchsupportTicketClient(id.client_id)
                 this.fetchsupportTicketServiceType(id.service_type_id)
               })
             })
             .catch(e => {
-              alert(e);
+               var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to fetch Support Ticket")
+                }
             }).finally(() => this.loading = false)
           }
 
     },
     methods: {
-
       fetchsupportTicketClient(id){
          this.axios.get(`clients/`+ id)
           .then(response => {
             this.client_name = response.data[0].name
           })
           .catch(e => {
+             var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to fetch Client")
+                }
           }).finally(() =>
           this.loading = false
           )
@@ -115,9 +134,16 @@ export default {
          this.axios.get(`serviceTypes/`+ id)
           .then(response => {
             this.service_type = response.data.service_type
-
           })
           .catch(e => {
+             var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to fetch Service Type")
+                }
           }).finally(() =>
           this.loading = false
           )
@@ -135,6 +161,14 @@ export default {
             })
           })
           .catch(e => {
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Project officers")
+              }
           }).finally(() =>
           this.loading = false
           )
@@ -168,14 +202,21 @@ export default {
             }
           })
           this.tableData = allData;
-              this.axios.delete('supportTickets/'+ row.id)
-              .then(response => {
-                 this.$alertify.success("Record Deleted Successfully")
-                this.$router.push({ path: '/admin/company/ticket/support/manage' })
-              })
-              .catch(e => {
-                 this.$alertify.error("Unable to Delete Record")
-              }).finally(() => this.loading = false)
+          this.axios.delete('supportTickets/'+ row.id)
+          .then(response => {
+              this.$alertify.success("Record Deleted Successfully")
+            this.$router.push({ path: '/admin/company/ticket/support/manage' })
+          })
+          .catch(e => {
+              var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Update Client")
+              }
+          }).finally(() => this.loading = false)
       },
 
     }

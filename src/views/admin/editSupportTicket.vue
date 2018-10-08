@@ -266,7 +266,14 @@ export default {
           this.devices = response.data
         })
         .catch(e => {
-          alert(e);
+          var vm = this
+          if(e.response.data.message){
+            for(var key in e.response.data.message){
+              vm.$alertify.error(e.response.data.message[key]);
+            }
+          }else{
+            this.$alertify.error("Unable to Fetch Devices")
+          }
         }).finally(() => this.loading = false)
       },
       getProjectOfficers(){
@@ -276,7 +283,14 @@ export default {
             this.allStaff = vm.generateData2(response.data)
           })
           .catch(e => {
-            alert(e);
+            var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to fetch users")
+            }
           }).finally(() => this.loading = false)
       },
       serviceTypes(){
@@ -285,7 +299,14 @@ export default {
             this.service_types = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Service Types")
+              }
           }).finally(() => this.loading = false)
       },
       initOnNewClient(){
@@ -318,7 +339,14 @@ export default {
                   location.reload()
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Client")
+                  var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Fetch Client")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -356,7 +384,14 @@ export default {
                 this.$router.push({ path: '/admin/company/ticket/support/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Update support Ticket")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Update Support Ticket")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -372,7 +407,14 @@ export default {
             this.AllClients = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Client")
+              }
           }).finally(() => this.loadAllValuesLoader = false)
       },
       handleClose(){

@@ -101,7 +101,14 @@ export default {
                 this.$router.push({ path: '/admin/company/flexcom/lines/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Flexcom Line")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                   this.$alertify.error("Unable to Create Flexcom Line")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -116,7 +123,14 @@ export default {
             this.AllClients = response.data
           })
           .catch(e => {
-            alert(e);
+            var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to fetch Clients")
+            }
           }).finally(() => this.loadAllValuesLoader = false)
       },
       resetForm(formName) {

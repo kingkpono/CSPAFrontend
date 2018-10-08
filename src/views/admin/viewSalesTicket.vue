@@ -231,9 +231,7 @@ export default {
        this.fetchsalesTicketRemarks()
     },
     methods: {
-      onSubmit(){
 
-      },
       closeSalesTicket(){
           this.loading = true
           this.axios.put(`salesTickets/`+ this.$store.state.salesTicketEditScope.id, this.ruleForm2)
@@ -242,7 +240,14 @@ export default {
             this.$router.push({ path: '/admin/company/ticket/sales/manage' })
           })
           .catch(e => {
-              this.$alertify.error("Unable to Close Sales Ticket")
+              var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Close Sales Ticket")
+                }
           }).finally(() => this.loading = false)
       },
       fillUpFields(){
@@ -259,6 +264,14 @@ export default {
             })
           })
           .catch(e => {
+             var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to fetch Project Officers")
+                }
           }).finally(() =>
           this.loading = false
           )
@@ -271,6 +284,14 @@ export default {
              this.remarks = response.data
           })
           .catch(e => {
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Sales Ticket Remarks")
+              }
           }).finally(() =>
           this.loading = false
           )
@@ -286,6 +307,14 @@ export default {
                   this.fetchsalesTicketRemarks()
                 })
                 .catch(e => {
+                   var vm = this
+                  if(e.response.data.message){
+                    for(var key in e.response.data.message){
+                      vm.$alertify.error(e.response.data.message[key]);
+                    }
+                  }else{
+                    this.$alertify.error("Unable to Save Sales Ticket Remarks")
+                  }
                 }).finally(() =>
                 this.loading = false
                 )

@@ -73,7 +73,14 @@ export default {
         this.tableData = response.data
       })
       .catch(e => {
-        alert(e);
+         var vm = this
+          if(e.response.data.message){
+            for(var key in e.response.data.message){
+              vm.$alertify.error(e.response.data.message[key]);
+            }
+          }else{
+            this.$alertify.error("Unable to fetch flexcom Client")
+          }
       }).finally(() => this.loading = false)
     },
     methods: {
@@ -103,13 +110,20 @@ export default {
             }
           })
           this.tableData = allData;
-              this.axios.delete('cass/'+ row.id)
+              this.axios.delete('flexcom/clients/'+ row.id)
               .then(response => {
                  this.$alertify.success("Record Deleted Successfully")
                 this.$router.push({ path: '/admin/company/flexcom/clients' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Delete Record")
+                  var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Delete Client")
+                }
               }).finally(() => this.loading = false)
       },
 

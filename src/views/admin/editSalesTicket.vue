@@ -240,7 +240,6 @@ export default {
       };
     },
     mounted:function(){
-      console.log({'allStaff':this.allStaff,'project_officer':this.ruleForm.project_officers})
       this.loading = true
        this.getClients()
        this.serviceTypes()
@@ -267,7 +266,6 @@ export default {
       handleFileChange(e) {
         var file = e
         var vm = this
-        console.log(file)
         var metadata = {
           'contentType': file.type
          };
@@ -275,14 +273,20 @@ export default {
           var auth = this.$firebase.auth();
           var storage = this.$firebase.storage();
           var storageRef = storage.ref();
-            console.log(file.url)
            storageRef.child('salesTicketImages/' + file.name).put(file.raw, metadata).then(function(snapshot) {
             snapshot.ref.getDownloadURL().then(function(url) {
               vm.ruleForm.attachment = url
               vm.$alertify.success("file uploaded successfully")
             });
           }).catch(function(error) {
-            console.error('Upload failed:', error);
+             var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Upload File")
+                }
          });
       },
 
@@ -305,7 +309,14 @@ export default {
           this.devices = response.data
         })
         .catch(e => {
-          alert(e);
+           var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Fetch Devices")
+            }
         }).finally(() => this.loading = false)
       },
       getProjectOfficers(){
@@ -315,7 +326,14 @@ export default {
             this.allStaff = vm.generateData2(response.data)
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Project Officers")
+              }
           }).finally(() => this.loading = false)
       },
       serviceTypes(){
@@ -324,7 +342,14 @@ export default {
             this.service_types = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Service Type")
+              }
           }).finally(() => this.loading = false)
       },
       initOnNewClient(){
@@ -357,7 +382,14 @@ export default {
                   location.reload()
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Client")
+                  var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Create Client")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -398,7 +430,14 @@ export default {
                 this.$router.push({ path: '/admin/company/ticket/sales/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Update Sales Ticket")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Update Sales Ticket")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -414,7 +453,14 @@ export default {
             this.AllClients = response.data
           })
           .catch(e => {
-            alert(e);
+            var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Fetch Clients")
+            }
           }).finally(() => this.loadAllValuesLoader = false)
       },
       handleClose(){

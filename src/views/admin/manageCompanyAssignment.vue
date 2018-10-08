@@ -105,7 +105,6 @@ export default {
     },
     methods: {
       fetchQuery(){
-        console.log(this.value + this.client_type)
        if(this.client_type == 'all' ||this.client_type == '' && this.value !== ''){
             this.getClientBySector(this.value)
         }else if(this.client_type !== 'all' && this.value){
@@ -123,7 +122,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Client")
+              }
           }).finally(() => this.loading = false)
       },
       getClientByBdmperson(id){
@@ -133,7 +139,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Client")
+              }
           }).finally(() => this.loading = false)
       },
       getClientBySector(id){
@@ -143,17 +156,30 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Client")
+              }
           }).finally(() => this.loading = false)
       },
       getSectors(){
           this.axios.get(`sectors`)
           .then(response => {
-            console.log(response.data)
             this.sector_value = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Sector")
+              }
           }).finally(() => this.fetchQueryValueLoader = false)
       },
       getbdmPersons(){
@@ -162,7 +188,14 @@ export default {
             this.bdm_persons = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch BDM Manager")
+              }
           }).finally(() => this.fetchQueryValueLoader = false)
       },
       getClientsByType(type){
@@ -172,7 +205,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Client")
+              }
           }).finally(() => this.loading = false)
       },
       getClients(){
@@ -182,7 +222,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Client")
+              }
           }).finally(() => this.loading = false)
       },
        handleClick(scope) {
@@ -221,7 +268,14 @@ export default {
            location.reload()
         })
         .catch(e => {
-
+           var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Update BDM Manager")
+            }
         }).finally(() => this.loading = false)
       },
       handleDelete(row){
@@ -239,7 +293,14 @@ export default {
                 this.$router.push({ path: '/admin/company/clients/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Delete Record")
+                  var vm = this
+                  if(e.response.data.message){
+                    for(var key in e.response.data.message){
+                      vm.$alertify.error(e.response.data.message[key]);
+                    }
+                  }else{
+                    this.$alertify.error("Unable to Delete Client")
+                  }
               }).finally(() => this.loading = false)
       }
     }

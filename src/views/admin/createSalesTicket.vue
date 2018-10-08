@@ -218,7 +218,7 @@ export default {
         ruleForm: {
           serial_number:'',
           device:'',
-          client_id:[],
+          client_id:'',
           device_warranty:'',
           device_description:'',
           project_details:'',
@@ -227,7 +227,7 @@ export default {
           start_date:'',
           end_date:'',
           project_officers:[],
-          service_type_id:[],
+          service_type_id:'',
           attachment:'',
           duration:'',
           projectStaff:[],
@@ -346,7 +346,15 @@ export default {
               vm.$alertify.success("file uploaded successfully")
             });
           }).catch(function(error) {
-            console.error('Upload failed:', error);
+              var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Upload File")
+            }
+            //console.error('Upload failed:', error);
          });
       },
     removeImage: function (e) {
@@ -370,7 +378,14 @@ export default {
             this.allStaff = vm.generateData2(response.data)
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to fetch Project Officers")
+            }
           }).finally(() => this.loading = false)
       },
       serviceTypes(){
@@ -379,7 +394,14 @@ export default {
             this.service_types = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to fetch Service Types")
+            }
           }).finally(() => this.loading = false)
       },
       initOnNewClient(){
@@ -412,7 +434,14 @@ export default {
                   location.reload()
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Client")
+                  var vm = this
+                  if(e.response.data.message){
+                    for(var key in e.response.data.message){
+                      vm.$alertify.error(e.response.data.message[key]);
+                    }
+                  }else{
+                    this.$alertify.error("Unable to Create Client")
+                  }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -422,8 +451,6 @@ export default {
         });
       },
       submitSalesTicketForm(formName) {
-         console.log(this.ruleForm)
-
         this.$refs[formName].validate((valid) => {
           if(this.$localStorage.get().role.toLowerCase() == 'staff'){
            this.ruleForm.project_officers = this.$localStorage.get().id.toString()
@@ -447,7 +474,14 @@ export default {
                 this.$router.push({ path: '/admin/company/ticket/sales/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Sales Ticket Type")
+                var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Create Sales Ticket")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -463,7 +497,14 @@ export default {
             this.AllClients = response.data
           })
           .catch(e => {
-            alert(e);
+            var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Fetch Clients")
+            }
           }).finally(() => this.loadAllValuesLoader = false)
       },
       handleClose(){

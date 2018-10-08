@@ -76,23 +76,18 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to fetch flexcom lines")
+                }
           }).finally(() => this.loading = false)
     },
     methods: {
-      viewDueCass(){
-         this.ruleForm.due_year = this.ruleForm.date.getFullYear().toString()
-         this.ruleForm.due_month = this.monthNames[this.ruleForm.date.getMonth()]
-         this.tableData = []
-        this.loading = true
-          this.axios.post(`cass/due`, this.ruleForm)
-          .then(response => {
-            this.tableData = response.data
-          })
-          .catch(e => {
-            alert(e);
-          }).finally(() => this.loading = false)
-      },
+
       handleClick(scope) {
          this.$store.commit('editFlexcomLineScope', scope)
          this.$router.push({ path: '/admin/company/flexcom/lines/edit' })
@@ -118,13 +113,20 @@ export default {
             }
           })
           this.tableData = allData;
-              this.axios.delete('cass/'+ row.id)
+              this.axios.delete('flexcom/lines/'+ row.id)
               .then(response => {
                  this.$alertify.success("Record Deleted Successfully")
                 this.$router.push({ path: '/admin/company/flexcom/lines/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Delete Record")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to flexcom line")
+                }
               }).finally(() => this.loading = false)
       },
 

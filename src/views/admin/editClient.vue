@@ -175,7 +175,14 @@ export default {
                 this.$router.push({ path: '/admin/company/client/manage'})
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Update Client")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Update Client")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")

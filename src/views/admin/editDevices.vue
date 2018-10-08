@@ -64,7 +64,14 @@ export default {
                 this.$router.push({ path: '/admin/company/devices/manage' })
               })
               .catch(e => {
-
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Update Device")
+                }
               }).finally(() => this.loading = false)
 
             } else {

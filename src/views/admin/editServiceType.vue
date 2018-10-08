@@ -66,15 +66,20 @@ export default {
               this.axios.put('serviceType/'+ this.$store.state.serviceTypeEditScope.id, this.ruleForm)
              .then(response => {
                  this.$alertify.success("Service Type Updated Successfully")
-                this.$router.push({ path: '/admin/company/devices/manage' })
+                this.$router.push({ path: '/admin/company/devices/service-types/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Update Service Type")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Update Service Type")
+                }
               }).finally(() => this.loading = false)
-
             } else {
               this.$alertify.error("Please complete the fields")
-              console.log('error submit!!');
               return false;
             }
         });

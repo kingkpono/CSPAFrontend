@@ -87,7 +87,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Cass")
+              }
           }).finally(() => this.loading = false)
     },
     methods: {
@@ -101,7 +108,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Due Cass")
+              }
           }).finally(() => this.loading = false)
       },
       handleClick(scope) {
@@ -135,7 +149,14 @@ export default {
                 this.$router.push({ path: '/admin/company/cass/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Delete Record")
+                  var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Delete Cass")
+                }
               }).finally(() => this.loading = false)
       },
 

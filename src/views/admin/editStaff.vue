@@ -90,23 +90,17 @@ export default {
          alert(this.$store.state.staffEditScope)
       },
       submitForm(formName) {
-           console.log(1);
         this.$refs[formName].validate((valid) => {
-           console.log(2);
           if (valid) {
-             console.log(3);
-              this.loading = true
+              this.loading = true;
               this.axios.put('users/'+ this.$store.state.staffEditScope.id, this.ruleForm)
              .then(response => {
                  this.$alertify.success("Staff Record Updated Successfully")
                 this.$router.push({ path: '/admin/staff/manage' })
               })
               .catch(e => {
-                 console.log(5);
-                 console.log(e);
+                this.$alertify.error("Unable to update Staff record")
               }).finally(() => this.loading = false)
-               this.$alertify.error("Unable to update Staff record")
-               this.$router.push({ path: '/admin/staff/manage' })
             } else {
               this.$alertify.error("Please complete the fields")
               console.log('error submit!!');

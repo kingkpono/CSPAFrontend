@@ -72,7 +72,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+            var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Client")
+              }
           }).finally(() => this.loading = false)
       },
        handleClick(scope) {
@@ -104,7 +111,14 @@ export default {
                 this.$router.push({ path: '/admin/company/prospects/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Delete Record")
+                  var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Delete Client")
+                }
               }).finally(() => this.loading = false)
       }
     }

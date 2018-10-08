@@ -166,7 +166,14 @@ export default {
           this.bdmpersons = response.data
         })
         .catch(e => {
-          alert(e);
+          var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Fetch BDM Managers")
+            }
         }).finally(() => this.loading = false)
       },
       getsectors(){
@@ -177,32 +184,51 @@ export default {
           this.bdmpersons = response.data
         })
         .catch(e => {
-          alert(e);
+          var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Fetch Sectors")
+            }
         }).finally(() => this.loading = false)
       },
       getservicetypes(){
          this.loading = true
         this.axios.get(`serviceTypes`)
         .then(response => {
-          console.log(response.data);
           this.service_types = response.data
         })
         .catch(e => {
-          alert(e);
+          var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Fetch Service Types")
+            }
         }).finally(() => this.loading = false)
       },
       submitForm(formName) {
-
         this.$refs[formName].validate((valid) => {
           if (valid) {
               this.loading = true
               this.axios.post(`clients`, this.ruleForm)
                .then(response => {
                  this.$alertify.success("New Client Created Successfully")
-                this.$router.push({ path: '/admin/company/clients/manage' })
+                this.$router.push({ path: '/admin/company/company/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Client")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Create Client")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")

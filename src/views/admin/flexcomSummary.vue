@@ -67,7 +67,14 @@ export default {
         this.tableData = response.data
       })
       .catch(e => {
-        alert(e);
+         var vm = this
+          if(e.response.data.message){
+            for(var key in e.response.data.message){
+              vm.$alertify.error(e.response.data.message[key]);
+            }
+          }else{
+            this.$alertify.error("Unable to Fetch Flexcom Summary")
+          }
       }).finally(() => this.loading = false)
     },
     methods: {

@@ -108,7 +108,7 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            
+
               this.loading = true
               this.axios.put(`flexcom/lines`, this.ruleForm)
                .then(response => {
@@ -116,7 +116,14 @@ export default {
                 this.$router.push({ path: '/admin/company/flexcom/lines/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Update Flexcom Line")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Update Flexcom Line")
+                }
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
@@ -131,7 +138,14 @@ export default {
             this.AllClients = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Client")
+              }
           }).finally(() => this.loadAllValuesLoader = false)
       },
       resetForm(formName) {

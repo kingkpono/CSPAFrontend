@@ -6,7 +6,7 @@
           <div class="card" >
               <div class="card-header" >
                  <i class="icon-user"></i>Manage Company
-              </div> 
+              </div>
               <div class="card-body">
                   <el-row>
                   <router-link to="/admin/company/company/add">
@@ -110,7 +110,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+            var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to fetch BDM Manager")
+            }
           }).finally(() => this.loading = false)
       },
       getClientBySector(id){
@@ -120,7 +127,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Sector")
+              }
           }).finally(() => this.loading = false)
       },
       getSectors(){
@@ -129,7 +143,14 @@ export default {
             this.query_value = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Sector")
+              }
           }).finally(() => this.fetchQueryValueLoader = false)
       },
       getbdmPersons(){
@@ -142,7 +163,14 @@ export default {
             })
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch BDM Manager")
+              }
           }).finally(() => this.fetchQueryValueLoader = false)
       },
       getClients(){
@@ -152,7 +180,14 @@ export default {
             this.tableData = response.data
           })
           .catch(e => {
-            alert(e);
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Fetch Clients")
+              }
           }).finally(() => this.loading = false)
       },
        handleClick(scope) {
@@ -184,7 +219,14 @@ export default {
                 this.$router.push({ path: '/admin/company/clients/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Delete Record")
+                  var vm = this
+                  if(e.response.data.message){
+                    for(var key in e.response.data.message){
+                      vm.$alertify.error(e.response.data.message[key]);
+                    }
+                  }else{
+                    this.$alertify.error("Unable to Delete Client")
+                  }
               }).finally(() => this.loading = false)
       }
     }

@@ -90,7 +90,14 @@ export default {
               })
             })
             .catch(e => {
-              alert(e);
+               var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to fetch Sales Ticket")
+                }
             }).finally(() => this.loading = false)
           }else{
              this.axios.get(`salesTickets`)
@@ -104,7 +111,14 @@ export default {
               })
             })
             .catch(e => {
-              alert(e);
+              var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to fetch Sales Ticket")
+                }
             }).finally(() => this.loading = false)
           }
 
@@ -117,6 +131,14 @@ export default {
             this.client_name = response.data[0].name
           })
           .catch(e => {
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to fetch Clients")
+              }
           }).finally(() =>
           this.loading = false
           )
@@ -128,6 +150,14 @@ export default {
 
           })
           .catch(e => {
+             var vm = this
+              if(e.response.data.message){
+                for(var key in e.response.data.message){
+                  vm.$alertify.error(e.response.data.message[key]);
+                }
+              }else{
+                this.$alertify.error("Unable to Update Client")
+              }
           }).finally(() =>
           this.loading = false
           )
@@ -142,6 +172,14 @@ export default {
             })
           })
           .catch(e => {
+             var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to fetch Project Officer")
+                }
           }).finally(() =>
           this.loading = false
           )
@@ -184,7 +222,14 @@ export default {
                 this.$router.push({ path: '/admin/company/ticket/sales/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Delete Record")
+                  var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Delete Sales Ticket")
+                }
               }).finally(() => this.loading = false)
       },
 

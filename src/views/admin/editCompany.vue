@@ -176,11 +176,17 @@ export default {
          this.loading = true
         this.axios.get(`serviceTypes`)
         .then(response => {
-          console.log(response.data);
           this.service_types = response.data
         })
         .catch(e => {
-          alert(e);
+           var vm = this
+            if(e.response.data.message){
+              for(var key in e.response.data.message){
+                vm.$alertify.error(e.response.data.message[key]);
+              }
+            }else{
+              this.$alertify.error("Unable to Fetch Service Types")
+            }
         }).finally(() => this.loading = false)
       },
       fillUpFields(){
@@ -197,7 +203,14 @@ export default {
                 this.$router.push({ path: '/admin/company/company/manage'})
               })
               .catch(e => {
-                this.$alertify.success("Unable to update client")
+                 var vm = this
+                if(e.response.data.message){
+                  for(var key in e.response.data.message){
+                    vm.$alertify.error(e.response.data.message[key]);
+                  }
+                }else{
+                  this.$alertify.error("Unable to Update Client")
+                }
               }).finally(() => this.loading = false)
 
             } else {

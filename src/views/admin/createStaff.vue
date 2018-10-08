@@ -13,7 +13,6 @@
                     <el-form-item label="Name" prop="name">
                       <el-input placeholder="Name" v-model="ruleForm.name"></el-input>
                     </el-form-item>
-
                     <el-form-item prop="email" label="Email">
                       <el-input placeholder="Email" v-model="ruleForm.email"></el-input>
                     </el-form-item>
@@ -37,7 +36,7 @@
                     <el-form-item>
                       <el-button type="primary" @click="submitForm('ruleForm')">Create</el-button>
                       <el-button @click="resetForm('ruleForm')">Reset</el-button>
-                    </el-form-item> 
+                    </el-form-item>
                   </el-form>
                 </el-card>
               </div>
@@ -65,6 +64,7 @@ export default {
           password: '',
           phone: ''
         },
+        error:[],
         rules: {
           email:[
              { required: true, message: 'Please input email address', trigger: 'blur' },
@@ -93,19 +93,26 @@ export default {
     },
     methods: {
       submitForm(formName) {
-           console.log(1);
         this.$refs[formName].validate((valid) => {
-           console.log(2);
           if (valid) {
-             console.log(3);
               this.loading = true
               this.axios.post(`users`, this.ruleForm)
                .then(response => {
+                  console.log(response);
                  this.$alertify.success("Staff Created Successfully")
                 this.$router.push({ path: '/admin/staff/manage' })
               })
               .catch(e => {
-                 this.$alertify.error("Unable to Create Staff")
+                 var vm = this
+                 if(e.response.data.message){
+                   for(var key in e.response.data.message){
+                     vm.$alertify.error(e.response.data.message[key]);
+                   }
+                 }else{
+                    this.$alertify.error("Unable to Create Staff")
+                 }
+
+
               }).finally(() => this.loading = false)
             } else {
               this.$alertify.error("Please complete the fields")
